@@ -1,0 +1,61 @@
+name: Create release after develop merge
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: release-master
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out merged commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Confirm this is a merged pull request from develop
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pull_requests="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" \
+            --jq '[.[] | select(.merged_at != null and .base.ref == "master" and .head.ref == "develop")] | length')"
+          if [[ "$pull_requests" -gt 0 ]]; then
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=false" >> "$GITHUB_OUTPUT"
+            echo "This master update was not merged from develop; no release will be created."
+          fi
+
+      - name: Calculate next patch version
+        id: version
+        if: steps.source.outputs.release == 'true'
+        run: |
+          git fetch --tags origin
+          latest_tag="$(git tag --list 'v[0-9]*' --sort=-version:refname | head -n 1)"
+          if [[ -z "$latest_tag" ]]; then
+            next_tag="v0.1.0"
+          elif [[ "$latest_tag" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            next_tag="v${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.$((BASH_REMATCH[3] + 1))"
+          else
+            echo "Latest tag '$latest_tag' is not a vMAJOR.MINOR.PATCH version." >&2
+            exit 1
+          fi
+          echo "tag=$next_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub release with generated notes
+        if: steps.source.outputs.release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+        run: gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "$RELEASE_TAG" --generate-notes
