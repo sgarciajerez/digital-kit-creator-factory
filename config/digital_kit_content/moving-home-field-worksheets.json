@@ -1,0 +1,42 @@
+{
+  "title": "Moving Home Field Worksheets",
+  "subtitle": "A practical companion for the details that do not fit in a budget table",
+  "pages": [
+    {
+      "title": "Mover quote scope comparison",
+      "intro": "Use the same move description for each provider so the totals are comparable. Record what is included, what is excluded and the question you still need answered before booking.",
+      "checks": ["Confirm access, floors, lifts and parking", "List packing or dismantling needs", "Check waiting-time and weekend terms", "Ask about cancellation and date changes", "Keep the written quote and booking confirmation"],
+      "fields": ["Provider and quote date", "Included work", "Exclusions or variable charges", "Access notes", "Decision and reason"]
+    },
+    {
+      "title": "Move-cost buffer and payment checkpoints",
+      "intro": "Separate confirmed costs from estimates and deposits. This worksheet is for organising information, not for deciding what your household can afford.",
+      "checks": ["Record the agreed budget ceiling", "Mark each cost as estimate, confirmed or paid", "Note refundable deposits separately", "Keep one line for unexpected costs", "Review the remaining amount after each major booking"],
+      "fields": ["Cost category", "Estimate", "Confirmed amount", "Due date", "Receipt or reference", "Open question"]
+    },
+    {
+      "title": "Room, box and first-night inventory",
+      "intro": "Give each box a simple ID, name its destination room, and mark what must be reachable first. Keep personal documents, medicines, chargers and keys with you rather than in the van.",
+      "checks": ["Choose a short room code for the new home", "Number boxes as they are sealed", "Flag fragile or upright-only boxes", "Set aside one first-night and one first-morning box", "Photograph valuable or delicate items before packing"],
+      "fields": ["Room code and colour", "Box ID range", "First-night essentials", "Items travelling with the household", "Questions for the mover"]
+    },
+    {
+      "title": "Address, services and meter-reading handover",
+      "intro": "Use this page as a reminder list, not as a substitute for local requirements. Confirm account closure or transfer dates directly with providers and keep dated readings or confirmation numbers with your move records.",
+      "checks": ["Confirm electricity, gas and water arrangements at both homes", "Record final readings and take a dated photograph where relevant", "Schedule internet and phone changes", "Notify important organisations using their official process", "Check mail-forwarding options and timing for your location"],
+      "fields": ["Provider or organisation", "Old-home end date", "New-home start date", "Confirmation reference", "Follow-up owner and date"]
+    },
+    {
+      "title": "Move-day run sheet and key control",
+      "intro": "The day usually goes better when one person owns the clock and one short list covers the handovers. Record who has each key set and where the vehicle should stop before the first box comes down.",
+      "checks": ["Confirm arrival window and access instructions", "Keep phone, keys, documents and medication accessible", "Walk each room before loading and after unloading", "Check the agreed inventory against the vehicle", "Record who received each set of keys"],
+      "fields": ["First contact and phone", "Vehicle access and parking", "Old-home handover time", "New-home access time", "Key sets and recipient", "Issue to resolve before departure"]
+    },
+    {
+      "title": "First-week landing and close-out",
+      "intro": "Do not try to make the new home perfect in one evening. Start with safe access, sleeping, food, essential services and the boxes that unblock daily routines. Leave cosmetic decisions for a calmer day.",
+      "checks": ["Test essential services and note anything not working", "Unpack the kitchen, bedding and work or school essentials", "Check deliveries and storage return dates", "File receipts, agreements and handover photographs", "Reconcile planned costs with final amounts"],
+      "fields": ["First three rooms to make usable", "Outstanding delivery or repair", "Receipt folder location", "Final budget review date", "One task to postpone until settled"]
+    }
+  ]
+}

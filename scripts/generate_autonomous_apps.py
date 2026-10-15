@@ -39,11 +39,15 @@ def validate_generated_workbook(path: Path, expected_tabs: list[str], spec: dict
     if not path.exists():
         return {"passed": False, "score": 0, "checks": [], "errors": ["XLSX no existe"]}
     guide_path = path.parent / "README.md"
+    guide_pdf_name = str((spec or {}).get("app_user_guide_pdf_filename", f"{(spec or {}).get('slug', 'excel')}-user-guide.pdf"))
+    guide_pdf_path = path.parent / guide_pdf_name
     expected_language = str((spec or {}).get("design_language") or "en").casefold()
     if not guide_path.is_file():
         errors.append("Falta app/README.md con instrucciones de uso")
     elif f"**Language:** `{expected_language}`" not in guide_path.read_text(encoding="utf-8"):
         errors.append("app/README.md no coincide con el idioma declarado del producto")
+    if not guide_pdf_path.is_file():
+        errors.append("Falta la guía de uso equivalente en PDF")
     try:
         wb = load_workbook(path, data_only=False)
     except Exception as exc:
@@ -146,9 +150,26 @@ def style_product_charts(path: Path, spec: dict) -> None:
     accent = excel_rgb(palette["accent"])
     secondary = excel_rgb(palette["secondary"])
     background = excel_rgb(palette["background"])
-    ink = excel_rgb(palette["ink"])
     white = 0xFFFFFF
     black = 0x000000
+
+    def style_text_shape(shape) -> None:
+        """Give chart title boxes a soft palette gradient and plain black text."""
+        try:
+            shape.Format.Fill.Visible = -1
+            shape.Format.Fill.TwoColorGradient(1, 1)
+            shape.Format.Fill.ForeColor.RGB = background
+            shape.Format.Fill.BackColor.RGB = white
+            shape.Format.Line.Visible = False
+        except Exception:
+            pass
+        try:
+            text_range = shape.Format.TextFrame2.TextRange
+            text_range.Font.Fill.ForeColor.RGB = black
+            text_range.Font.Line.Visible = False
+        except Exception:
+            pass
+
     chart_titles = {
         "Dashboard": "Planned vs actual spend",
         "Timeline": "Days left by task",
@@ -195,21 +216,27 @@ def style_product_charts(path: Path, spec: dict) -> None:
                         axis = chart.Axes(axis_type)
                         axis.HasTitle = True
                         axis.AxisTitle.Text = title
-                        text = axis.AxisTitle.Format.TextFrame2.TextRange
-                        text.Font.Fill.ForeColor.RGB = white
-                        text.Font.Line.Visible = -1
-                        text.Font.Line.ForeColor.RGB = black
+                        style_text_shape(axis.AxisTitle)
+                        axis.TickLabels.Font.Color = black
                     except Exception:
                         pass
                 try:
-                    title_text = chart.ChartTitle.Format.TextFrame2.TextRange
-                    title_text.Font.Fill.ForeColor.RGB = ink
-                    title_text.Font.Line.Visible = -1
-                    title_text.Font.Line.ForeColor.RGB = black
+                    style_text_shape(chart.ChartTitle)
                 except Exception:
                     pass
                 try:
-                    chart.Legend.Format.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = ink
+                    legend_text = chart.Legend.Format.TextFrame2.TextRange
+                    legend_text.Font.Fill.ForeColor.RGB = black
+                    legend_text.Font.Line.Visible = False
+                except Exception:
+                    pass
+                try:
+                    for series_index in range(1, chart.SeriesCollection().Count + 1):
+                        series = chart.SeriesCollection(series_index)
+                        if series.HasDataLabels:
+                            labels = series.DataLabels().Format.TextFrame2.TextRange
+                            labels.Font.Fill.ForeColor.RGB = black
+                            labels.Font.Line.Visible = False
                 except Exception:
                     pass
         workbook.Save()
@@ -307,6 +334,32 @@ def main() -> int:
     for product_id in product_ids:
         folder = OUT_ROOT / f"product-{product_id}"
         spec = json.loads((folder / "design_spec.json").read_text(encoding="utf-8"))
+        from digital_kit import build_digital_kit, product_kit_policy
+        kit_policy = product_kit_policy(spec.get("slug", ""))
+        if not kit_policy:
+            results.append({
+                "product_id": product_id,
+                "slug": spec.get("slug"),
+                "status": "blocked_by_missing_kit_profile",
+            })
+            print(f"product-{product_id}: blocked_by_missing_kit_profile")
+            continue
+        if kit_policy.get("product_readiness", "ready") != "ready":
+            manifest_path = folder / "draft_package" / "listing.json"
+            if manifest_path.is_file():
+                previous_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                previous_manifest["status"] = "blocked_by_product_redesign"
+                previous_manifest["next_action"] = kit_policy.get("readiness_note", "Redesign the product before sale.")
+                manifest_path.write_text(json.dumps(previous_manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+            result = {
+                "product_id": product_id,
+                "slug": spec.get("slug"),
+                "status": "blocked_by_product_redesign",
+                "readiness_note": kit_policy.get("readiness_note"),
+            }
+            results.append(result)
+            print(f"product-{product_id}: blocked_by_product_redesign")
+            continue
         manifest_path = folder / "draft_package" / "listing.json"
         if manifest_path.is_file():
             previous_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -339,6 +392,12 @@ def main() -> int:
         app_dir.mkdir(parents=True, exist_ok=True)
         app_guide_path = app_dir / "README.md"
         write_app_usage_markdown(app_guide_path, spec, model_contract)
+        guide_filename = str(spec.get("app_user_guide_pdf_filename", f"{spec['slug']}-user-guide.pdf"))
+        if not guide_filename.lower().endswith(".pdf") or Path(guide_filename).name != guide_filename:
+            raise RuntimeError(f"product-{product_id}: app_user_guide_pdf_filename debe ser un nombre PDF sin rutas")
+        from product_guide_pdf import generate_user_guide_pdf
+        user_guide_pdf = generate_user_guide_pdf(app_guide_path, app_dir / guide_filename, spec)
+        user_guide_pdf["file"] = str((app_dir / guide_filename).relative_to(ROOT))
         path = app_dir / f"{spec['slug']}-excel-template.xlsx"
         master_workbook = ROOT / str(spec.get("master_workbook", "templates/excel-first-base/master_workbook.xlsx"))
         spec["_native_source_present"] = master_workbook.is_file() and bool(spec.get("model_base")) and bool(spec.get("source_lineage"))
@@ -366,6 +425,21 @@ def main() -> int:
         style_product_charts(path, spec)
         from workbook_views import apply_workbook_views
         apply_workbook_views(path, spec)
+        ebook_spec = spec.get("ebook") or {}
+        ebook_filename = str(ebook_spec.get("filename", ""))
+        ebook_required = bool(kit_policy.get("ebook_required", False))
+        if ebook_filename:
+            if not ebook_filename.lower().endswith(".pdf") or Path(ebook_filename).name != ebook_filename:
+                raise RuntimeError(f"product-{product_id}: ebook.filename debe ser un nombre PDF descriptivo sin rutas")
+            from product_ebook import generate_product_ebook
+            ebook_path = app_dir / ebook_filename
+            ebook_report = generate_product_ebook(spec, ebook_path)
+            ebook_report["file"] = str(ebook_path.relative_to(ROOT))
+            ebook_report["included"] = True
+        elif ebook_required:
+            raise RuntimeError(f"product-{product_id}: el perfil del kit exige un e-book PDF declarado")
+        else:
+            ebook_report = {"passed": True, "included": False, "reason": "No topic e-book is required by this kit profile."}
         validation = validate_generated_workbook(path, spec["tabs"], spec)
         # Keep the normative model guide and the independent result of its
         # verification as first-class factory artifacts.  The guide is built
@@ -373,7 +447,7 @@ def main() -> int:
         # report records whether the generated workbook satisfies it.
         model_qa_path = folder / "model_behavior_qa.json"
         model_qa_path.write_text(json.dumps(validation.get("model_quality", {}), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        report = {"product_id": product_id, "slug": spec["slug"], "generated_at": datetime.now(timezone.utc).isoformat(), "file": str(path.relative_to(ROOT)), "validation": validation, "design_sources": {"master_workbook": str(master_workbook.relative_to(ROOT)) if master_workbook.is_relative_to(ROOT) else str(master_workbook), "native_model": spec["_native_source_present"], "source_lineage": spec.get("source_lineage", [])}, "visual_pattern": spec.get("visual_inheritance", {}), "design_architecture": architecture_report, "status": "generated" if validation["passed"] else "needs_implementation_fix"}
+        report = {"product_id": product_id, "slug": spec["slug"], "generated_at": datetime.now(timezone.utc).isoformat(), "file": str(path.relative_to(ROOT)), "user_guide_pdf": user_guide_pdf, "ebook": ebook_report, "validation": validation, "design_sources": {"master_workbook": str(master_workbook.relative_to(ROOT)) if master_workbook.is_relative_to(ROOT) else str(master_workbook), "native_model": spec["_native_source_present"], "source_lineage": spec.get("source_lineage", [])}, "visual_pattern": spec.get("visual_inheritance", {}), "design_architecture": architecture_report, "status": "generated" if validation["passed"] and ebook_report["passed"] and user_guide_pdf["passed"] else "needs_implementation_fix"}
         report["artifact_identity"] = artifact_identity(path, master_workbook, model_contract, spec)
         if validation["passed"]:
             from customer_workbook import create_clean_workbook
@@ -384,10 +458,19 @@ def main() -> int:
             if not clean_qa["passed"]:
                 validation["passed"] = False
                 report["status"] = "needs_implementation_fix"
+        if validation.get("passed") and report.get("customer_copy", {}).get("validation", {}).get("passed"):
+            kit_report = build_digital_kit(spec, app_dir, path, ROOT / report["customer_copy"]["file"], user_guide_pdf, ebook_report)
+            if kit_report.get("file"):
+                kit_report["file"] = str(Path(kit_report["file"]).relative_to(ROOT))
+        else:
+            kit_report = {"passed": False, "status": "blocked_by_workbook_qa", "file": None, "included_files": []}
+        report["digital_kit"] = kit_report
+        if not kit_report.get("passed"):
+            report["status"] = "needs_implementation_fix"
         (folder / "app_generation_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         results.append(report)
         print(f"product-{product_id}: app={report['status']} score={validation['score']}")
-    batch = {"generated_at": datetime.now(timezone.utc).isoformat(), "products": results, "all_passed": all(item["validation"]["passed"] for item in results)}
+    batch = {"generated_at": datetime.now(timezone.utc).isoformat(), "products": results, "all_passed": all(item.get("validation", {}).get("passed", False) for item in results)}
     if not args.product:
         (OUT_ROOT / "app_generation_report.json").write_text(json.dumps(batch, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"APP_GENERATION={'PASSED' if batch['all_passed'] else 'FAILED'}")

@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.1.0",
+  "selection_policy": {
+    "core": ["populated_workbook", "blank_workbook", "markdown_guide", "guide_pdf", "kit_index"],
+    "ebook": "include_when_declared_and_required_by_profile",
+    "companion_modules": "include_when_any_profile_need_matches_module_trigger",
+    "interactive_html": "select_the_highest_scoring_tool_whose_declared_triggers_match_product_needs; omit_when_no_relevant_candidate_exists",
+    "unmapped_profile_needs": "reported_for_review"
+  },
+  "products": {
+    "community-garden-planner": {
+      "profile": "community_garden",
+      "needs": ["site_readiness", "shared_governance", "volunteer_coordination", "harvest_sharing", "seasonal_planning"],
+      "ebook_required": true,
+      "product_readiness": "ready"
+    },
+    "moving-home-planner": {
+      "profile": "home_move",
+      "needs": ["move_budget", "removal_quote_comparison", "packing_and_inventory", "address_and_utilities", "handover_and_move_day", "first_week_setup"],
+      "ebook_required": true,
+      "product_readiness": "ready"
+    },
+    "creator-content-sponsorship-tracker": {
+      "profile": "creator_business",
+      "needs": ["content_publishing", "sponsorship_pipeline", "invoice_follow_up", "creator_cashflow"],
+      "ebook_required": false,
+      "product_readiness": "blocked_by_product_redesign",
+      "readiness_note": "The current workbook model is a generic renovation-budget derivative. Redesign and validate the creator-specific content and sponsorship workflows before any sale."
+    },
+    "home-renovation-planner": {
+      "profile": "home_renovation",
+      "needs": ["renovation_scope", "contractor_quotes", "change_control", "materials_and_handover"],
+      "ebook_required": true,
+      "product_readiness": "ready"
+    },
+    "freshwater-aquarium-setup-planner": {
+      "profile": "freshwater_aquarium_setup",
+      "needs": ["tank_setup_budget", "aquarium_equipment_quotes", "aquarium_setup_timeline", "freshwater_tank_volume"],
+      "ebook_required": true,
+      "product_readiness": "ready"
+    },
+    "puppy-first-year-planner": {
+      "profile": "puppy_first_year",
+      "needs": ["new_dog_setup_budget", "vet_cost_comparison", "first_year_care_timeline", "puppy_first_year_estimate"],
+      "ebook_required": true,
+      "product_readiness": "ready"
+    }
+  },
+  "html_tools": [
+    {
+      "id": "moving-budget-buffer-calculator",
+      "title": "Moving Budget Buffer Calculator",
+      "filename": "moving-budget-buffer-calculator.html",
+      "operation": "moving_budget",
+      "triggers": ["move_budget", "removal_quote_comparison"],
+      "priority": 10
+    },
+    {
+      "id": "renovation-contingency-calculator",
+      "title": "Renovation Contingency Calculator",
+      "filename": "renovation-contingency-calculator.html",
+      "operation": "renovation_contingency",
+      "triggers": ["renovation_scope", "contractor_quotes", "change_control"],
+      "priority": 10
+    },
+    {
+      "id": "garden-bed-planting-calculator",
+      "title": "Garden Bed Planting Calculator",
+      "filename": "garden-bed-planting-calculator.html",
+      "operation": "garden_spacing",
+      "triggers": ["seasonal_planning", "site_readiness", "harvest_sharing"],
+      "priority": 10
+    },
+    {
+      "id": "freshwater-tank-volume-calculator",
+      "title": "Freshwater Tank Volume Calculator",
+      "filename": "freshwater-tank-volume-calculator.html",
+      "operation": "aquarium_volume",
+      "triggers": ["freshwater_tank_volume", "tank_setup_budget"],
+      "priority": 12
+    },
+    {
+      "id": "puppy-first-year-cost-calculator",
+      "title": "Puppy First-Year Cost Calculator",
+      "filename": "puppy-first-year-cost-calculator.html",
+      "operation": "puppy_first_year",
+      "triggers": ["new_dog_setup_budget", "puppy_first_year_estimate"],
+      "priority": 12
+    }
+  ],
+  "modules": [
+    {
+      "id": "community-garden-operations",
+      "title": "Community Garden Operations Worksheets",
+      "filename": "community-garden-operations-worksheets.pdf",
+      "content_file": "config/digital_kit_content/community-garden-operations.json",
+      "triggers": ["site_readiness", "shared_governance", "volunteer_coordination", "harvest_sharing", "seasonal_planning"]
+    },
+    {
+      "id": "moving-home-fieldworksheets",
+      "title": "Moving Home Field Worksheets",
+      "filename": "moving-home-field-worksheets.pdf",
+      "content_file": "config/digital_kit_content/moving-home-field-worksheets.json",
+      "triggers": ["move_budget", "removal_quote_comparison", "packing_and_inventory", "address_and_utilities", "handover_and_move_day", "first_week_setup"]
+    },
+    {
+      "id": "home-renovation-fieldworksheets",
+      "title": "Home Renovation Field Worksheets",
+      "filename": "home-renovation-field-worksheets.pdf",
+      "content_file": "config/digital_kit_content/home-renovation-fieldworksheets.json",
+      "triggers": ["renovation_scope", "contractor_quotes", "change_control", "materials_and_handover"]
+    },
+    {
+      "id": "creator-content-and-deals",
+      "title": "Creator Content & Sponsorship Worksheets",
+      "filename": "creator-content-and-sponsorship-worksheets.pdf",
+      "content_file": "config/digital_kit_content/creator-content-and-sponsorship.json",
+      "triggers": ["content_publishing", "sponsorship_pipeline", "invoice_follow_up", "creator_cashflow"]
+    },
+    {
+      "id": "freshwater-aquarium-setup-worksheets",
+      "title": "Freshwater Aquarium Setup Field Worksheets",
+      "filename": "freshwater-aquarium-setup-field-worksheets.pdf",
+      "content_file": "config/digital_kit_content/freshwater-aquarium-setup.json",
+      "triggers": ["tank_setup_budget", "aquarium_equipment_quotes", "aquarium_setup_timeline", "freshwater_tank_volume"]
+    },
+    {
+      "id": "puppy-first-year-preparation-worksheets",
+      "title": "Puppy First-Year Preparation Worksheets",
+      "filename": "puppy-first-year-preparation-worksheets.pdf",
+      "content_file": "config/digital_kit_content/puppy-first-year.json",
+      "triggers": ["new_dog_setup_budget", "vet_cost_comparison", "first_year_care_timeline", "puppy_first_year_estimate"]
+    }
+  ]
+}

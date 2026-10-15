@@ -1,0 +1,52 @@
+{
+  "title": "Community Garden Operations Worksheets",
+  "subtitle": "Print these pages for your next planning session",
+  "pages": [
+    {
+      "title": "1. Site walk-through",
+      "intro": "Use this before committing to beds, deliveries or a budget. Walk the site at more than one time of day and after rain if you can.",
+      "checks": [
+        "Sun and shade are noted across the growing area.",
+        "Water source, hose reach and any usage limits are confirmed.",
+        "Access, slopes, muddy areas and turning space have been walked with intended users.",
+        "Land permission, site history and any recommended soil tests are understood.",
+        "Tool storage, delivery access and a safe gathering spot are identified."
+      ],
+      "fields": ["Site / address", "Walk-through date", "People consulted", "First issue to resolve", "Next action and owner"]
+    },
+    {
+      "title": "2. Kick-off meeting and shared decisions",
+      "intro": "A one-page record helps new volunteers understand why the garden is being built and how decisions were made.",
+      "checks": [
+        "Our two most important outcomes this season are written down.",
+        "We have named what is outside this season's scope.",
+        "We agreed how beds and harvests will be shared.",
+        "We know who can approve purchases and where receipts go.",
+        "We scheduled a review date rather than treating the first plan as permanent."
+      ],
+      "fields": ["Meeting date", "Season goals", "Decision method", "Purchase approver", "Review date"]
+    },
+    {
+      "title": "3. Volunteer rota and handover",
+      "intro": "Give each recurring task a named primary person, a backup and a simple handover. Avoid relying on one volunteer's memory.",
+      "checks": [
+        "Watering instructions and water restrictions are visible near the equipment.",
+        "A backup contact is listed for each week.",
+        "Shared tools have a clear storage and return place.",
+        "Missed tasks can be reported without blame so the plan can be adjusted."
+      ],
+      "fields": ["Week / date", "Primary volunteer", "Backup", "Tasks to check", "Handover notes", "Next check-in"]
+    },
+    {
+      "title": "4. Harvest and surplus agreement",
+      "intro": "Decide the harvest rule before the first busy week. Check recipient requirements before promising a delivery.",
+      "checks": [
+        "It is clear who may harvest and which crops are not ready yet.",
+        "The group has agreed how volunteer shares and community shares work.",
+        "A recipient has confirmed what produce, timing and handling they can accept.",
+        "Surplus and crop losses will be noted to improve next season's plan."
+      ],
+      "fields": ["Harvest date", "Crop / amount", "Share rule", "Recipient / collection point", "Person coordinating", "What we will change next time"]
+    }
+  ]
+}

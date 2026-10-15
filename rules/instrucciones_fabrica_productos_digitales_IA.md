@@ -393,6 +393,11 @@ Evaluar la oportunidad a dos niveles:
 
 Evitar generar muchos productos similares antes de probar el primero.
 
+La implementación operativa del selector, sus filtros de evidencia, revisión
+de solapamiento, diversidad y uso de resultados de tienda está documentada en
+`rules/PRODUCT_SELECTION.md`. No se debe confundir el SEO/precio de un producto
+ya elegido con la investigación necesaria para decidir qué producto crear.
+
 ---
 
 ## 8. Estrategia inicial de producto: hojas de cálculo y plantillas funcionales

@@ -1,4 +1,5 @@
 from openpyxl import Workbook
+from openpyxl.styles import Alignment
 from openpyxl.worksheet.table import Table
 
 from excel_template_factory import create_template_workbook
@@ -64,3 +65,27 @@ def test_factory_declares_native_table_and_semantic_number_formats() -> None:
     assert sheet["B7"].number_format == "0"
     assert sheet["C7"].number_format == "0%"
     assert sheet["D7"].number_format == "#,##0.00"
+
+
+def test_model_quality_rejects_total_without_fit_to_cell() -> None:
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = "Budget"
+    sheet["A1"] = "Area"
+    sheet["A2"] = "TOTAL"
+    sheet["B2"] = "=SUM(B3:B4)"
+    sheet.add_table(Table(displayName="tblBudget", ref="A1:B1"))
+    contract = {
+        "contract_id": "fit-v1", "title": "Fit", "purpose": "Test total formatting.",
+        "sheets": ["Budget"], "tables": [{
+            "sheet": "Budget", "ref": "A1:B1", "headers": [{"name": "Area"}, {"name": "Amount"}],
+            "total_ref": "A2:B2",
+        }],
+        "formula_rules": [], "relationships": [], "cases": [], "failure_criteria": [],
+    }
+    from model_quality import validate_model_contract
+    report = validate_model_contract(workbook, contract)
+    assert any("totales sin ajuste" in error for error in report["errors"])
+    sheet["B2"].alignment = Alignment(shrinkToFit=True)
+    report = validate_model_contract(workbook, contract)
+    assert not any("totales sin ajuste" in error for error in report["errors"])

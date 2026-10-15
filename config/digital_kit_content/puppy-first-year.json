@@ -1,0 +1,10 @@
+{
+  "title": "Puppy First-Year Preparation Worksheets",
+  "pages": [
+    {"title": "Home-Ready Walk-Through", "intro": "Prepare the space and agree on simple household routines before the puppy arrives.", "fields": ["Chosen quiet home base", "Resting place and gates", "Cords and small objects checked", "Houseplants and household products reviewed", "Who handles meals and breaks", "First-night plan", "Questions for the rescue or previous caregiver", "Unresolved decision"]},
+    {"title": "First-Year Cost Sketch", "intro": "Use local prices and your own circumstances; this worksheet does not estimate veterinary needs or recommend insurance.", "fields": ["Adoption or acquisition fee", "Initial supplies", "Food estimate per month", "Routine-care estimate per month", "Insurance quote per month, if considered", "Training / grooming allowance", "Emergency reserve target", "Source and date for each estimate"]},
+    {"title": "Service Quote Comparison", "intro": "Compare like-for-like scope and write down questions before choosing a clinic, trainer or groomer.", "fields": ["Service and provider", "Scope included", "Price and possible extras", "Availability", "Handling / training approach", "Credentials or referral checked", "Questions asked", "Decision and date"]},
+    {"title": "Records to Gather", "intro": "Bring existing records to the veterinary appointment and ask the clinic which information it needs.", "fields": ["Adoption / transfer paperwork", "Previous caregiver contact", "Known food and routine information", "Existing veterinary records received", "Microchip / registration documents", "Clinic contact details", "Questions to ask the veterinarian", "Follow-up owner and date"]},
+    {"title": "Household Routine Review", "intro": "Keep observations descriptive and review the routine together rather than treating a checklist as a behaviour diagnosis.", "fields": ["Date range", "What seemed to help the puppy settle", "Rest and quiet-time observations", "Household hand-offs that worked", "New question for a qualified professional", "Budget change to record", "Next household check-in", "Notes"]}
+  ]
+}

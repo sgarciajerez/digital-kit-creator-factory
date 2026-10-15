@@ -134,6 +134,7 @@ def apply_design_architecture(spec: dict[str, Any]) -> dict[str, Any]:
     spec["model_behavior_file"] = str(spec.get("model_behavior_file", "model_behavior.md"))
     spec["model_contract_file"] = str(spec.get("model_contract_file", "model_contract.json"))
     spec["app_user_guide_file"] = str(spec.get("app_user_guide_file", "app/README.md"))
+    spec["app_user_guide_pdf_filename"] = str(spec.get("app_user_guide_pdf_filename", f"{spec.get('slug', 'excel')}-user-guide.pdf"))
     spec["model_behavior_source"] = "declared_model_contract_before_xlsx"
     spec["user_model_guide"] = {
         "file": spec["model_behavior_file"],

@@ -1,4 +1,5 @@
 from pathlib import Path
+from datetime import date
 import sqlite3
 from types import SimpleNamespace
 
@@ -110,7 +111,7 @@ def test_database_migrates_schema_and_creates_indexes(tmp_path: Path) -> None:
 
     initialize_database(path)
 
-    assert scalar(path, "PRAGMA user_version") == 2
+    assert scalar(path, "PRAGMA user_version") == 3
     tables = scalar(
         path,
         "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name IN "
@@ -118,11 +119,25 @@ def test_database_migrates_schema_and_creates_indexes(tmp_path: Path) -> None:
         "'metrics_daily', 'experiments', 'approvals')",
     )
     assert tables == 8
+    assert scalar(path, "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'opportunity_evidence'") == 1
     assert scalar(
         path,
         "SELECT COUNT(*) FROM sqlite_master WHERE type = 'index' "
         "AND name = 'idx_opportunities_decision'",
     ) == 1
+
+
+def test_database_v2_migrates_opportunity_evidence_table(tmp_path: Path) -> None:
+    path = tmp_path / "factory-v2.sqlite3"
+    initialize_database(path)
+    with sqlite3.connect(path) as connection:
+        connection.execute("DROP TABLE opportunity_evidence")
+        connection.execute("PRAGMA user_version = 2")
+
+    initialize_database(path)
+
+    assert scalar(path, "PRAGMA user_version") == 3
+    assert scalar(path, "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='opportunity_evidence'") == 1
 
 
 def test_opportunity_and_product_crud_is_audited(tmp_path: Path) -> None:
@@ -190,8 +205,8 @@ def test_existing_legacy_schema_is_upgraded(tmp_path: Path) -> None:
             row[1]
             for row in connection.execute("PRAGMA table_info(opportunities)")
         }
-    assert {"subcategory", "proposed_solution", "next_review_at"} <= columns
-    assert scalar(path, "PRAGMA user_version") == 2
+    assert {"subcategory", "proposed_solution", "market_research_json", "next_review_at"} <= columns
+    assert scalar(path, "PRAGMA user_version") == 3
 
 
 def test_mock_provider_validates_structured_output_and_records_cost(tmp_path: Path) -> None:
@@ -418,6 +433,23 @@ def test_autopilot_generates_only_accepted_local_drafts(tmp_path: Path) -> None:
         problem="Necesitan separar gastos de estudio y vida diaria",
         decision="accept",
         score=88,
+        confidence=80,
+    )
+    evidence_path = tmp_path / "accepted_market_evidence.csv"
+    evidence_path.write_text(
+        "observed_at,query,market,language,metric_name,metric_value,unit,evidence_type,"
+        "confidence,limitations,raw_reference\n"
+        f"{date.today().isoformat()},budget opposition,US,en,monthly searches,1200,count,observed,90,Search estimate varies,https://keywords.example/searches\n"
+        f"{date.today().isoformat()},budget opposition,US,en,active listings,450,count,observed,85,Search results are supply,https://etsy.example/search\n"
+        f"{date.today().isoformat()},budget opposition,US,en,buyer interviews,4,count,observed,70,Small exploratory sample,https://interviews.example/notes\n",
+        encoding="utf-8",
+    )
+    evidence_import = import_evidence_csv(path, evidence_path, "selection_test_sources")
+    evidence_ids = tuple(row["id"] for row in list_evidence(path, evidence_import.research_run_id))
+    score_opportunity(
+        path,
+        accepted_id,
+        [ScoreComponentInput("evidencia de demanda", 100, 5, "Test evidence-linked decision", evidence_ids)],
         confidence=80,
     )
     create_opportunity(path, "Candidato sin aceptación", decision="review", score=99, confidence=99)

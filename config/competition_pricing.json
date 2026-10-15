@@ -1,7 +1,16 @@
 {
   "currency_observed": "USD",
-  "method": "Cap every comparable at 3 EUR-equivalent, take the median of the capped prices, then launch 8% below it with Etsy-friendly cents. No template may exceed 3 EUR.",
-  "observed_at": "2026-10-13",
+  "shop_currency": "EUR",
+  "minimum_comparables": 5,
+  "sample_size_per_query": 40,
+  "usd_to_eur_reference": {
+    "rate": 0.89325,
+    "observed_at": "2026-10-15",
+    "source": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html",
+    "method": "Reciprocal of the ECB reference rate 1 EUR = 1.1195 USD; informational reference, not a transaction quote."
+  },
+  "method": "Before building each listing draft, query Etsy active listings using up to three product-specific search phrases. Sample digital downloads only, exclude this shop, deduplicate listings, convert current listing prices to the shop currency using the latest ECB reference rates, report the Q1–Q3 middle-market band and recommend its median. Do not apply a universal price ceiling; require at least five valid comparables and preserve every result URL and search phrase for review.",
+  "observed_at": "2026-10-15",
   "products": {
     "wedding-planner": {
       "observed_prices": [11.18, 6.90, 6.54, 6.24, 9.94, 7.97, 5.90, 6.99, 7.97, 11.51, 7.99],
@@ -18,6 +27,15 @@
         "https://www.etsy.com/listing/1216858632/debt-snowball-spreadsheet-excel-debt"
       ],
       "note": "The effective comparable prices observed for debt payoff trackers cluster close to five dollars."
+    },
+    "moving-home-planner": {
+      "observed_prices": [2.74, 8.37, 12.97],
+      "sources": [
+        "https://www.etsy.com/listing/4341109679/moving-planner-excel-google-sheets",
+        "https://www.etsy.com/listing/4490182063/moving-home-planner-spreadsheet-budget",
+        "https://www.etsy.com/listing/4534181391/moving-planner-spreadsheet-countdown"
+      ],
+      "note": "Historical Etsy examples show a range from a low-price Excel/Sheets tracker to broader connected moving planners. The factory now refreshes active-listing comparables for each new draft."
     },
     "small-business-cashflow": {
       "observed_prices": [5.76, 5.76, 8.31, 9.95, 9.78, 4.99, 3.57, 7.15, 16.34, 6.85, 9.99, 13.85],
@@ -44,7 +62,7 @@
         "https://www.etsy.com/market/home_renovation_template",
         "https://www.etsy.com/listing/1760071459/home-remodel-planner-remodeling-budget"
       ],
-      "note": "Comparable renovation spreadsheets span low-cost trackers and premium multi-sheet planners; the launch method caps comparables at 3 EUR and positions this connected workbook at the store's low-entry ceiling."
+      "note": "Historical renovation spreadsheet examples span low-cost trackers and premium multi-sheet planners. Live Etsy search results now set the launch position within the current category middle range."
     },
     "freelance-client-invoice-tracker": {
       "observed_prices": [5.76, 5.76, 8.31, 9.95, 9.78, 4.99, 3.57, 7.15],
@@ -61,6 +79,27 @@
         "https://www.etsy.com/listing/4510615333/cash-flow-tracker-small-business"
       ],
       "note": "Comparable creator and small-business finance templates support an entry-level launch position for a connected sponsorship and cash tracker."
+    },
+    "freshwater-aquarium-setup-planner": {
+      "observed_prices": [2.99, 4.39, 7.99, 12.33],
+      "sources": [
+        "https://www.etsy.com/market/saltwater_aquarium_log",
+        "https://www.etsy.com/market/aquarium_log",
+        "https://www.etsy.com/listing/4521868863/aquarium-maintenance-tracker-excel",
+        "https://www.etsy.com/listing/4483821900/aquarium-water-parameter-tracker"
+      ],
+      "note": "Historical aquarium-log search results indicate a broad category. Comparables are adjacent care/parameter trackers rather than exact setup-project planners. The factory refreshes active listings and exchange rates when preparing a new draft; this product differentiates around setup budgeting, equipment quotes, readiness milestones and a volume-only helper."
+    },
+    "puppy-first-year-planner": {
+      "search_queries": ["puppy budget spreadsheet", "dog expense tracker excel", "new puppy planner spreadsheet"],
+      "observed_prices": [1.99, 4.99, 7.49, 9.99],
+      "sources": [
+        "https://www.etsy.com/listing/4494601584/dog-expense-tracker-excel-google-sheets",
+        "https://www.etsy.com/listing/4524990964/pet-care-planner-vet-log-bundle",
+        "https://www.etsy.com/listing/4476676877/pet-care-tracker-excel-google-sheets-pet",
+        "https://www.etsy.com/listing/4574755213/pet-care-planner-excel-vet-records"
+      ],
+      "note": "Historical adjacent dog/pet spreadsheet observations; live Etsy search results are used for the actual recommendation. These are not exact first-year puppy comparisons. Differentiate around first-year preparation budgeting, provider quote questions and an offline estimate; avoid medical tracking claims."
     }
   }
 }

@@ -14,13 +14,19 @@
 - Comando --no-open documentado compatible; selección de producto propagada al empaquetado.
 - Las observaciones de precios ya no se recortan al aplicar el máximo comercial al precio sugerido.
 - Directorio temporal de pruebas independiente, sin utilizar el enlace pytest-current de otro usuario.
+- Protección frente a `####` en celdas de totales: Excel reduce el texto numérico dentro del ancho fijo heredado del master.
+- Las previsiones de Budget toman ofertas `Selected = Yes` y `Decision = Preferred` desde Quotes, usando el Área. No cuentan como gasto real hasta registrarlas en Purchases.
+- Quotes genera 20 filas de ejemplo para las 20 filas que admite el rango nativo `B7:I27`; antes se escribían 21 y la última quedaba fuera de la tabla y de sus filtros.
+- El formato monetario usa `NumberFormatLocal` con `#.##0,00 €`. Excel convertía mal los separadores cuando se pasaba una máscara internacional a `NumberFormat`.
+- Las celdas de fórmulas en totales y previsiones ajustan el contenido a la columna; la QA ahora bloquea regresiones de ajuste en filas total.
 
 ## Verificación realizada
 
 - Entorno: Python 3.12.10, Excel 16.0; comprobación satisfactoria.
-- Suite completa con RUN_EXCEL_TESTS=1: 38 pruebas aprobadas.
-- Dos pruebas de escritorio verifican aislamiento de casos, detección de errores Excel, gráficos nativos y paneles congelados.
-- Productos 1 y 14 regenerados: seis casos funcionales aprobados por producto, auditoría semántica y preflight aprobados.
+- Suite predeterminada: 37 aprobadas y 2 pruebas COM omitidas (requieren `RUN_EXCEL_TESTS=1`).
+- Dos pruebas COM optativas cubren aislamiento de casos, detección de errores Excel, gráficos nativos y paneles congelados.
+- Productos 1 y 14 regenerados: ocho casos funcionales aprobados por producto, auditoría semántica y preflight aprobados.
+- Excel muestra `41.025,00 €` en los totales; el ajuste al ancho está activo y Quotes incluye 20 filas dentro de su tabla.
 - Copias limpias: tres indicadores de Dashboard comprobados a cero.
 - Producto 14: paquete local regenerado correctamente. No se ha publicado nada.
 - Copias de los productos anteriores: backups/quality-upgrade-20261015-085312/.

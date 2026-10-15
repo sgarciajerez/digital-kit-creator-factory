@@ -6,6 +6,8 @@ python-dotenv>=1,<2
 PyYAML>=6,<7
 pywin32>=306; sys_platform == "win32"
 Pillow>=10,<13
+pypdfium2>=5,<6
+reportlab>=4.2,<5
 imageio>=2.34,<3
 imageio-ffmpeg>=0.5,<1
 mss>=9,<11

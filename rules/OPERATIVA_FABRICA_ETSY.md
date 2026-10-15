@@ -1,7 +1,12 @@
 # Operativa de fábrica y publicación
 
-La fábrica crea y verifica primero el XLSX. La publicación se mantiene
-desactivada hasta una revisión humana independiente.
+La fábrica crea y verifica primero el XLSX. La autopublicación queda limitada
+a productos nuevos elegibles: ID 15 en adelante, más las excepciones puntuales
+que figuren en `auto_publish_policy.one_time_product_ids`. Los productos 1 y 2
+y el resto de anuncios existentes no se publican automáticamente. La ficha solo
+se activa después de superar todas las puertas de calidad y subir el ZIP, las
+imágenes y el vídeo. Las herramientas Etsy ejecutadas manualmente conservan su
+bloqueo global por defecto.
 
 ## Paquete de producto
 
@@ -45,10 +50,20 @@ el libro cambia, los assets deben regenerarse después de repetir la validación
 
 ## Publicación
 
-El paquete de listing contiene el XLSX, la ficha, el precio y el texto. La
-activación está deshabilitada por defecto. Antes de publicar, una persona debe
-abrir el XLSX, confirmar que el contenido tiene sentido y aprobar manualmente
-la ficha y los datos comerciales.
+El paquete de listing contiene el XLSX, la ficha, el precio y el texto. Antes
+de cerrar el título y las etiquetas, la factoría debe investigar términos de
+búsqueda pertinentes y guardar fuentes, fecha, métricas observadas y decisiones
+en `seo_keyword_research.json`. Puede usar expresiones como `Digital Kit` si
+describen el paquete y la investigación las respalda; no debe rellenar el título
+con palabras clave repetidas. Se aplican los límites vigentes de Etsy y se
+revisa coherencia entre título, etiquetas, descripción y archivos.
+
+La política de autopublicación se configura en
+`config/FACTORY_PIPELINE.json`. La excepción del producto 12 se consume tras
+una publicación satisfactoria. Para los productos nuevos (ID 15 o superior), la
+factoría habilita las escrituras de Etsy solo en sus subprocesos finales; no
+modifica `.env`, que conserva `ETSY_DRY_RUN=true` y
+`ETSY_PUBLISH_ENABLED=false`. Un fallo de QA impide subir o activar el anuncio.
 
 ## Comandos de fábrica
 

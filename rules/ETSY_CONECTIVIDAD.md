@@ -2,7 +2,7 @@
 
 ## 1. Registrar el callback OAuth
 
-En Etsy Developer Portal, abre la aplicación cuyas credenciales están en `.env` y registra exactamente:
+En Etsy Developer Portal, registra exactamente:
 
 ```text
 http://localhost:8501/etsy/callback
@@ -12,55 +12,58 @@ Debe coincidir con `ETSY_REDIRECT_URI`.
 
 ## 2. Autorizar la tienda
 
-Desde `D:\Proyectos\Creador de Excels` ejecuta:
+Desde `D:\Proyectos\Creador de Excels`:
 
 ```powershell
 .venv\Scripts\python.exe etsy_oauth.py
 ```
 
-Se abrirá Etsy en el navegador. Autoriza los permisos `listings_r` y `listings_w`. El script valida `state` y PKCE y guarda el `ETSY_REFRESH_TOKEN` en `.env` sin imprimirlo.
+Autoriza los permisos `listings_r` y `listings_w`. El script valida `state` y
+PKCE y guarda el token de renovación en `.env` sin imprimirlo.
 
-## 3. Comprobar la taxonomía
+## 3. Revisar el paquete
 
-La taxonomía se puede recalcular con:
-
-```powershell
-.venv\Scripts\python.exe etsy_taxonomy.py "budget planner spreadsheet" --write-env
-```
-
-El script consulta el árbol oficial de taxonomía y solo guarda la coincidencia si hay una diferencia clara frente al segundo candidato.
-
-## 4. Revisar el paquete
-
-Antes de una escritura real hay que confirmar:
-
-- Que el texto y el archivo son propios o tienen licencia de uso.
-- Que la descripción y las etiquetas no contienen afirmaciones engañosas.
-- Que el precio y la moneda son correctos.
-- Que el paquete contiene una imagen de portada para poder activar el listing.
-
-El paquete actual más reciente está en `outputs\listings\product-7`. Está bloqueado hasta completar la revisión de política y derechos.
-
-## 5. Crear un borrador en Etsy
-
-La aplicación sigue protegida por defecto. Tras completar OAuth y la revisión, cambia temporalmente en `.env`:
-
-```text
-ETSY_DRY_RUN=false
-ETSY_PUBLISH_ENABLED=true
-```
-
-Luego crea el listing como borrador y carga el XLSX:
+Ejecuta la factoría para el producto seleccionado:
 
 ```powershell
-.venv\Scripts\python.exe scripts\\etsy_publish.py --manifest outputs\listings\product-7\listing.json --execute
+.venv\Scripts\python.exe scripts\run_autonomous_factory.py --product N --no-open
 ```
 
-La activación pública es una acción separada y requiere una imagen de portada:
+El flujo genera y valida el kit, prepara el paquete de listing y, como etapa
+obligatoria, crea las capturas, mockups y demo del Excel para ese producto. Los
+recursos se guardan en `outputs\listings\product-N\draft_package`; el manifiesto
+`listing.json` apunta a todos ellos. No se usan rutas fijas a otro producto.
+
+Antes de publicar, revisa los derechos, el texto comercial, el precio, la
+portada y las vistas del libro. La generación de assets no sustituye esa revisión.
+
+## 4. Crear y activar el listing
+
+En la ejecución normal de la factoría, crear el listing, subir sus medios y
+activarlo son etapas automáticas para productos elegibles. Los comandos
+manuales de abajo permanecen sujetos a los flags globales y requieren
+habilitación explícita en el entorno.
+
+`.env` mantiene `ETSY_DRY_RUN=true` y `ETSY_PUBLISH_ENABLED=false` por defecto.
+La factoría puede habilitar las escrituras temporalmente, solo dentro de sus
+subprocesos finales y para los productos autorizados por `auto_publish_policy`
+en `config/FACTORY_PIPELINE.json`. No publica productos antiguos: solo se
+admiten excepciones puntuales o productos nuevos desde el ID configurado.
+
+Primero se crea el listing como borrador y se carga el ZIP:
 
 ```powershell
-.venv\Scripts\python.exe scripts\\etsy_publish.py --manifest outputs\listings\product-7\listing.json --execute --activate
+.venv\Scripts\python.exe scripts\etsy_publish.py --manifest outputs\listings\product-N\draft_package\listing.json --execute
 ```
 
-No uses `--activate` hasta revisar el borrador en Etsy.
+Después, `etsy_activate.py` carga la portada, las imágenes de marketing y el
+vídeo declarados en el manifiesto antes de activar el anuncio. No lo ejecutes
+hasta revisar el borrador y los recursos visuales en el paquete local:
 
+```powershell
+.venv\Scripts\python.exe scripts\etsy_activate.py --manifest outputs\listings\product-N\draft_package\listing.json --execute
+```
+
+La activación exige que las imágenes y el vídeo existan en el paquete y que el
+token conserve `listings_w`. El manifiesto registra los IDs de los recursos
+subidos para poder auditar la publicación.

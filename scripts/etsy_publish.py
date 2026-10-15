@@ -70,10 +70,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Crea y carga un listing digital en Etsy")
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--execute", action="store_true", help="Permite escrituras reales en Etsy")
-    parser.add_argument("--activate", action="store_true", help="Activa el listing después de cargarlo")
+    parser.add_argument("--activate", action="store_true", help="Deprecated; activa con etsy_activate.py para cargar todos los medios")
     args = parser.parse_args()
 
     values = load_env()
+    if args.activate:
+        raise SystemExit("La activación directa está deshabilitada; usa etsy_activate.py para subir portada, imágenes y vídeo antes de publicar.")
     manifest_path = args.manifest.resolve()
     if not manifest_path.exists():
         raise SystemExit(f"No existe el manifiesto: {manifest_path}")
@@ -92,6 +94,8 @@ def main() -> int:
         raise SystemExit("Falta ETSY_TAXONOMY_ID; ejecuta etsy_taxonomy.py primero")
     if not local_file.exists():
         raise SystemExit(f"No existe el archivo del producto: {local_file}")
+    if local_file.stat().st_size > 20 * 1024 * 1024:
+        raise SystemExit("El ZIP supera el límite de 20 MB por archivo digital de Etsy")
 
     if args.activate:
         images = [
@@ -101,6 +105,18 @@ def main() -> int:
         ]
         if not images:
             raise SystemExit("No se activa: Etsy requiere una imagen de listing y el paquete no contiene ninguna")
+
+    marketing = manifest.get("marketing_assets") or {}
+    if marketing.get("status") != "ready":
+        raise SystemExit("No se crea el listing: falta completar MARKETING_ASSETS")
+    image_files = [manifest_path.parent / str(item) for item in manifest.get("image_files", [])]
+    video_refs = manifest.get("video_files") or [manifest.get("video_file")]
+    video_paths = [manifest_path.parent / str(item or "") for item in video_refs if item]
+    missing_media = [path for path in [*image_files, *video_paths] if not path.is_file()]
+    if missing_media:
+        raise SystemExit("No se crea el listing: faltan recursos de marketing: " + ", ".join(str(path) for path in missing_media))
+    if len(image_files) > 10:
+        raise SystemExit("El listing declara mÃ¡s de diez imÃ¡genes, por encima del lÃ­mite de Etsy")
 
     dry_run = bool_env(values, "ETSY_DRY_RUN")
     publish_enabled = bool_env(values, "ETSY_PUBLISH_ENABLED")

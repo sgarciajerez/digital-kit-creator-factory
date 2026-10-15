@@ -52,7 +52,12 @@ def main() -> int:
         write_model_behavior_markdown(model_behavior_path, model_contract)
         write_model_contract_json(model_behavior_path.with_name("model_contract.json"), model_contract)
     output.parent.mkdir(parents=True, exist_ok=True)
-    write_app_usage_markdown(output.parent / "README.md", spec, model_contract or {})
+    guide_markdown = write_app_usage_markdown(output.parent / "README.md", spec, model_contract or {})
+    guide_filename = str(spec.get("app_user_guide_pdf_filename", f"{spec.get('slug', 'excel')}-user-guide.pdf"))
+    if not guide_filename.lower().endswith(".pdf") or Path(guide_filename).name != guide_filename:
+        raise ValueError("app_user_guide_pdf_filename debe ser un nombre PDF sin rutas")
+    from product_guide_pdf import generate_user_guide_pdf
+    generate_user_guide_pdf(guide_markdown, output.parent / guide_filename, spec)
     create_template_workbook(spec, spec.get("content_seed")).save(output)
     model_report = validate_model_file(
         output,

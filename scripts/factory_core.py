@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS opportunities (
     target_audience TEXT,
     problem TEXT,
     proposed_solution TEXT,
+    market_research_json TEXT,
     score REAL,
     confidence REAL,
     decision TEXT NOT NULL DEFAULT 'review',
@@ -96,6 +97,14 @@ CREATE TABLE IF NOT EXISTS score_components (
     rationale TEXT,
     evidence_ids TEXT,
     FOREIGN KEY(opportunity_id) REFERENCES opportunities(id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS opportunity_evidence (
+    opportunity_id INTEGER NOT NULL,
+    evidence_id INTEGER NOT NULL,
+    created_at TEXT NOT NULL,
+    PRIMARY KEY(opportunity_id, evidence_id),
+    FOREIGN KEY(opportunity_id) REFERENCES opportunities(id) ON DELETE CASCADE,
+    FOREIGN KEY(evidence_id) REFERENCES evidence(id) ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -209,6 +218,7 @@ CREATE INDEX IF NOT EXISTS idx_evidence_research_run ON evidence(research_run_id
 CREATE INDEX IF NOT EXISTS idx_opportunities_decision ON opportunities(decision);
 CREATE INDEX IF NOT EXISTS idx_opportunities_updated_at ON opportunities(updated_at);
 CREATE INDEX IF NOT EXISTS idx_score_components_opportunity ON score_components(opportunity_id);
+CREATE INDEX IF NOT EXISTS idx_opportunity_evidence_evidence ON opportunity_evidence(evidence_id);
 CREATE INDEX IF NOT EXISTS idx_products_status ON products(status);
 CREATE INDEX IF NOT EXISTS idx_products_opportunity ON products(opportunity_id);
 CREATE INDEX IF NOT EXISTS idx_listings_product ON listings(product_id);
@@ -221,6 +231,7 @@ MIGRATION_COLUMNS = {
     "opportunities": {
         "subcategory": "TEXT",
         "proposed_solution": "TEXT",
+        "market_research_json": "TEXT",
         "next_review_at": "TEXT",
     },
     "products": {
@@ -248,6 +259,7 @@ EXPORTABLE_TABLES = {
     "evidence",
     "opportunities",
     "score_components",
+    "opportunity_evidence",
     "products",
     "listings",
     "metrics_daily",
@@ -363,9 +375,18 @@ def initialize_database(path: Path) -> None:
             connection.executescript(SCHEMA)
             connection.execute("PRAGMA user_version = 1")
         _apply_column_migrations(connection)
+        connection.execute(
+            "CREATE TABLE IF NOT EXISTS opportunity_evidence ("
+            "opportunity_id INTEGER NOT NULL, evidence_id INTEGER NOT NULL, created_at TEXT NOT NULL, "
+            "PRIMARY KEY(opportunity_id, evidence_id), "
+            "FOREIGN KEY(opportunity_id) REFERENCES opportunities(id) ON DELETE CASCADE, "
+            "FOREIGN KEY(evidence_id) REFERENCES evidence(id) ON DELETE CASCADE)"
+        )
         connection.executescript(INDEXES)
         if version < 2:
             connection.execute("PRAGMA user_version = 2")
+        if version < 3:
+            connection.execute("PRAGMA user_version = 3")
 
 
 def _insert_audit(
@@ -452,6 +473,7 @@ def create_opportunity(
     target_audience: str | None = None,
     problem: str | None = None,
     proposed_solution: str | None = None,
+    market_research_json: dict[str, Any] | str | None = None,
     score: float | None = None,
     confidence: float | None = None,
     decision: str = "review",
@@ -464,13 +486,20 @@ def create_opportunity(
         raise ValueError("decision debe ser accept, reject o review")
     score = _optional_score(score, "score")
     confidence = _optional_score(confidence, "confidence")
+    if isinstance(market_research_json, dict):
+        market_research_json = json.dumps(market_research_json, ensure_ascii=False)
+    elif market_research_json is not None:
+        try:
+            json.loads(market_research_json)
+        except (TypeError, json.JSONDecodeError) as error:
+            raise ValueError("market_research_json debe ser un JSON válido") from error
     timestamp = now_utc()
     with managed_connection(path) as connection:
         cursor = connection.execute(
             "INSERT INTO opportunities "
-            "(name, category, subcategory, target_audience, problem, proposed_solution, "
+            "(name, category, subcategory, target_audience, problem, proposed_solution, market_research_json, "
             "score, confidence, decision, decision_reason, next_review_at, created_at, updated_at) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 name,
                 category,
@@ -478,6 +507,7 @@ def create_opportunity(
                 target_audience,
                 problem,
                 proposed_solution,
+                market_research_json,
                 score,
                 confidence,
                 decision,
@@ -499,6 +529,36 @@ def get_opportunity(path: Path, opportunity_id: int) -> dict[str, Any] | None:
             "SELECT * FROM opportunities WHERE id = ?", (opportunity_id,)
         ).fetchone()
         return _row_dict(row)
+
+
+def link_evidence_to_opportunity(path: Path, opportunity_id: int, evidence_ids: list[int]) -> int:
+    """Attach research evidence to an opportunity without assigning a score."""
+    initialize_database(path)
+    normalized = list(dict.fromkeys(int(evidence_id) for evidence_id in evidence_ids))
+    if not normalized:
+        return 0
+    timestamp = now_utc()
+    with managed_connection(path) as connection:
+        if not connection.execute("SELECT 1 FROM opportunities WHERE id = ?", (opportunity_id,)).fetchone():
+            raise ValueError(f"No existe la oportunidad {opportunity_id}")
+        placeholders = ",".join("?" for _ in normalized)
+        existing = {
+            int(row[0]) for row in connection.execute(
+                f"SELECT id FROM evidence WHERE id IN ({placeholders})", normalized
+            ).fetchall()
+        }
+        missing = set(normalized) - existing
+        if missing:
+            raise ValueError("No existe evidencia con ID: " + ", ".join(map(str, sorted(missing))))
+        connection.executemany(
+            "INSERT OR IGNORE INTO opportunity_evidence (opportunity_id, evidence_id, created_at) VALUES (?, ?, ?)",
+            [(opportunity_id, evidence_id, timestamp) for evidence_id in normalized],
+        )
+        linked_count = int(connection.execute(
+            "SELECT COUNT(*) FROM opportunity_evidence WHERE opportunity_id = ?", (opportunity_id,)
+        ).fetchone()[0])
+        _insert_audit(connection, "system", "evidence_linked_to_opportunity", "opportunity", str(opportunity_id))
+        return linked_count
 
 
 def list_opportunities(path: Path, decision: str | None = None) -> list[dict[str, Any]]:
@@ -526,6 +586,7 @@ def update_opportunity(path: Path, opportunity_id: int, **changes: Any) -> bool:
         "target_audience",
         "problem",
         "proposed_solution",
+        "market_research_json",
         "score",
         "confidence",
         "decision",
@@ -541,6 +602,13 @@ def update_opportunity(path: Path, opportunity_id: int, **changes: Any) -> bool:
         changes["name"] = _require_text(changes["name"], "name")
     if "decision" in changes and changes["decision"] not in {"accept", "reject", "review"}:
         raise ValueError("decision debe ser accept, reject o review")
+    if isinstance(changes.get("market_research_json"), dict):
+        changes["market_research_json"] = json.dumps(changes["market_research_json"], ensure_ascii=False)
+    elif changes.get("market_research_json") is not None:
+        try:
+            json.loads(changes["market_research_json"])
+        except (TypeError, json.JSONDecodeError) as error:
+            raise ValueError("market_research_json debe ser un JSON válido") from error
     for field in ("score", "confidence"):
         if field in changes:
             changes[field] = _optional_score(changes[field], field)

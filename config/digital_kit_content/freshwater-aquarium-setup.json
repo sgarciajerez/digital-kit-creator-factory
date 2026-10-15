@@ -1,0 +1,10 @@
+{
+  "title": "Freshwater Aquarium Setup Field Worksheets",
+  "pages": [
+    {"title": "Tank & Room Measure-Up", "intro": "Record the physical constraints before comparing tanks or stands.", "fields": ["Chosen location", "Inside tank length", "Inside tank width", "Planned water depth", "Stand / support confirmed by", "Socket and service clearance", "Direct sun / vent / vibration notes", "Questions to resolve"]},
+    {"title": "Equipment Comparison", "intro": "Compare products on the same scope, not price alone.", "fields": ["Equipment type", "Model / dimensions", "Intended purpose", "Included parts and media", "Replacement parts", "Warranty / return terms", "Supplier", "Quoted price", "Open question", "Decision and date"]},
+    {"title": "Setup Purchase Checklist", "intro": "Separate essential setup purchases from later upgrades.", "fields": ["Item", "Essential / optional", "Quantity or size", "Supplier", "Price", "Delivery date", "Received and checked", "Receipt location", "Follow-up"]},
+    {"title": "Readiness Questions", "intro": "Use these prompts for conversations with a knowledgeable aquatic professional; this sheet is not a readiness test.", "fields": ["Tank type and intended species", "Species-specific care source", "Filter maturation method and source", "Water tests planned", "Unexpected result / question", "Professional contacted", "Advice received and date", "Decision deferred until"]},
+    {"title": "First-Month Observation Notes", "intro": "Keep descriptive notes after setup; avoid changing multiple variables without advice.", "fields": ["Date and time", "Equipment running normally", "Water test kit / expiry", "Observed result", "Plant or livestock observation", "Recent change", "Question for specialist", "Next review date"]}
+  ]
+}

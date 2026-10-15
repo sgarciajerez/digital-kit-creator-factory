@@ -1,6 +1,18 @@
 {
   "schema_version": "1.0.0",
-  "active_product_ids": [1],
+  "active_product_ids": [
+    1,
+    2,
+    12,
+    15,
+    16
+  ],
   "finalized_product_ids": [],
-  "rule": "The autonomous factory starts from product-1 and the master_workbook only; every later product must be explicitly added to the active catalogue."
+  "auto_publish_policy": {
+    "enabled": true,
+    "minimum_new_product_id": 15,
+    "one_time_product_ids": [],
+    "requires_passed_factory_gates": true
+  },
+  "rule": "The autonomous factory starts from product-1 and the master_workbook only; every later product must be explicitly added to the active catalogue. Product-2 is the moving-home planner pilot. Product-12 is the home renovation planner with a distinct terracotta-and-sage editorial identity. Product-15 is a freshwater aquarium setup planner with a distinct aquatic field-guide visual identity. Product-16 is a puppy first-year preparation and budget kit with a distinct illustrated, warm editorial identity; its estimate tool is a budgeting aid, not veterinary, behavioural, insurance or financial advice."
 }

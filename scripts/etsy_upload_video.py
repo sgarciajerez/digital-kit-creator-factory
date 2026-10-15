@@ -19,26 +19,17 @@ from etsy_client import (
 )
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-VIDEO_DIR = PROJECT_ROOT / "outputs" / "listings" / "product-7" / "video"
-VIDEO_CANDIDATES = (
-    VIDEO_DIR / "planificador-demo-interactivo-etsy.mp4",
-    VIDEO_DIR / "planificador-demo-etsy.mp4",
-)
-VIDEO_PATH = next((path for path in VIDEO_CANDIDATES if path.exists()), VIDEO_CANDIDATES[0])
-
-
 def env_flag(values: dict[str, str], key: str) -> bool:
     return values.get(key, "").strip().casefold() in {"1", "true", "yes", "on"}
 
 
-def upload(values: dict[str, str], shop_id: str, listing_id: str, token: str) -> dict[str, Any]:
+def upload(values: dict[str, str], shop_id: str, listing_id: str, token: str, video_path: Path) -> dict[str, Any]:
     boundary = f"----CodexEtsyVideo{secrets.token_hex(16)}"
-    content_type = mimetypes.guess_type(VIDEO_PATH.name)[0] or "video/mp4"
+    content_type = mimetypes.guess_type(video_path.name)[0] or "video/mp4"
     body = multipart_body(
-        [("name", VIDEO_PATH.name)],
+        [("name", video_path.name)],
         "video",
-        VIDEO_PATH,
+        video_path,
         boundary,
         content_type=content_type,
     )
@@ -59,17 +50,20 @@ def main() -> int:
     parser.add_argument("--execute", action="store_true", help="Permite escrituras reales en Etsy")
     parser.add_argument("--allow-additional", action="store_true", help="Sube el vídeo nuevo aunque exista uno activo")
     parser.add_argument("--replace-active", action="store_true", help="Elimina los vídeos activos anteriores después de cargar el nuevo")
+    parser.add_argument("--html-tool", action="store_true", help="Selecciona el vídeo demostrativo de la herramienta HTML si existe")
     args = parser.parse_args()
     values = load_env()
     manifest_path = args.manifest.resolve()
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     shop_id = values.get("ETSY_SHOP_ID", "").strip()
     listing_id = str(manifest.get("etsy_listing_id", ""))
+    video_ref = manifest.get("html_tool_video_file") if args.html_tool else manifest.get("video_file")
+    video_path = manifest_path.parent / str(video_ref or "")
     if not shop_id or not listing_id:
         raise SystemExit("Falta ETSY_SHOP_ID o etsy_listing_id")
-    if not VIDEO_PATH.exists():
-        raise SystemExit(f"No existe el vídeo: {VIDEO_PATH}")
-    print(f"Vídeo preparado: {VIDEO_PATH.name} ({VIDEO_PATH.stat().st_size} bytes)")
+    if not video_path.is_file():
+        raise SystemExit(f"No existe el vídeo declarado en el manifiesto: {video_path}")
+    print(f"Vídeo preparado: {video_path.name} ({video_path.stat().st_size} bytes)")
     if not args.execute:
         print("Modo seguro: no se modifica Etsy.")
         return 0
@@ -92,7 +86,7 @@ def main() -> int:
         raise SystemExit("El anuncio ya tiene un vídeo activo; no se sustituye automáticamente.")
     if active:
         print(f"Vídeo activo existente detectado: {len(active)}; se añadirá el nuevo vídeo solicitado.")
-    result = upload(values, shop_id, listing_id, token)
+    result = upload(values, shop_id, listing_id, token, video_path)
     new_video_id = int(result.get("video_id")) if result.get("video_id") else None
     if args.replace_active and new_video_id:
         for old_video in active:
@@ -108,6 +102,9 @@ def main() -> int:
             print(f"Vídeo anterior eliminado: {old_video_id}")
     manifest["etsy_video_id"] = new_video_id
     manifest["video_uploaded"] = True
+    if args.html_tool:
+        manifest["etsy_html_tool_video_id"] = new_video_id
+        manifest["html_tool_video_uploaded"] = True
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Vídeo subido a Etsy. ID: {result.get('video_id', '<no indicado>')}")
     return 0

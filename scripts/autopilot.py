@@ -16,6 +16,7 @@ from factory_core import (
 )
 from listing_package import ListingDraft, create_listing_package
 from product_generation import ProductBrief, create_first_product
+from product_selection import load_selection_config, recommend_products
 
 
 DEFAULT_MIN_SCORE = 75.0
@@ -86,26 +87,32 @@ def select_publishable_opportunities(
         raise ValueError("max_products debe ser positivo")
     if not 0 <= min_score <= 100 or not 0 <= min_confidence <= 100:
         raise ValueError("Los umbrales deben estar entre 0 y 100")
+    config = load_selection_config()
+    config["policy"]["minimum_opportunity_score"] = min_score
+    config["policy"]["minimum_confidence"] = min_confidence
+    report = recommend_products(database_path, max_products=max_products, config=config)
+    selected_ids = report.selected_opportunity_ids
+    if not selected_ids:
+        return ()
     initialize_database(database_path)
     with managed_connection(database_path) as connection:
+        placeholders = ",".join("?" for _ in selected_ids)
         rows = connection.execute(
-            "SELECT o.* FROM opportunities o "
-            "WHERE o.decision = 'accept' "
-            "AND o.score >= ? AND o.confidence >= ? "
-            "AND NOT EXISTS ("
-            "  SELECT 1 FROM products p WHERE p.opportunity_id = o.id"
-            ") "
-            "ORDER BY o.score DESC, o.confidence DESC, o.updated_at DESC, o.id ASC "
-            "LIMIT ?",
-            (min_score, min_confidence, max_products),
+            f"SELECT * FROM opportunities WHERE id IN ({placeholders})", selected_ids
         ).fetchall()
-        return tuple(dict(row) for row in rows)
+        indexed = {int(row["id"]): dict(row) for row in rows}
+        return tuple(indexed[opportunity_id] for opportunity_id in selected_ids if opportunity_id in indexed)
 
 
 def _brief_from_opportunity(opportunity: dict) -> ProductBrief:
     category = (opportunity.get("category") or "General").strip()
     subcategory = (opportunity.get("subcategory") or "Otros").strip()
     opportunity_text = f"{opportunity.get('name', '')} {opportunity.get('target_audience', '')}".casefold()
+    if not any(token in opportunity_text for token in ("presupuesto", "budget", "gastos", "expense")):
+        raise ValueError(
+            "El generador heredado solo produce planificadores de presupuesto; "
+            "esta oportunidad requiere un adaptador de kit específico antes de generar"
+        )
     is_family = any(token in opportunity_text for token in ("familiar", "familia", "pareja", "hogar", "couple"))
     family = "family_budget_planner" if is_family else "budget_planner"
     if is_family:
@@ -113,17 +120,32 @@ def _brief_from_opportunity(opportunity: dict) -> ProductBrief:
     else:
         categories = [category[:24], subcategory[:24], "Otros"]
     categories = list(dict.fromkeys(value for value in categories if value))
+    market_research = opportunity.get("market_research_json")
+    if isinstance(market_research, str) and market_research.strip():
+        try:
+            market_research = json.loads(market_research)
+        except json.JSONDecodeError as error:
+            raise ValueError("La oportunidad contiene contexto de mercado JSON no válido") from error
+    if not isinstance(market_research, dict):
+        market_research = None
     return ProductBrief(
         family=family,
         name=str(opportunity["name"]),
         audience=(opportunity.get("target_audience") or "Personas que quieren organizar sus gastos"),
         problem=(opportunity.get("problem") or "Necesitan una forma sencilla de revisar presupuesto y gasto real"),
         categories=categories or ["Otros"],
+        market_research=market_research,
     )
 
 
 def _listing_draft(brief: ProductBrief) -> ListingDraft:
     raw_tags = ["presupuesto", "planificador", "plantilla", "xlsx", *brief.categories]
+    if brief.market_research:
+        trend_query = str(brief.market_research.get("query") or "").strip()
+        if trend_query and len(trend_query) <= 20:
+            raw_tags.insert(0, trend_query)
+        elif trend_query:
+            raw_tags[0:0] = [token for token in trend_query.split() if 3 <= len(token) <= 20][:3]
     tags: list[str] = []
     for tag in raw_tags:
         normalized = re.sub(r"[^\w -]", "", tag, flags=re.UNICODE).strip()

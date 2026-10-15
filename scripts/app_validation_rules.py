@@ -16,12 +16,14 @@ def _native_package(folder: Path, spec: dict) -> dict:
     contract_name = str(spec.get("model_contract_file", "model_contract.json"))
     guide_name = str(spec.get("model_behavior_file", "model_behavior.md"))
     app_guide_name = str(spec.get("app_user_guide_file", "app/README.md"))
+    guide_pdf_name = str(spec.get("app_user_guide_pdf_filename", f"{spec.get('slug', 'excel')}-user-guide.pdf"))
     workbook_files = sorted((folder / "app").glob("*.xlsx"))
     return {
         "master_workbook_exists": (folder.parents[2] / str(spec.get("master_workbook", "templates/excel-first-base/master_workbook.xlsx"))).is_file(),
         "model_contract_exists": (folder / contract_name).is_file(),
         "model_behavior_exists": (folder / guide_name).is_file(),
         "app_user_guide_exists": (folder / app_guide_name).is_file(),
+        "app_user_guide_pdf_exists": (folder / "app" / guide_pdf_name).is_file(),
         "final_workbook_exists": bool(workbook_files),
         "final_workbook": workbook_files[0].name if workbook_files else None,
     }
@@ -62,7 +64,7 @@ def validate_product_rules(folder: Path, spec: dict) -> dict:
     functionality_checks = {
         "functional_scope_is_substantial": feature_count >= 7,
         "onboarding_dashboard_settings_flow": {"Start here", "Dashboard", "Settings"}.issubset(tabs),
-        "native_package_exists": native["final_workbook_exists"] and native["model_contract_exists"] and native["model_behavior_exists"] and native["app_user_guide_exists"],
+        "native_package_exists": native["final_workbook_exists"] and native["model_contract_exists"] and native["model_behavior_exists"] and native["app_user_guide_exists"] and native["app_user_guide_pdf_exists"],
         "native_structure_gate_declared": "master_workbook.xlsx" in app_markdown and "source of truth" in app_markdown.casefold(),
     }
     functionality_evidence = [f"Documented capabilities: {feature_count}"]

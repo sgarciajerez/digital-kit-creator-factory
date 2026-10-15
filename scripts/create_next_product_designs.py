@@ -16,11 +16,54 @@ OUT_ROOT = ROOT / "outputs" / "listings"
 
 PRODUCTS = [
     {
+        "id": 2,
+        "slug": "moving-home-planner",
+        "workflow_label": "MOVING HOME",
+        "title": "Moving Home Planner & Budget Excel Template",
+        "subtitle": "A connected home-move workbook for budgets, mover quotes, purchases and the timeline from first plan to handover.",
+        "target_buyer": "Renters, homeowners and families coordinating a home move and trying to keep costs, suppliers and dates in one reliable place.",
+        "ebook": {
+            "title": "The Smoother Move",
+            "filename": "The Smoother Move - 10 practical tips.pdf",
+            "content_file": "config/ebooks/moving-home-planner.json",
+            "cover_image": "assets/ebook-covers/moving-home-planner-cover.png",
+            "cover_prompt": "A generated editorial photograph of a calm, organised home move in a teal and coral palette; no visible brand or readable address details.",
+        },
+        "price_test": 2.75,
+        "palette": {"background": "#F3F7F8", "ink": "#243747", "accent": "#2D8F8B", "secondary": "#E9826B", "highlight": "#D2AA4B"},
+        "visual_identity": {"name": "A clear landing", "motif": "A teal route line with coral move-day milestones", "usage": "Workbook headers, timeline emphasis and e-book cover accents"},
+        "signature_chart": {"type": "Move budget remaining and timeline readiness summary", "purpose": "Keep the next move decision visible while tracking the budget and dated tasks"},
+        "tabs": ["Start here", "Dashboard", "Budget", "Purchases", "Quotes", "Timeline", "Settings"],
+        "features": ["Moving budget by practical cost area", "Actual costs linked to one purchase log", "Mover and service quote comparison", "Dates, owners and status for move tasks", "Budget cap and contingency settings", "Dashboard cue for remaining budget and next task", "Example data plus a clean blank workbook"],
+        "sources": ["assets/research_evidence/product2-moving-home-market-research.json", "templates/excel-first-base/master_workbook.xlsx"],
+        "model_base": "templates/excel-first-base",
+        "native_sheet_map": {"Start here": "Inicio", "Dashboard": "Resumen", "Budget": "Presupuesto", "Purchases": "Gastos reales", "Quotes": "Movimientos", "Timeline": "Flujo de caja", "Settings": "Listas"},
+        "mock_profile": {
+            "project_name": "Harbour Lane home move",
+            "areas": ["Removal company", "Packing materials", "Cleaning", "Utility setup", "Storage", "Travel and meals", "Contingency"],
+            "suppliers": ["Northstar Removals", "Box & Wrap Co", "Bright Clean", "Harbour Energy", "SafeStore", "City Van Hire", "Move Reserve"],
+            "items": ["Move booking deposit", "Boxes and tape", "End-of-tenancy clean", "Broadband installation", "Short-term storage", "Van and fuel", "Unexpected move cost"],
+            "locations": ["Old home", "Packing room", "Old home", "New home", "Storage unit", "Route", "Move plan"],
+            "phases": ["Book", "Pack", "Hand over", "Set up", "Bridge", "Move day", "Review"],
+            "tasks": ["Confirm move date and key handover", "Compare removal quotes", "Book the chosen mover", "Collect boxes and label rooms", "Confirm utility changeover dates", "Pack an arrival-day essentials box", "Record final meter readings", "Photograph both property handovers", "Return all old-home keys", "Check first-week deliveries", "Update remaining address records", "Reconcile final move costs"],
+            "quote_notes": ["Includes dismantling", "Check weekend surcharge", "Confirm floor protection", "Installation window pending", "Ask about access hours", "Mileage included", "Keep as contingency option"]
+        },
+        "preserve_native_master_objects": True,
+        "native_surface_adaptations": {"fit_table_columns_to_content": False, "allow_column_width_changes": [], "merged_slot_resizes": {}},
+    },
+    {
         "id": 1,
         "slug": "community-garden-planner",
         "title": "Community Garden Budget & Project Planner",
         "subtitle": "A connected Excel system for planning shared garden costs, suppliers, volunteers and seasonal milestones.",
         "target_buyer": "Neighbourhood groups and small community gardens coordinating improvements, purchases and shared responsibilities.",
+        "ebook": {
+            "title": "A Greener Community Garden",
+            "filename": "A Greener Community Garden - 10 Practical Tips.pdf",
+            "content_file": "config/ebooks/community-garden-planner.json",
+            "cover_image": "assets/ebook-covers/community-garden-planner-cover.png",
+            "cover_prompt": "Portrait editorial garden photography for an e-book: a welcoming urban community garden at soft morning light, raised beds with leafy greens, tomatoes and herbs, timber paths and a few tools; calm negative space above and below for later title placement; sage and leaf greens, terracotta and soft gold inspired by the product palette; no text, letters, logo, watermark, border or overlays.",
+        },
         "price_test": 7.99,
         "palette": {"background": "#F2F5EC", "ink": "#2F3B32", "accent": "#5C8058", "secondary": "#D17A5A", "highlight": "#C5A34B"},
         "visual_identity": {"name": "Shared harvest", "motif": "A calm leaf-green grid with terracotta markers for shared progress", "usage": "Native workbook accents, table headers and dashboard emphasis"},
@@ -55,7 +98,7 @@ PRODUCTS = [
         "signature_chart": {"type": "Budget allocation plus countdown timeline", "purpose": "Make wedding progress tangible while keeping spend categories readable"},
         "tabs": ["Start here", "Dashboard", "Budget", "Guests", "Vendors", "Payments", "Checklist", "Settings"],
         "features": ["Budget versus actual by category", "Vendor directory with deposits and balance due", "Guest list and RSVP tracking", "Meal and dietary notes", "Payment timeline", "Wedding checklist with progress", "Countdown dashboard"],
-        "sources": ["templates/sources/planilla-de-excel-de-presupuesto-de-fiesta.xlsx", "templates/sources/planilla-de-excel-de-presupuesto-de-casamiento.xlsx"],
+        "sources": ["templates/sources/planilla-de-excel-de-presupuesto-de-fiesta.xlsx", "templates/sources/planilla-de-excel-para-presupuesto-de-casamiento.xlsx"],
         "model_base": "templates/model-library/wedding-planner-base",
     },
     {
@@ -107,8 +150,15 @@ PRODUCTS = [
         "id": 12,
         "slug": "home-renovation-planner",
         "title": "Home Renovation Budget & Project Planner",
-        "subtitle": "A practical Excel system to connect renovation costs, purchases, quotes and the project timeline in one calm view.",
+        "subtitle": "A home renovation digital kit for comparing contractor quotes, tracking project costs and keeping the next renovation decision visible.",
         "target_buyer": "Homeowners and DIY renovators coordinating a room refresh or small renovation without losing control of the budget.",
+        "ebook": {
+            "title": "A More Considered Renovation",
+            "filename": "A More Considered Renovation - 10 practical ideas.pdf",
+            "content_file": "config/ebooks/home-renovation-planner.json",
+            "cover_image": "assets/ebook-covers/home-renovation-planner-cover.png",
+            "cover_prompt": "Generated editorial gouache illustration of a calm kitchen renovation in progress; sample board with terracotta paint and sage tile, measuring tape and floor plan on an oak worktop, bright finished kitchen beyond; warm ivory light, tactile paper grain, premium independent interiors magazine composition, no text or people.",
+        },
         "price_test": 7.99,
         "palette": {"background": "#F8F4EF", "ink": "#3E3530", "accent": "#C4775A", "secondary": "#6F8A73", "highlight": "#D5A84F"},
         "visual_identity": {"name": "Measured home", "motif": "Terracotta roofline paired with a sage measuring square", "usage": "Header mark, budget cue and product cover identity"},
@@ -117,7 +167,7 @@ PRODUCTS = [
         "features": ["Budget by renovation area", "Actual spend linked to purchase entries", "Available budget after committed spend", "Purchase log with paid and status fields", "Quote comparison by supplier and area", "Timeline with due dates and days left", "Contingency and date settings", "Dashboard cues for the next decision"],
         "sources": ["templates/sources/planilla-de-excel-para-presupuesto-de-obra.xlsx", "templates/sources/planilla-de-excel-de-presupuesto-de-obra-de-vivienda.xlsx", "templates/sources/cronograma-de-actividades-en-excel.xlsx", "templates/sources/planilla-de-excel-de-planeamiento-de-compras.xlsx"],
         "model_base": "templates/model-library/family-budget-sources-base",
-        "native_sheet_map": {"Start here": "Inicio", "Dashboard": "Resumen", "Transactions": "Presupuesto", "Invoices": "Gastos reales", "Recurring": "Movimientos", "Forecast": "Flujo de caja", "Year end": "Metas y fondo", "Settings": "Listas"},
+        "native_sheet_map": {"Start here": "Inicio", "Dashboard": "Resumen", "Budget": "Presupuesto", "Purchases": "Gastos reales", "Quotes": "Movimientos", "Timeline": "Flujo de caja", "Settings": "Listas"},
         "mock_profile": {
             "project_name": "Oak Street renovation plan",
             "areas": ["Kitchen units", "Flooring", "Lighting", "Plumbing", "Paint", "Permits", "Contingency"],
@@ -173,6 +223,110 @@ PRODUCTS = [
         "sources": ["templates/sources/Presupuesto de gastos empresariales.xlsx", "templates/sources/planilla-de-excel-de-presupuesto-de-ventas.xlsx"],
         "model_base": "templates/model-library/family-budget-sources-base",
         "native_sheet_map": {"Start here": "Inicio", "Dashboard": "Resumen", "Budget": "Presupuesto", "Purchases": "Gastos reales", "Quotes": "Movimientos", "Timeline": "Flujo de caja", "Settings": "Listas"},
+        "preserve_native_master_objects": True,
+        "native_surface_adaptations": {"fit_table_columns_to_content": False, "allow_column_width_changes": [], "merged_slot_resizes": {}},
+    },
+    {
+        "id": 15,
+        "slug": "freshwater-aquarium-setup-planner",
+        "workflow_label": "FRESHWATER AQUARIUM SETUP",
+        "title": "Freshwater Aquarium Setup Planner & Budget",
+        "subtitle": "A calm, practical project kit for planning a freshwater tank setup budget, comparing equipment and keeping readiness tasks in view.",
+        "target_buyer": "First-time and returning freshwater aquarists planning a new planted or community aquarium before buying equipment and livestock.",
+        "ebook": {
+            "title": "The Thoughtful Freshwater Aquarium",
+            "filename": "The Thoughtful Freshwater Aquarium - 10 field notes.pdf",
+            "content_file": "config/ebooks/freshwater-aquarium-setup-planner.json",
+            "cover_image": "assets/ebook-covers/freshwater-aquarium-planner-cover.png",
+            "cover_prompt": "Original AI-generated natural-history field-guide illustration of a planted freshwater nano aquarium with ember tetras, river stones, clear water and generous cream negative space; deep jade, ink navy and copper palette, no text.",
+        },
+        "price_test": 2.76,
+        "palette": {"background": "#F2F5EB", "ink": "#203A3B", "accent": "#3F8176", "secondary": "#CF765B", "highlight": "#D5B45B"},
+        "visual_identity": {
+            "name": "Stillwater field notes",
+            "motif": "A deep-jade aquarium window framed by copper waterline marks and a pale sand bed",
+            "usage": "Workbook identity, field-guide cover and aquatic editorial marketing campaign",
+            "marketing_layout": "aquarium_fieldguide",
+            "marketing_artwork_file": "marketing_artwork/stillwater-aquarium-field-guide.png",
+            "marketing_artwork_source": "assets/ebook-covers/freshwater-aquarium-planner-cover.png",
+            "marketing_art_direction": "An illustrated freshwater biotope field guide: panoramic planted tank as a luminous specimen window, separated by cream paper bands, fine copper measurement marks and deep-jade ink panels; never reuse moving maps, renovation room boards or their card grids.",
+        },
+        "signature_chart": {"type": "Setup budget remaining and readiness milestones", "purpose": "Keep the equipment spend and next setup decision visible before the aquarium is stocked"},
+        "tabs": ["Start here", "Dashboard", "Budget", "Purchases", "Quotes", "Timeline", "Settings"],
+        "features": ["Setup budget by tank, equipment and aquascape area", "Actual equipment costs linked to one purchase log", "Filter, lighting and tank quote comparison", "Setup milestones with owners and due dates", "Contingency setting and budget cap", "Dashboard cue for remaining setup budget and next task", "Worked example plus a clean blank workbook"],
+        "sources": [
+            "outputs/listings/product-15/seo_keyword_research.json",
+            "config/ebooks/freshwater-aquarium-setup-planner.json",
+            "config/digital_kit_content/freshwater-aquarium-setup.json",
+        ],
+        "model_base": "templates/excel-first-base",
+        "native_sheet_map": {"Start here": "Inicio", "Dashboard": "Resumen", "Budget": "Presupuesto", "Purchases": "Gastos reales", "Quotes": "Movimientos", "Timeline": "Flujo de caja", "Settings": "Listas"},
+        "mock_profile": {
+            "project_name": "Stillwater planted tank setup",
+            "areas": ["Tank and stand", "Filtration", "Lighting and heat", "Substrate and hardscape", "Plants", "Water testing", "Contingency"],
+            "suppliers": ["Clearwater Aquatics", "Current & Co", "Bright Reef Supply", "Riverstone Studio", "Greenfin Nursery", "Waterwise Test Lab", "Stillwater Reserve"],
+            "items": ["Rimless glass tank and stand", "Adjustable filter and media", "LED light and thermostat", "Sand and driftwood", "Aquatic plant selection", "Water test kit", "Unplanned setup purchase"],
+            "locations": ["Tank footprint", "Filter chamber", "Tank canopy", "Aquascape base", "Planting zone", "Test station", "Project reserve"],
+            "phases": ["Measure", "Compare", "Install", "Aquascape", "Plant", "Test", "Review"],
+            "tasks": ["Measure the planned tank footprint", "Confirm a level location and suitable support", "Compare tank and stand options", "Choose a filter suited to the intended setup", "Check heater and lighting requirements", "Rinse and arrange substrate and hardscape", "Fill and test equipment for leaks and operation", "Record water tests during filter maturation", "Review species-specific needs before any livestock purchase", "Confirm the aquarium is ready with a knowledgeable aquatic professional", "Reconcile setup costs and remaining budget"],
+            "quote_notes": ["Confirm stand load rating", "Check filter media included", "Verify light dimensions", "Confirm substrate quantity", "Ask whether plants are grown submerged", "Check test-kit reagents and expiry", "Keep as contingency alternative"],
+        },
+        "preserve_native_master_objects": True,
+        "native_surface_adaptations": {"fit_table_columns_to_content": False, "allow_column_width_changes": [], "merged_slot_resizes": {}},
+    },
+    {
+        "id": 16,
+        "slug": "puppy-first-year-planner",
+        "workflow_label": "A FIRST YEAR TOGETHER",
+        "title": "New Puppy Planner & First-Year Budget",
+        "subtitle": "A practical Excel-first kit for planning a puppy's first year: setup costs, vet quote questions, purchases and care milestones, with an offline cost calculator.",
+        "target_buyer": "First-time puppy adopters and households preparing for the first year of dog ownership who want to organize costs and questions without relying on memory.",
+        "ebook": {
+            "title": "The First Year Together",
+            "filename": "The First Year Together - 10 thoughtful field notes.pdf",
+            "content_file": "config/ebooks/puppy-first-year-planner.json",
+            "cover_image": "assets/ebook-covers/puppy-first-year-planner-cover.png",
+            "cover_prompt": "Original editorial gouache and coloured-pencil illustration: a relaxed golden-brown rescue puppy settling beside its person's shoes in a warmly lit first home, oak bench, folded lead, ceramic bowl and a few understated toys; paper texture, ink navy, cream, pine, rust and ochre; quiet space for later title, no text or logo.",
+        },
+        "price_test": 2.76,
+        "palette": {"background": "#F6F1E8", "ink": "#27313A", "accent": "#526D58", "secondary": "#B85F48", "highlight": "#C69B43"},
+        "visual_identity": {
+            "name": "The first-year field journal",
+            "motif": "An ink-blue home threshold, pine-green lead and small rust milestone marks",
+            "usage": "Workbook identity, puppy-preparation guide and first-year editorial campaign",
+            "marketing_layout": "puppy_firstyear_editorial",
+            "marketing_artwork_file": "marketing_artwork/first-year-together-editorial.png",
+            "marketing_artwork_source": "assets/ebook-covers/puppy-first-year-planner-cover.png",
+            "marketing_art_direction": "An intimate illustrated field journal about the first year at home: large editorial portrait panels, hand-marked milestone lines, quiet cream paper and pine-green/rust annotations. Avoid aquarium specimen frames, home-renovation boards, route maps, paw-print wallpaper and generic pet-store stock imagery.",
+        },
+        "signature_chart": {"type": "First-year budget remaining and next care milestone", "purpose": "Keep the planned first-year costs and the next owner-organized task visible without implying veterinary advice"},
+        "tabs": ["Start here", "Dashboard", "Budget", "Purchases", "Quotes", "Timeline", "Settings"],
+        "features": [
+            "First-year setup budget by adoption, supplies, food, routine care and contingency",
+            "Actual purchases linked to one expense log",
+            "Vet clinic and trainer quote comparison with questions and scope notes",
+            "Owner-managed first-year timeline with dates, reminders and completion status",
+            "Budget cap and contingency setting",
+            "Dashboard cue for remaining budget and the next planned task",
+            "Worked example plus a clean blank workbook",
+        ],
+        "sources": [
+            "outputs/listings/product-16/seo_keyword_research.json",
+            "config/ebooks/puppy-first-year-planner.json",
+            "config/digital_kit_content/puppy-first-year.json",
+        ],
+        "model_base": "templates/excel-first-base",
+        "native_sheet_map": {"Start here": "Inicio", "Dashboard": "Resumen", "Budget": "Presupuesto", "Purchases": "Gastos reales", "Quotes": "Movimientos", "Timeline": "Flujo de caja", "Settings": "Listas"},
+        "mock_profile": {
+            "project_name": "Maple's first year at home",
+            "areas": ["Adoption and setup", "Food", "Veterinary care", "Training", "Grooming", "Equipment", "Contingency"],
+            "suppliers": ["Willow Lane Rescue", "Good Bowl Pantry", "Cedar Veterinary Clinic", "Kind Steps Trainer", "Brush & Bath", "Homebound Pet Supply", "First-Year Reserve"],
+            "items": ["Adoption fee", "First food order", "Initial veterinary appointment", "Reward-based class", "Brush and nail kit", "Gate and washable bed", "Unexpected first-year cost"],
+            "locations": ["Adoption plan", "Kitchen shelf", "Clinic folder", "Training notes", "Care basket", "Home setup", "Reserve"],
+            "phases": ["Prepare", "Bring home", "Settle", "Build routine", "Review costs", "Plan ahead", "Reflect"],
+            "tasks": ["Choose the home base and safe rest area", "Confirm food transition questions with the veterinarian", "Gather records from the rescue or previous caregiver", "Book an introductory veterinary appointment", "Compare local training options and methods", "Check gates, cords and small objects at puppy level", "Set a realistic monthly care estimate", "Record receipts and recurring costs", "Review the routine with the household", "Update the next milestone after professional advice", "Reconcile the first-year budget", "Note what helped the puppy settle"],
+            "quote_notes": ["Ask what the initial visit includes", "Confirm examination and follow-up fees", "Ask about appointment length and handling", "Check trainer credentials and reward-based approach", "Compare group and one-to-one formats", "Confirm grooming service scope", "Keep a second option for comparison"],
+        },
         "preserve_native_master_objects": True,
         "native_surface_adaptations": {"fit_table_columns_to_content": False, "allow_column_width_changes": [], "merged_slot_resizes": {}},
     },
@@ -239,6 +393,7 @@ def write_app_design_spec(product: dict, path: Path, model_contract: dict) -> No
 - The master workbook exists and is the only visual and structural base.
 - The final XLSX preserves the declared grid, table dimensions, navigation, identity and source-model structure.
 - The final XLSX passes direct functional and structural audits.
+- The product includes a validated PDF e-book with an AI-generated cover and exactly ten substantial, page-separated points.
 """
     path.write_text(content, encoding="utf-8")
 
@@ -259,6 +414,17 @@ def validate_product_identity_and_mock(product: dict) -> None:
         raise ValueError(f"{product['slug']}: faltan colores de identidad: {', '.join(missing)}")
     if len({str(palette[key]).casefold() for key in required_palette}) != len(required_palette):
         raise ValueError(f"{product['slug']}: la paleta debe tener cinco colores distintos")
+    ebook = product.get("ebook") or {}
+    if not all(ebook.get(key) for key in ("title", "filename", "content_file", "cover_image", "cover_prompt")):
+        raise ValueError(f"{product['slug']}: el e-book debe declarar título, nombre PDF, manuscrito e imagen de portada IA")
+    for key in ("content_file", "cover_image"):
+        if not (ROOT / ebook[key]).is_file():
+            raise ValueError(f"{product['slug']}: no existe ebook.{key}: {ebook[key]}")
+    manuscript = json.loads((ROOT / ebook["content_file"]).read_text(encoding="utf-8"))
+    if not isinstance(manuscript.get("sections"), list) or len(manuscript["sections"]) != 10:
+        raise ValueError(f"{product['slug']}: el manuscrito del e-book debe tener exactamente diez puntos")
+    if not ebook["filename"].lower().endswith(".pdf") or Path(ebook["filename"]).name != ebook["filename"]:
+        raise ValueError(f"{product['slug']}: ebook.filename debe ser un nombre PDF sin rutas")
     if int(product["id"]) < 12:
         return
     profile = product.get("mock_profile") or {}
@@ -322,6 +488,8 @@ def main() -> None:
             "visual_inheritance": {"pattern_id": "dashboard-card-v1", "manual": "rules/FACTORY_SCREEN_PATTERN_MANUAL.md", "machine_contract": "FACTORY_SCREEN_PATTERN.json", "role": "simple_excel_inheriting_screen_pattern"},
             "tabs": product["tabs"],
             "functional_scope": product["features"],
+            "workflow_label": product.get("workflow_label", "Project"),
+            "ebook": product["ebook"],
             "mock_profile": product.get("mock_profile", {}),
             "visual_acceptance": {"human_review_required": True, "native_geometry_required": True, "source_model_match_required": True},
             "research_sources": product["sources"],
@@ -338,6 +506,7 @@ def main() -> None:
             "model_behavior_file": "model_behavior.md",
             "model_contract_file": "model_contract.json",
             "app_user_guide_file": "app/README.md",
+            "app_user_guide_pdf_filename": f"{product['slug']}-user-guide.pdf",
             "model_behavior_source": "declared_model_contract_before_xlsx",
             "model_contract": model_contract,
             "user_model_guide": {"file": "model_behavior.md", "purpose": "Guía de uso y verificación funcional independiente del XLSX.", "edit_inputs_only": True, "fail_on_contract_mismatch": True},

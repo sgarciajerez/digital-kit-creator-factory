@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "policy": {
+    "minimum_opportunity_score": 75,
+    "minimum_confidence": 60,
+    "maximum_products_per_run": 3,
+    "maximum_per_category": 1,
+    "maximum_catalog_similarity": 0.62,
+    "evidence_freshness_days": 180,
+    "minimum_observed_evidence": 3,
+    "minimum_independent_sources": 2,
+    "shop_signal_minimum_visits": 50,
+    "shop_signal_minimum_orders": 3
+  },
+  "evidence_classification": {
+    "demand_terms": [
+      "monthly searches",
+      "search volume",
+      "etsy searches",
+      "search growth",
+      "search trend",
+      "keyword interest",
+      "sales",
+      "orders",
+      "visits",
+      "favorites",
+      "requests",
+      "interview",
+      "waitlist",
+      "conversion",
+      "clicks",
+      "demand"
+    ],
+    "competition_terms": [
+      "competitor",
+      "listing count",
+      "matching listings",
+      "active listings",
+      "competition",
+      "saturation",
+      "comparable price",
+      "price range",
+      "market price",
+      "search result count"
+    ]
+  },
+  "ranking": {
+    "opportunity_score_weight": 0.7,
+    "novelty_weight": 0.2,
+    "shop_performance_weight": 0.1,
+    "no_shop_data_policy": "renormalize_available_weights",
+    "catalog_stopwords": [
+      "planner", "planning", "plan", "budget", "tracker", "template", "spreadsheet",
+      "excel", "digital", "kit", "guide", "with", "for", "the", "and", "from",
+      "de", "del", "la", "el", "los", "las", "un", "una", "para", "con", "por",
+      "que", "sus", "their", "your", "and", "the", "home", "project", "system"
+    ]
+  }
+}

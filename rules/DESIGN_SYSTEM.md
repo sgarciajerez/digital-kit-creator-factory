@@ -37,6 +37,10 @@ La única referencia visual y estructural es
 - validaciones conectadas a rangos declarados;
 - icono SVG propio o adaptado en todas las hojas;
 - paleta única por producto;
+- Los títulos y títulos de ejes de cada gráfico usan un relleno degradado suave
+  desde el color claro de fondo de la paleta hasta blanco, texto negro y sin
+  bordes ni contorno de texto; leyendas, etiquetas y valores usan texto negro
+  sin contorno.
 - botones redondeados nativos; paneles congelados solo si se declaran por hoja en `freeze_panes`;
 - anchuras y alturas explícitas, sin desbordamientos.
 

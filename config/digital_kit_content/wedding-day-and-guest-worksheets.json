@@ -1,0 +1,36 @@
+{
+  "title": "Wedding Day & Guest Planning Worksheets",
+  "subtitle": "Practical pages for decisions, hand-offs and details that deserve more than a cell",
+  "pages": [
+    {
+      "title": "Guest-list final review",
+      "intro": "Use this page before submitting the final count. Keep personal information in the workbook or a suitably private location, and share only the details a supplier needs.",
+      "checks": ["Confirm invited, replied and attending counts separately", "Check plus-one names and children against the invitation", "Ask guests directly about dietary and access needs", "Confirm the venue deadline and meal format", "Assign one person to submit and verify the final count"],
+      "fields": ["Venue submission deadline", "Current attending count", "Open replies and follow-up owner", "Dietary or access notes to share", "Confirmation received from venue"]
+    },
+    {
+      "title": "Vendor proposal comparison",
+      "intro": "Compare suppliers against the same brief. Check what is included, what is optional and which terms are in the signed agreement before choosing.",
+      "checks": ["Compare the same date, hours, location and scope", "Separate base fee, options, travel and tax", "Check cancellation, rescheduling and overtime terms", "Confirm the named day-of contact", "Save the proposal and contract together"],
+      "fields": ["Vendor and service", "Included scope", "Exclusions or open questions", "Contract reference and due date", "Decision and reason"]
+    },
+    {
+      "title": "Payment milestone and receipt check",
+      "intro": "Use the contract as the source of truth for payment schedules. This worksheet helps you spot upcoming actions; it is not financial or legal advice.",
+      "checks": ["List each instalment separately", "Distinguish retainer, deposit and final balance", "Set a reminder before each due date", "Save the receipt or transaction reference", "Confirm any changed terms in writing"],
+      "fields": ["Vendor and instalment", "Amount and due date", "Paid date and method", "Receipt or confirmation location", "Next follow-up owner"]
+    },
+    {
+      "title": "Wedding-day run sheet hand-off",
+      "intro": "Start with fixed venue and ceremony times, then add realistic travel and setup buffers. Give each supplier the version relevant to their role.",
+      "checks": ["Confirm venue access and setup window", "List key transitions and travel times", "Name an owner for each hand-off", "Share the current schedule with relevant vendors", "Leave space to eat, greet guests and pause"],
+      "fields": ["Time and location", "What happens", "Responsible person", "Supplier or contact", "Buffer or fallback note"]
+    },
+    {
+      "title": "Small contingency and contact plan",
+      "intro": "Plan for a few plausible disruptions without trying to control every possibility. Use the venue's official procedures for safety and weather decisions.",
+      "checks": ["Identify the venue contact and on-site lead", "Agree who handles vendor delays", "Know the venue's weather decision point", "Share emergency contacts with named helpers", "Decide which issues require the couple's input"],
+      "fields": ["Likely issue", "First practical action", "Person responsible", "Who to contact", "Decision that must come to the couple"]
+    }
+  ]
+}

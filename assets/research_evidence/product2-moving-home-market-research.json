@@ -1,0 +1,15 @@
+{
+  "product_id": 2,
+  "slug": "moving-home-planner",
+  "captured_at": "2026-10-15",
+  "decision": "Proceed with a connected moving-home budget, quotes and timeline workbook plus companion worksheets selected from declared move-planning needs.",
+  "audience_hypothesis": "Renters, homeowners and families coordinating a move who need costs, service quotes and deadlines in one place.",
+  "observations": [
+    {"source": "https://www.etsy.com/listing/4341109679/moving-planner-excel-google-sheets", "observed_price": 2.74, "currency": "USD", "observed_features": ["Excel and Google Sheets", "moving expense tracker", "relocation checklist"]},
+    {"source": "https://www.etsy.com/listing/4490182063/moving-home-planner-spreadsheet-budget", "observed_price": 8.37, "currency": "USD", "observed_features": ["connected moving budget", "supplier quotes", "change-of-address tracker", "timeline"]},
+    {"source": "https://www.etsy.com/listing/4534181391/moving-planner-spreadsheet-countdown", "observed_price": 12.97, "currency": "USD", "observed_features": ["countdown", "budget", "box inventory", "mover quotes", "checklist"]}
+  ],
+  "method": "Manual public listing-page review via search results. Prices and listing features are observed snapshots, not proof of sales or demand. No competitor text, images, spreadsheet or layout was copied.",
+  "uncertainties": ["Search visibility does not establish conversion or current sales volume.", "Displayed prices may include temporary discounts and can change.", "The proposed EUR launch price follows the factory low-price test policy, not an estimate of product value."],
+  "exchange_rate": {"reference": "ECB euro reference rate", "date": "2026-10-15", "quote": "1 EUR = 1.1195 USD", "usd_to_eur": 0.89325, "source": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-usd.en.html"}
+}

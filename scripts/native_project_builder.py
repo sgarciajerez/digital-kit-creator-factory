@@ -45,13 +45,16 @@ def master_workbook_builder(spec: dict, path: Path) -> None:
     ink = rgb(palette["ink"])
     input_fill = rgb(palette.get("input_fill", "FFF9E9"))
     formula_fill = rgb(palette.get("formula_fill", "F4F8F6"))
-    currency_format = '#,##0.00 "EUR"'
+    # Excel on this machine uses Spanish separators. NumberFormatLocal avoids
+    # COM silently rewriting the decimal marker as a thousands placeholder.
+    currency_format = '#.##0,00 €'
     # Excel's desktop format parser is locale-aware in this COM path. Using
     # the Spanish four-digit year token avoids writing the literal text
     # ``yyyy`` into the visible cell while keeping the exported value a real
     # date.
     date_format = "dd/mm/aaaa"
     mock_profile = spec.get("mock_profile") or {}
+    workflow_label = str(spec.get("workflow_label", "PROJECT")).upper()
     mock_areas = list(mock_profile.get("areas") or ["Kitchen units", "Flooring", "Lighting", "Plumbing", "Paint", "Permits", "Contingency"])
     mock_suppliers = list(mock_profile.get("suppliers") or ["Oak & Co", "Stone House", "Bright Home", "Flow Trade", "Colour Room", "City office", "Project reserve"])
     mock_items = list(mock_profile.get("items") or ["Primary package", "Materials", "Production", "Tools", "Services", "Travel", "Reserve"])
@@ -105,7 +108,7 @@ def master_workbook_builder(spec: dict, path: Path) -> None:
             except Exception:
                 pass
             sheet.UsedRange.ClearContents()
-            sheet.Range("B2").Value = f"RENOVATION PLANNER · {sheet.Name.upper()}"
+            sheet.Range("B2").Value = f"{workflow_label} PLANNER · {sheet.Name.upper()}"
             sheet.Range("B3").Value = title
             sheet.Range("B4").Value = subtitle
             sheet.Range("B2").Font.Color = rgb(palette["accent"])
@@ -206,7 +209,7 @@ def master_workbook_builder(spec: dict, path: Path) -> None:
                         if "d" in formats[offset].casefold():
                             cell.NumberFormatLocal = date_format
                         else:
-                            cell.NumberFormat = formats[offset]
+                            cell.NumberFormatLocal = formats[offset]
                     if formats[offset] and "d" in formats[offset].casefold():
                         cell.HorizontalAlignment = -4152  # xlRight
             end_row = start_row + len(rows)
@@ -238,9 +241,13 @@ def master_workbook_builder(spec: dict, path: Path) -> None:
                 cell.Font.Bold = True
                 cell.Interior.Color = formula_fill
                 cell.HorizontalAlignment = -4152  # xlRight
+                # Keep large totals readable inside the fixed master grid.
+                cell.ShrinkToFit = True
                 if col in formats:
-                    cell.NumberFormat = formats[col]
-            sheet.Range(f"B{row}:{last_letter}{row}").VerticalAlignment = -4108  # xlCenter
+                    cell.NumberFormatLocal = formats[col]
+            total_row = sheet.Range(f"B{row}:{last_letter}{row}")
+            total_row.VerticalAlignment = -4108  # xlCenter
+            total_row.ShrinkToFit = True
 
         def format_table_surface(sheet, table_name: str, header_row: int, last_row: int) -> None:
             """Fit table examples to the inherited master slots.
@@ -303,7 +310,7 @@ def master_workbook_builder(spec: dict, path: Path) -> None:
                     cell.WrapText = True
                     cell.VerticalAlignment = -4108
             note = sheet.Range("E21:M23")
-            note.Value = "Use the yellow inputs on the left; the reference panels keep the renovation workflow visible."
+            note.Value = f"Use the yellow inputs on the left; the reference panels keep the {workflow_label.casefold()} workflow visible."
             note.Interior.Pattern = 1
             note.Interior.Color = formula_fill
             note.Font.Color = ink
@@ -386,15 +393,15 @@ def master_workbook_builder(spec: dict, path: Path) -> None:
         for row, (label, formula) in enumerate(quick, 7):
             start.Cells(row, 7).Value = label
             start.Cells(row, 8).Formula = formula
-        start.Range("H8").NumberFormat = currency_format
+        start.Range("H8").NumberFormatLocal = currency_format
         start.Range("H9").NumberFormat = "0%"
         start.Range("H10:H11").NumberFormatLocal = date_format
         start.Range("B14").Value = "WORKBOOK MAP"
-        map_rows = [("Dashboard", "Budget, actual spend and next decisions."), ("Budget", "Planned renovation areas and remaining amounts."), ("Purchases", "One operational log for materials and supplier costs."), ("Quotes", "Compare alternatives before committing."), ("Timeline", "Tasks, dates, statuses and days left."), ("Settings", "Project assumptions and dates."), ("Start here", "Setup guide and quick project view.")]
+        map_rows = [("Dashboard", "Budget, actual spend and next decisions."), ("Budget", f"Planned {workflow_label.casefold()} areas and remaining amounts."), ("Purchases", "One operational log for move costs and services."), ("Quotes", "Compare alternatives before committing."), ("Timeline", "Tasks, dates, statuses and days left."), ("Settings", "Project assumptions and dates."), ("Start here", "Setup guide and quick project view.")]
         for row, (label, body) in enumerate(map_rows, 15):
             start.Cells(row, 2).Value = label
             start.Cells(row, 3).Value = body
-        start.Range("B25").Value = "Tip: duplicate the file before starting a new renovation. The master grid and formulas remain easy to review and adapt."
+        start.Range("B25").Value = f"Tip: duplicate the file before starting a new {workflow_label.casefold()} project. Keep the example unchanged as a reference."
 
         settings = workbook.Worksheets("Settings")
         settings.Range("B6").Value = "PROJECT SETTINGS"
@@ -404,13 +411,13 @@ def master_workbook_builder(spec: dict, path: Path) -> None:
         settings.Range("C8").WrapText = False
         settings.Range("C8").ShrinkToFit = True
         settings.Range("C8:C13").VerticalAlignment = -4108  # xlCenter
-        settings.Range("C9").NumberFormat = currency_format
+        settings.Range("C9").NumberFormatLocal = currency_format
         settings.Range("C10").NumberFormat = "0%"
         settings.Range("C11:C12").NumberFormatLocal = date_format
         populate_settings_reference_panels(settings)
 
         budget = workbook.Worksheets("Budget")
-        budget.Range("B6").Value = "RENOVATION BUDGET · INPUTS IN YELLOW"
+        budget.Range("B6").Value = f"{workflow_label} BUDGET · INPUTS IN YELLOW"
         base_area_numbers = [9000, 5200, 3600, 1800, 1400, 1000, 2400]
         base_area_notes = ["Primary creator income or project allocation", "Production and delivery costs", "Editing and post-production", "Tools and subscriptions", "Workspace and equipment", "Travel and creator logistics", "Reserve for tax and surprises"]
         areas = [(area, base_area_numbers[index], base_area_notes[index], 4500 if index == 0 else 0, 2500 if index == 0 else 0, 1500 if index == 0 else 0, 300 if index == 0 else 0, 0, 200 if index == 0 else 0, 0, base_area_numbers[index]) for index, area in enumerate(mock_areas)]
@@ -423,7 +430,7 @@ def master_workbook_builder(spec: dict, path: Path) -> None:
         budget.Range("F15").Value = "On track"
         budget.Range("G15").Value = "LINKED TO PURCHASES"
         budget.ListObjects("tblRenovationBudget").Resize(budget.Range("B7:O14"))
-        budget.Range("B18").Value = "Planned, actual and remaining amounts stay connected to Purchases across the full renovation budget grid."
+        budget.Range("B18").Value = f"Planned, actual and remaining amounts stay connected to Purchases across the full {workflow_label.casefold()} budget grid."
 
         purchases = workbook.Worksheets("Purchases")
         purchases.Range("B6").Value = "PURCHASE LOG · ENTER EACH COST ONCE"
@@ -524,13 +531,13 @@ def master_workbook_builder(spec: dict, path: Path) -> None:
         if mock_profile:
             quote_rows = [
                 [mock_suppliers[index % len(mock_suppliers)], mock_areas[index % len(mock_areas)], date(2026, 10, 14) + timedelta(days=index), 1800 + index * 275, "Yes" if index % 3 == 0 else "No", mock_quote_notes[index % len(mock_quote_notes)], f"{index % 5 + 1} weeks", "Preferred" if index % 3 == 0 else "Review"]
-                for index in range(21)
+                for index in range(20)
             ]
         write_table(quotes, 7, ["Supplier", "Area", "Quote date", "Amount", "Selected", "Notes", "Lead time", "Decision"], quote_rows, "tblRenovationQuotes", ["input"] * 8, [None, None, date_format, currency_format, None, None, None, None])
-        quotes.ListObjects("tblRenovationQuotes").Resize(quotes.Range("B7:I27"))
+        quotes.ListObjects("tblRenovationQuotes").Resize(quotes.Range(f"B7:I{7 + len(quote_rows)}"))
         for address, text_value in (
             ("K7:M10", "Compare supplier, area and amount before committing."),
-            ("K12:M15", "Mark Selected = Yes only for the quote you will carry into Purchases."),
+            ("K12:M15", "A Selected Preferred quote updates Budget Forecast for the same area. Record any real payment separately in Purchases."),
         ):
             card = quotes.Range(address)
             card.Value = text_value
@@ -559,7 +566,7 @@ def master_workbook_builder(spec: dict, path: Path) -> None:
         ], 8)]
         if mock_profile:
             creator_tasks = [
-                (mock_tasks[index], mock_areas[index % len(mock_areas)], start_date, due_date, "In progress" if index == 1 else "Open", "Project lead", mock_phases[index % len(mock_phases)], mock_quote_notes[index % len(mock_quote_notes)])
+                (mock_tasks[index % len(mock_tasks)], mock_areas[index % len(mock_areas)], start_date, due_date, "In progress" if index == 1 else "Open", "Project lead", mock_phases[index % len(mock_phases)], mock_quote_notes[index % len(mock_quote_notes)])
                 for index, (start_date, due_date) in enumerate([
                     (date(2026, 10, 20), date(2026, 11, 3)), (date(2026, 10, 28), date(2026, 11, 10)),
                     (date(2026, 11, 4), date(2026, 11, 15)), (date(2026, 11, 12), date(2026, 11, 22)),
@@ -595,8 +602,8 @@ def master_workbook_builder(spec: dict, path: Path) -> None:
         for label_cell, value_cell, label, formula in (("B6", "B7", "BUDGET CAP", "=Settings!C9"), ("E6", "E7", "ACTUAL SPEND", "=SUM(Purchases!F8:F14)"), ("H6", "H7", "CONTINGENCY", "=Settings!C9*Settings!C10"), ("K6", "K7", "AVAILABLE", "=B7-E7")):
             dashboard.Range(label_cell).Value = label
             dashboard.Range(value_cell).Formula = formula
-            dashboard.Range(value_cell).NumberFormat = currency_format
-        dashboard.Range("B10").Value = "BUDGET BY RENOVATION AREA"
+            dashboard.Range(value_cell).NumberFormatLocal = currency_format
+        dashboard.Range("B10").Value = f"BUDGET BY {workflow_label} AREA"
         dashboard_rows = [[f"=Budget!B{row}", f"=Budget!C{row}", f"=Budget!D{row}", f"=Budget!E{row}", f"=Budget!F{row}"] for row in range(8, 15)]
         write_table(dashboard, 11, ["Area", "Planned", "Actual spend", "Remaining", "Status"], dashboard_rows, "tblRenovationDashboard", ["derived"] * 5, [None, currency_format, currency_format, currency_format, None])
         write_total(dashboard, 19, 6, "TOTAL PROJECT", {3: "=SUM(C12:C18)", 4: "=SUM(D12:D18)", 5: "=SUM(E12:E18)"}, {3: currency_format, 4: currency_format, 5: currency_format})

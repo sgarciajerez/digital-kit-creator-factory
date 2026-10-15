@@ -564,6 +564,12 @@ def validate_model_contract(
                     checks.append(f"{expected['sheet']}!{total_ref}: total fuera de la tabla")
                 else:
                     errors.append(f"{expected['sheet']}!{total_ref}: falta etiqueta TOTAL fuera de la tabla")
+                formula_cells = [ws.cell(row, col) for row in range(min_row, max_row + 1) for col in range(min_col, max_col + 1) if isinstance(ws.cell(row, col).value, str) and ws.cell(row, col).value.startswith("=")]
+                cramped_totals = [cell.coordinate for cell in formula_cells if not cell.alignment.shrinkToFit]
+                if cramped_totals:
+                    errors.append(f"{expected['sheet']}!{total_ref}: totales sin ajuste al ancho {cramped_totals}")
+                else:
+                    checks.append(f"{expected['sheet']}!{total_ref}: resultados ajustados al ancho de celda")
             except Exception as exc:
                 errors.append(f"{expected['sheet']}!{total_ref}: rango de total inválido ({exc})")
 
@@ -608,7 +614,7 @@ def validate_functional_contract_schema(
     known_sheets = set(sheet_names)
     if not contract.get("cases"):
         errors.append("faltan casos funcionales")
-    operators = {"equals", "not_equals", "changed", "contains", "formula_contains", "not_error"}
+    operators = {"equals", "not_equals", "changed", "unchanged", "contains", "formula_contains", "not_error"}
     for case_index, case in enumerate(contract.get("cases") or [], 1):
         prefix = f"caso funcional {case_index}"
         if not case.get("assertions"):
@@ -715,6 +721,8 @@ def run_functional_contract(path: Path, contract: dict[str, Any]) -> dict[str, A
                     passed = not _values_equal(actual, expected)
                 elif operator == "changed":
                     passed = not _values_equal(actual, before[(sheet, address)])
+                elif operator == "unchanged":
+                    passed = _values_equal(actual, before[(sheet, address)])
                 elif operator == "contains":
                     passed = str(expected) in str(actual)
                 elif operator == "formula_contains":

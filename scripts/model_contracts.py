@@ -561,6 +561,48 @@ def _product_contracts() -> dict[int, dict[str, Any]]:
         "y el presupuesto disponible."
     )
     contracts[14] = creator
+    aquarium = deepcopy(creator)
+    aquarium.update({
+        "contract_id": "freshwater-aquarium-setup-planner-v1",
+        "title": "Freshwater Aquarium Setup Planner",
+        "product_id": 15,
+        "purpose": "Planificar el presupuesto y las compras de un acuario de agua dulce, comparar equipos y ordenar las tareas de montaje antes de introducir animales.",
+        "relationships": [
+            "Purchases is the operational source for aquarium setup costs.",
+            "Purchases.Area must match Budget.Area so equipment and setup costs are attributed once.",
+            "Quotes compare aquarium equipment and services before a purchase is committed.",
+            "Timeline keeps setup, equipment checks and readiness milestones visible while Days left remains derived.",
+            "Rows labelled TOTAL remain outside editable and filterable table ranges.",
+        ],
+    })
+    aquarium_areas = ["Tank and stand", "Filtration", "Lighting and heat", "Substrate and hardscape", "Plants", "Water testing", "Contingency"]
+    for enum in aquarium["enum_contract"]:
+        if enum.get("column") == "Area":
+            enum["values"] = aquarium_areas
+    aquarium["cases"][0]["name"] = "aquarium equipment spend updates the control panel"
+    aquarium["cases"][0]["purpose"] = "Comprueba que el coste de un filtro atribuido a su partida actualiza gasto real y presupuesto disponible sin duplicarse."
+    contracts[15] = aquarium
+    puppy = deepcopy(aquarium)
+    puppy.update({
+        "contract_id": "puppy-first-year-planner-v1",
+        "title": "New Puppy Planner & First-Year Budget",
+        "product_id": 16,
+        "purpose": "Organizar el presupuesto, las compras, las preguntas para profesionales y los hitos del primer año de un cachorro sin sustituir el consejo veterinario.",
+        "relationships": [
+            "Purchases is the operational source for puppy setup and first-year costs.",
+            "Purchases.Area must match Budget.Area so each cost is attributed once.",
+            "Quotes compare local veterinary, training and grooming services before a choice is made.",
+            "Timeline records owner-managed milestones and does not prescribe a medical schedule.",
+            "Rows labelled TOTAL remain outside editable and filterable table ranges.",
+        ],
+    })
+    puppy_areas = ["Adoption and setup", "Food", "Veterinary care", "Training", "Grooming", "Equipment", "Contingency"]
+    for enum in puppy["enum_contract"]:
+        if enum.get("column") == "Area":
+            enum["values"] = puppy_areas
+    puppy["cases"][0]["name"] = "puppy setup spending updates the control panel"
+    puppy["cases"][0]["purpose"] = "Comprueba que un gasto de preparación del cachorro actualiza la partida, el gasto acumulado y el presupuesto restante sin duplicarse."
+    contracts[16] = puppy
     book = deepcopy(contracts[12])
     book.update({
         "contract_id": "community-garden-planner-v1",
@@ -582,9 +624,30 @@ def _product_contracts() -> dict[int, dict[str, Any]]:
     book["cases"][0]["name"] = "garden spend updates the control panel"
     book["cases"][0]["purpose"] = "Comprueba que un coste del jardin actualiza su partida, el gasto acumulado y el presupuesto disponible."
     contracts[1] = book
+    move = deepcopy(book)
+    move.update({
+        "contract_id": "moving-home-planner-v1",
+        "title": "Moving Home Planner & Budget",
+        "product_id": 2,
+        "purpose": "Conectar el presupuesto de mudanza, costes reales, presupuestos de empresas y tareas con fecha desde la preparación hasta la entrega de llaves.",
+    })
+    move_areas = ["Removal company", "Packing materials", "Cleaning", "Utility setup", "Storage", "Travel and meals", "Contingency"]
+    for enum in move["enum_contract"]:
+        if enum.get("column") == "Area":
+            enum["values"] = move_areas
+    move["relationships"] = [
+        "Purchases is the single operational source for moving costs.",
+        "Purchases.Area must match Budget.Area so each cost is attributed once.",
+        "Quotes compare removal and setup services before a booking is committed.",
+        "Timeline keeps handover and move dates visible while Days left remains derived.",
+        "Rows labelled TOTAL remain outside editable and filterable table ranges.",
+    ]
+    move["cases"][0]["name"] = "moving costs update the control panel"
+    move["cases"][0]["purpose"] = "Comprueba que un coste de mudanza actualiza su partida, el gasto acumulado y el presupuesto disponible."
+    contracts[2] = move
     from project_model import extend_contract
-    for product_id in (1, 12, 14):
-        extend_contract(contracts[product_id])
+    for contract in contracts.values():
+        extend_contract(contract)
     return contracts
 
 
@@ -782,7 +845,7 @@ def render_app_usage_markdown(spec: dict[str, Any], contract: dict[str, Any]) ->
         "",
         f"**Language:** `{language}` ({language_label})",
         "",
-        "> This guide is generated from the expected product behaviour and is included with the XLSX.",
+        "> This guide is generated from the expected product behaviour and is included with the XLSX. A reader-friendly PDF copy is provided alongside this Markdown file.",
         "",
         "## Quick start",
         "",
@@ -799,6 +862,14 @@ def render_app_usage_markdown(spec: dict[str, Any], contract: dict[str, Any]) ->
         "## What can be edited",
         "",
     ]
+    ebook = spec.get("ebook") or {}
+    if ebook.get("filename"):
+        lines[5:5] = [
+            "## Companion e-book",
+            "",
+            f"The product package also includes `{ebook['filename']}` as a topic-specific PDF companion.",
+            "",
+        ]
     for table in contract.get("tables", []):
         editable = [column["name"] for column in table.get("headers", []) if column.get("role") == "input"]
         derived = [column["name"] for column in table.get("headers", []) if column.get("role") == "derived"]
@@ -824,6 +895,7 @@ def render_app_usage_markdown(spec: dict[str, Any], contract: dict[str, Any]) ->
         "- Keep notes and descriptions in their designated free-text columns.",
         "- Start with the -blank.xlsx copy; the -excel-template.xlsx file contains worked examples.",
         "- Add purchases with Insert > Table Rows inside the Purchases table so totals and formatting expand together. Do not type records below the total row.",
+        "- In Quotes, mark Selected = Yes and Decision = Preferred to include an offer in Budget.Forecast for the same Area. This is still an estimate: record a real payment separately in Purchases; Dashboard.Actual spend only includes that log.",
         "- Negative amounts represent refunds. Keep an existing area selected so costs remain assigned to the budget.",
         "",
         "## Verification",

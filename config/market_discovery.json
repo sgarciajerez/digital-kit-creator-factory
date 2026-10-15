@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0.0",
+  "default_market": "US",
+  "default_language": "en",
+  "markets": {
+    "US": {"label": "Estados Unidos", "geo_target_constant": "geoTargetConstants/2840"},
+    "GB": {"label": "Reino Unido", "geo_target_constant": "geoTargetConstants/2826"},
+    "ES": {"label": "España", "geo_target_constant": "geoTargetConstants/2724"}
+  },
+  "languages": {
+    "en": {"label": "Inglés", "language_constant": "languageConstants/1000"},
+    "es": {"label": "Español", "language_constant": "languageConstants/1003"}
+  },
+  "etsy_queries_per_scan": 8,
+  "etsy_listings_per_query": 40,
+  "starter_catalog": {
+    "en": [
+      {"id": "plant-care", "label": "Indoor plant care", "query": "indoor plant care planner"},
+      {"id": "pet-care", "label": "Dog and pet care", "query": "dog care planner"},
+      {"id": "moving-home", "label": "Moving home", "query": "moving house planner"},
+      {"id": "freelance", "label": "Freelance business", "query": "freelance client planner"},
+      {"id": "wedding", "label": "Wedding planning", "query": "wedding planning spreadsheet"},
+      {"id": "meal-prep", "label": "Family meal planning", "query": "family meal planner"},
+      {"id": "home-maintenance", "label": "Home maintenance", "query": "home maintenance checklist"},
+      {"id": "travel", "label": "Travel planning", "query": "travel itinerary planner"},
+      {"id": "aquarium", "label": "Aquarium care", "query": "aquarium maintenance log"},
+      {"id": "home-inventory", "label": "Home inventory", "query": "home inventory spreadsheet"},
+      {"id": "teacher", "label": "Teacher organization", "query": "teacher lesson planner"},
+      {"id": "craft-business", "label": "Craft business", "query": "handmade business inventory tracker"},
+      {"id": "garden", "label": "Vegetable gardening", "query": "vegetable garden planner"},
+      {"id": "baby", "label": "New baby organization", "query": "newborn feeding and care tracker"},
+      {"id": "fitness", "label": "Fitness and training", "query": "workout progress tracker"},
+      {"id": "caregiving", "label": "Family caregiving", "query": "caregiver medication schedule"},
+      {"id": "reading", "label": "Reading and book tracking", "query": "reading log book tracker"},
+      {"id": "job-search", "label": "Job search organization", "query": "job application tracker"},
+      {"id": "car-maintenance", "label": "Car maintenance", "query": "vehicle maintenance log"},
+      {"id": "study", "label": "Study planning", "query": "student study planner"},
+      {"id": "event", "label": "Event planning", "query": "event planning checklist"},
+      {"id": "garden-calendar", "label": "Seed starting calendar", "query": "seed starting calendar planner"},
+      {"id": "digital-habits", "label": "Digital habits and routines", "query": "habit tracker digital planner"},
+      {"id": "packing", "label": "Travel packing", "query": "travel packing list template"}
+    ],
+    "es": [
+      {"id": "plantas", "label": "Cuidado de plantas de interior", "query": "planificador cuidado plantas interior"},
+      {"id": "mascotas", "label": "Cuidado de perros y mascotas", "query": "planificador cuidado perros"},
+      {"id": "mudanza", "label": "Mudanzas y nuevo hogar", "query": "lista mudanza organizacion hogar"},
+      {"id": "autonomos", "label": "Negocio freelance", "query": "control clientes freelance"},
+      {"id": "bodas", "label": "Organización de bodas", "query": "organizador boda presupuesto"},
+      {"id": "comidas", "label": "Planificación de comidas", "query": "planificador comidas familiar"},
+      {"id": "hogar", "label": "Mantenimiento del hogar", "query": "registro mantenimiento hogar"},
+      {"id": "viajes", "label": "Planificación de viajes", "query": "planificador itinerario viaje"},
+      {"id": "acuarios", "label": "Cuidado de acuarios", "query": "registro mantenimiento acuario"},
+      {"id": "inventario", "label": "Inventario del hogar", "query": "plantilla inventario hogar"},
+      {"id": "docentes", "label": "Organización docente", "query": "planificador clases docentes"},
+      {"id": "artesania", "label": "Negocio de artesanía", "query": "control inventario negocio artesanal"},
+      {"id": "huerto", "label": "Huerto y cultivo", "query": "planificador huerto verduras"},
+      {"id": "bebe", "label": "Organización del recién nacido", "query": "registro cuidados recien nacido"},
+      {"id": "fitness", "label": "Entrenamiento y forma física", "query": "seguimiento entrenamiento gimnasio"},
+      {"id": "cuidados", "label": "Cuidados familiares", "query": "agenda medicacion cuidados familiar"},
+      {"id": "lectura", "label": "Lectura y seguimiento de libros", "query": "registro lectura libros tracker"},
+      {"id": "empleo", "label": "Organización de búsqueda de empleo", "query": "seguimiento candidaturas empleo"},
+      {"id": "coche", "label": "Mantenimiento del coche", "query": "registro mantenimiento vehiculo"},
+      {"id": "estudio", "label": "Planificación del estudio", "query": "planificador estudio estudiantes"},
+      {"id": "eventos", "label": "Organización de eventos", "query": "lista organizacion eventos presupuesto"},
+      {"id": "semilleros", "label": "Calendario de semilleros", "query": "calendario siembra semillas huerto"},
+      {"id": "habitos", "label": "Hábitos y rutinas digitales", "query": "seguimiento habitos digital"},
+      {"id": "equipaje", "label": "Equipaje y preparación de viajes", "query": "lista equipaje viaje plantilla"}
+    ]
+  },
+  "title_cluster_minimum_support": 2,
+  "title_stopwords": [
+    "the", "and", "for", "with", "from", "your", "you", "this", "that", "how",
+    "planner", "planning", "template", "spreadsheet", "excel", "digital", "download",
+    "kit", "bundle", "printable", "tracker", "worksheet", "worksheets", "budget"
+  ]
+}

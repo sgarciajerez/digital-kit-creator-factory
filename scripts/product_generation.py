@@ -24,6 +24,7 @@ class ProductBrief(BaseModel):
     problem: str = Field(min_length=5)
     currency: str = Field(default="EUR", min_length=3, max_length=3)
     categories: list[str] = Field(min_length=1)
+    market_research: dict | None = None
 
 
 class QualityReport(BaseModel):

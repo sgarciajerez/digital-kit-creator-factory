@@ -1,0 +1,41 @@
+{
+  "title": "Creator Content & Sponsorship Worksheets",
+  "subtitle": "Planning pages for a creator workflow; do not use as a substitute for a contract or accounting records",
+  "pages": [
+    {
+      "title": "1. Weekly publishing plan",
+      "intro": "Turn an idea into a deliverable with a channel, owner and review date. Keep the plan realistic for the time you actually have.",
+      "checks": [
+        "The audience and purpose for each planned post are clear.",
+        "Production, editing, approval and publishing dates are separated.",
+        "Dependencies such as products, access, music or review approval are recorded.",
+        "At least one buffer slot is left for delays or timely opportunities."
+      ],
+      "fields": ["Week of", "Channel / format", "Working title", "Audience / purpose", "Production owner", "Draft due", "Publish date", "Status / next action"]
+    },
+    {
+      "title": "2. Sponsorship campaign brief",
+      "intro": "Record the agreed scope before work begins. Confirm usage, revisions and payment terms in the signed agreement with the brand.",
+      "checks": [
+        "Deliverables and platforms match the written agreement.",
+        "Draft, approval and publication dates are confirmed.",
+        "Usage period, paid amplification and exclusivity are explicitly addressed.",
+        "Disclosure requirements and the approval contact are documented.",
+        "Fee, invoice date, payment due date and late-payment contact are captured."
+      ],
+      "fields": ["Brand / agency", "Campaign", "Deliverables", "Fee / currency", "Usage rights and duration", "Exclusivity", "Approval contact", "Invoice / due date"]
+    },
+    {
+      "title": "3. Invoice and usage-rights close-out",
+      "intro": "Use this at delivery so the work, payment and permitted use do not disappear into old messages.",
+      "checks": [
+        "Final deliverables and live links have been sent and acknowledged.",
+        "Invoice reference, issue date, due date and payment status are logged.",
+        "Any changes to the brief or extra revisions have written approval.",
+        "The rights-expiry or renewal date is calendared for follow-up.",
+        "The project files and agreement are stored in the agreed archive."
+      ],
+      "fields": ["Campaign / invoice reference", "Delivery date", "Invoice issued", "Due date", "Payment received", "Rights end date", "Renewal / follow-up owner"]
+    }
+  ]
+}

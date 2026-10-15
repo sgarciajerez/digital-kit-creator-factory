@@ -23,6 +23,13 @@ producto está bien.
 Si falla una comprobación, se repara el constructor o el XLSX. Nunca se
 modifica una imagen de referencia para ocultar el fallo.
 
+## Estilo de texto de grÃ¡ficos
+
+Los tÃ­tulos y tÃ­tulos de ejes usan un relleno degradado claro tomado del
+fondo de la paleta del producto hacia blanco, con texto negro y sin bordes ni
+contorno tipogrÃ¡fico. Leyendas, etiquetas y valores usan texto negro sin
+contorno.
+
 ## Comandos
 
 ```powershell
