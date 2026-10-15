@@ -23,7 +23,7 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
 
-      - name: Confirm this is a merged pull request from develop
+      - name: Confirm this is an integration from develop
         id: source
         env:
           GH_TOKEN: ${{ github.token }}
@@ -33,25 +33,34 @@ jobs:
           if [[ "$pull_requests" -gt 0 ]]; then
             echo "release=true" >> "$GITHUB_OUTPUT"
           else
-            echo "release=false" >> "$GITHUB_OUTPUT"
-            echo "This master update was not merged from develop; no release will be created."
+            git fetch origin develop:refs/remotes/origin/develop
+            develop_sha="$(git rev-parse refs/remotes/origin/develop)"
+            parents="$(git rev-list --parents -n 1 "$GITHUB_SHA")"
+            if [[ " $parents " == *" $develop_sha "* ]] && [[ "$(wc -w <<< "$parents")" -eq 3 ]]; then
+              echo "release=true" >> "$GITHUB_OUTPUT"
+              echo "Direct merge commit from develop detected."
+            else
+              echo "release=false" >> "$GITHUB_OUTPUT"
+              echo "This master update was not merged from develop; no release will be created."
+            fi
           fi
 
-      - name: Calculate next patch version
+      - name: Read and validate repository version
         id: version
         if: steps.source.outputs.release == 'true'
         run: |
           git fetch --tags origin
-          latest_tag="$(git tag --list 'v[0-9]*' --sort=-version:refname | head -n 1)"
-          if [[ -z "$latest_tag" ]]; then
-            next_tag="v0.1.0"
-          elif [[ "$latest_tag" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-            next_tag="v${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.$((BASH_REMATCH[3] + 1))"
-          else
-            echo "Latest tag '$latest_tag' is not a vMAJOR.MINOR.PATCH version." >&2
+          version="$(tr -d '[:space:]' < VERSION)"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "VERSION must contain a SemVer MAJOR.MINOR.PATCH value." >&2
             exit 1
           fi
-          echo "tag=$next_tag" >> "$GITHUB_OUTPUT"
+          release_tag="v$version"
+          if git rev-parse -q --verify "refs/tags/$release_tag" >/dev/null; then
+            echo "Release tag '$release_tag' already exists; increment VERSION before merging." >&2
+            exit 1
+          fi
+          echo "tag=$release_tag" >> "$GITHUB_OUTPUT"
 
       - name: Publish GitHub release with generated notes
         if: steps.source.outputs.release == 'true'

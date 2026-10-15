@@ -10,7 +10,7 @@
       "workbook": "templates/excel-first-base/master_workbook.xlsx",
       "contract": "templates/excel-first-base/native_base_contract.json",
       "source_lineage": ["templates/sources/*"],
-      "builder": "scripts/create_family_budget_from_sources.py"
+      "builder": "scripts/generation/create_family_budget_from_sources.py"
     },
     {
       "id": "family-budget-sources-base-v1",
@@ -19,7 +19,7 @@
       "contract": "templates/model-library/family-budget-sources-base/model_contract.json",
       "guide": "templates/model-library/family-budget-sources-base/model_behavior.md",
       "source_lineage": ["templates/sources/*"],
-      "builder": "scripts/create_family_budget_from_sources.py",
+      "builder": "scripts/generation/create_family_budget_from_sources.py",
       "patterns": ["monthly_budget", "planned_vs_actual", "cash_flow", "transactions", "emergency_fund", "debts", "validation_lists"]
     },
     {
@@ -35,7 +35,7 @@
         "templates/sources/cronograma-de-actividades-en-excel.xlsx",
         "templates/sources/planilla-de-excel-de-planeamiento-de-compras.xlsx"
       ],
-      "builder": "scripts/create_wedding_planner_native.py",
+      "builder": "scripts/generation/create_wedding_planner_native.py",
       "patterns": ["event_budget", "supplier_quotes", "payments", "guest_register", "checklist", "timeline"]
     }
   ]

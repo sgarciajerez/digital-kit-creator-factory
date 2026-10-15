@@ -9,14 +9,16 @@ from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter
 
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+import scripts  # noqa: F401 - initializes categorized legacy module paths
+
 from factory_config import PIPELINE_PATH, active_product_ids, all_product_ids, finalized_product_ids
 
 
-ROOT = Path(__file__).resolve().parent.parent
-
-
 def run(script: str, *args: str, env: dict[str, str] | None = None) -> int:
-    return int(subprocess.run([sys.executable, str(ROOT / "scripts" / script), *args], cwd=ROOT, env=env, check=False).returncode)
+    return int(subprocess.run([sys.executable, "-m", script, *args], cwd=ROOT, env=env, check=False).returncode)
 
 
 def run_stage(label: str, script: str, *args: str, records: list[dict] | None = None, env: dict[str, str] | None = None) -> bool:
@@ -58,11 +60,11 @@ def publish_product(product_id: int, records: list[dict]) -> bool:
     publish_env["ETSY_PUBLISH_ENABLED"] = "true"
     manifest_arg = str(manifest_path)
     if not manifest.get("etsy_listing_id"):
-        if not run_stage(f"PRODUCT_{product_id}_ETSY_DRAFT_UPLOAD", "etsy_publish.py", "--manifest", manifest_arg, "--execute", records=records, env=publish_env):
+        if not run_stage(f"PRODUCT_{product_id}_ETSY_DRAFT_UPLOAD", "scripts.etsy.etsy_publish", "--manifest", manifest_arg, "--execute", records=records, env=publish_env):
             return False
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if manifest.get("etsy_status") != "active":
-        if not run_stage(f"PRODUCT_{product_id}_ETSY_ACTIVATE", "etsy_activate.py", "--manifest", manifest_arg, "--execute", records=records, env=publish_env):
+        if not run_stage(f"PRODUCT_{product_id}_ETSY_ACTIVATE", "scripts.etsy.etsy_activate", "--manifest", manifest_arg, "--execute", records=records, env=publish_env):
             return False
     return True
 
@@ -100,15 +102,15 @@ def main() -> int:
     active_products = active_product_ids()
     is_finalized_target = args.product in finalized_product_ids() if args.product else False
 
-    if not run_stage("AUTO_EVALUATION", "evaluate_excel_products.py", "--no-open", records=stage_records):
+    if not run_stage("AUTO_EVALUATION", "scripts.validation.evaluate_excel_products", "--no-open", records=stage_records):
         failures.append("auto_evaluation")
     architecture_args = ("--product", str(args.product)) if args.product else ()
     architecture_ok = True
-    if not is_finalized_target and not run_stage("DESIGN_ARCHITECTURE", "validate_design_architecture.py", *architecture_args, records=stage_records):
+    if not is_finalized_target and not run_stage("DESIGN_ARCHITECTURE", "scripts.validation.validate_design_architecture", *architecture_args, records=stage_records):
         failures.append("design_architecture")
         architecture_ok = False
     generation_args = ("--product", str(args.product)) if args.product else ()
-    if architecture_ok and not run_stage("APP_GENERATION", "generate_autonomous_apps.py", *generation_args, records=stage_records):
+    if architecture_ok and not run_stage("APP_GENERATION", "scripts.generation.generate_autonomous_apps", *generation_args, records=stage_records):
         failures.append("app_generation")
     elif not architecture_ok:
         print("FACTORY_STAGE=APP_GENERATION_SKIPPED reason=design_architecture")
@@ -117,29 +119,29 @@ def main() -> int:
     if not failures:
         for product_id in target_products:
             semantic_label = f"PRODUCT_{product_id}_SEMANTIC_CONTRACT"
-            if not run_stage(semantic_label, "audit_design_contract.py", "--product", str(product_id), records=stage_records):
+            if not run_stage(semantic_label, "scripts.validation.audit_design_contract", "--product", str(product_id), records=stage_records):
                 failures.append(semantic_label)
                 continue
             native_label = f"PRODUCT_{product_id}_NATIVE_XLSX_PREFLIGHT"
-            if not run_stage(native_label, "preflight_visual_contract.py", "--product", str(product_id), records=stage_records):
+            if not run_stage(native_label, "scripts.validation.preflight_visual_contract", "--product", str(product_id), records=stage_records):
                 failures.append(native_label)
     else:
-        stage_records.append({"label": "NATIVE_XLSX_QA", "script": "preflight_visual_contract.py", "args": [], "status": "skipped", "return_code": None, "duration_seconds": 0.0, "reason": "upstream_quality_gate"})
+        stage_records.append({"label": "NATIVE_XLSX_QA", "script": "scripts.validation.preflight_visual_contract", "args": [], "status": "skipped", "return_code": None, "duration_seconds": 0.0, "reason": "upstream_quality_gate"})
         print("FACTORY_STAGE=NATIVE_XLSX_QA_SKIPPED reason=upstream_quality_gate")
 
     if failures:
-        stage_records.append({"label": "DRAFT_PACKAGE", "script": "prepare_autonomous_drafts.py", "args": [], "status": "skipped", "return_code": None, "duration_seconds": 0.0, "reason": "upstream_quality_gate"})
+        stage_records.append({"label": "DRAFT_PACKAGE", "script": "scripts.generation.prepare_autonomous_drafts", "args": [], "status": "skipped", "return_code": None, "duration_seconds": 0.0, "reason": "upstream_quality_gate"})
         print("FACTORY_STAGE=DRAFT_PACKAGE_SKIPPED reason=upstream_quality_gate")
-    elif not run_stage("DRAFT_PACKAGE", "prepare_autonomous_drafts.py", *generation_args, records=stage_records):
+    elif not run_stage("DRAFT_PACKAGE", "scripts.generation.prepare_autonomous_drafts", *generation_args, records=stage_records):
         failures.append("draft_package")
-    elif not run_stage("MARKETING_ASSETS", "marketing_assets.py", *generation_args, records=stage_records):
+    elif not run_stage("MARKETING_ASSETS", "scripts.marketing.marketing_assets", *generation_args, records=stage_records):
         failures.append("marketing_assets")
     else:
         for product_id in target_products:
             manifest_path = ROOT / "outputs" / "listings" / f"product-{product_id}" / "draft_package" / "listing.json"
             if not run_stage(
                 f"PRODUCT_{product_id}_MARKETING_QA",
-                "validate_marketing_assets.py",
+                "scripts.validation.validate_marketing_assets",
                 "--manifest",
                 str(manifest_path),
                 records=stage_records,

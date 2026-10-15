@@ -5,14 +5,14 @@ validarlas funcional y estructuralmente.
 
 ## Descubrimiento de nichos
 
-El panel incluye un explorador que toma hipótesis del catálogo configurable o de consultas propias y contrasta anuncios activos de Etsy (señal de oferta, no demanda). La factoría no automatiza Marketplace Insights ni ofrece un flujo de transcripción manual. Google Ads OAuth queda como diagnóstico de conexión y no se usa para inferir demanda de Etsy. La configuración está en `rules/MARKET_DISCOVERY.md`.
+El panel incluye un explorador que toma hipótesis del catálogo configurable o de consultas propias y contrasta anuncios activos de Etsy (señal de oferta, no demanda). La factoría no automatiza Marketplace Insights ni ofrece un flujo de transcripción manual. Google Ads OAuth queda como diagnóstico de conexión y no se usa para inferir demanda de Etsy. La configuración está en `rules/discovery/MARKET_DISCOVERY.md`.
 
 ## Fuentes y modelos
 
 - `templates/sources/`: ejemplos de Excel para estudiar estructura,
   dimensiones, fórmulas y distribución.
-- `templates/excel-first-base/master_workbook.xlsx`: única base visual y
-  estructural compartida.
+- `templates/excel-first-base/master_workbook.xlsx`: plantilla maestra de
+  finanzas personales y del hogar; consulta su [ficha de selección](templates/excel-first-base/MASTER_WORKBOOK.md).
 - `templates/model-library/`: modelos recuperados de productos anteriores.
 - `outputs/listings/`: productos activos en proceso de creación.
 
@@ -22,7 +22,10 @@ diseño y validación estructural. Después de superar la QA se generan los
 assets publicitarios dentro de `marketing_assets/`, incluido un vídeo demo
 del XLSX en uso.
 
-La regla completa está en `rules/FACTORY_NATIVE_SOURCE_WORKFLOW.md`.
+La regla completa está en `rules/excel/FACTORY_NATIVE_SOURCE_WORKFLOW.md`.
+La biblioteca crecerá con plantillas de familias distintas: la ficha de cada
+una debe explicar su modelo de datos, capacidades, límites y casos de uso para
+que la factoría seleccione por compatibilidad funcional, no solo por apariencia.
 
 ## Marketing y publicación
 
@@ -36,7 +39,7 @@ Las capturas, imágenes y el vídeo quedan declarados en
 
 Antes de cerrar el anuncio, la factoría también debe documentar la investigación
 SEO de Etsy y usar palabras clave pertinentes en el título y las etiquetas.
-Consulta `rules/FACTORY_ETSY_SEO.md`.
+Consulta `rules/marketing/FACTORY_ETSY_SEO.md`.
 
 ## Reglas de modelos
 
@@ -54,17 +57,20 @@ Consulta `rules/FACTORY_ETSY_SEO.md`.
 ## Flujo principal
 
 Requiere Windows, Python 3.12 y Microsoft Excel de escritorio. Ejecuta
-`scripts/setup_windows.ps1` y comprueba el entorno con
-`.venv\Scripts\python.exe scripts/check_environment.py --excel`.
+`scripts/maintenance/setup_windows.ps1` y comprueba el entorno con
+`.venv\Scripts\python.exe -m scripts.maintenance.check_environment --excel`.
 Las dependencias Python se declaran en `requirements.txt`; Excel se instala aparte.
 `constraints-windows-py312.txt` fija las versiones del entorno comprobado.
+La versión objetivo de la próxima integración se declara en `VERSION`; actualiza
+ese archivo y `changelog.md` en cada cambio, siguiendo las reglas de SemVer en
+`AGENTS.md`.
 
 ```powershell
-.venv\Scripts\python.exe scripts/create_next_product_designs.py
-.venv\Scripts\python.exe scripts/validate_design_architecture.py
-.venv\Scripts\python.exe scripts/generate_autonomous_apps.py --no-open
-.venv\Scripts\python.exe scripts/audit_design_contract.py --product N
-.venv\Scripts\python.exe scripts/preflight_visual_contract.py --product N
+.venv\Scripts\python.exe -m scripts.generation.create_next_product_designs
+.venv\Scripts\python.exe -m scripts.validation.validate_design_architecture
+.venv\Scripts\python.exe -m scripts.generation.generate_autonomous_apps --no-open
+.venv\Scripts\python.exe -m scripts.validation.audit_design_contract --product N
+.venv\Scripts\python.exe -m scripts.validation.preflight_visual_contract --product N
 .venv\Scripts\python.exe -m pytest -q
 ```
 
@@ -75,8 +81,8 @@ productos existentes no se autopublican.
 
 ## Calidad y entrega
 
-El constructor nativo está en `scripts/native_project_builder.py`; el comportamiento
-de la familia de proyectos, en `scripts/project_model.py`. Los casos funcionales
+El constructor nativo está en `scripts/generation/native_project_builder.py`; el comportamiento
+de la familia de proyectos, en `scripts/core/project_model.py`. Los casos funcionales
 se ejecutan sobre copias independientes e incluyen crecimiento de 111 filas,
 borrado, devolución, vaciado y fechas vencidas.
 
@@ -101,6 +107,6 @@ mediante CSV y el proveedor de IA incluido es una simulación `mock`. El selecto
 de producto contrasta la evidencia, la novedad del catálogo, la diversidad por
 categoría y las métricas de tienda que existan. No obtiene automáticamente
 volúmenes de búsqueda de Etsy: resultados/listados son señales de competencia,
-no prueba de demanda. Consulta `rules/PRODUCT_SELECTION.md` y
+no prueba de demanda. Consulta `rules/discovery/PRODUCT_SELECTION.md` y
 `config/product_selection.json`. Una hipótesis nunca se presenta como demanda
 observada y las recomendaciones requieren revisión humana.

@@ -6,8 +6,8 @@
   "source_product": "native-master-base",
   "source_native_model": "templates/excel-first-base/master_workbook.xlsx",
   "source_model_library": "templates/model-library/index.json",
-  "manual": "rules/FACTORY_SCREEN_PATTERN_MANUAL.md",
-  "native_contract_manual": "rules/FACTORY_NATIVE_EXCEL_DESIGN_CONTRACT.md",
+  "manual": "rules/excel/FACTORY_SCREEN_PATTERN_MANUAL.md",
+  "native_contract_manual": "rules/excel/FACTORY_NATIVE_EXCEL_DESIGN_CONTRACT.md",
   "source_of_truth": "master_workbook.xlsx",
   "invariants": {
     "minimum_outer_padding_fraction": 0.06,

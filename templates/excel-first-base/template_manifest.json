@@ -34,13 +34,13 @@
   "model_quality": {
     "behavior_guide_required": true,
     "contract_is_independent_from_xlsx": true,
-    "validator": "scripts/model_quality.py",
+    "validator": "scripts/core/model_quality.py",
     "functional_qa_cases_required_for_formula_models": true
   },
   "native_base": {
     "workbook": "master_workbook.xlsx",
     "contract": "native_base_contract.json",
-    "builder": "scripts/create_family_budget_from_sources.py",
+    "builder": "scripts/generation/create_family_budget_from_sources.py",
     "identity_rule": "La identidad derivada se expresa mediante la paleta declarada, los acentos nativos del workbook y datos de ejemplo coherentes con el proyecto.",
     "source_count": 29,
     "sheets": ["Inicio", "Resumen", "Presupuesto", "Gastos reales", "Movimientos", "Flujo de caja", "Metas y fondo", "Deudas", "Listas"],

@@ -3,10 +3,10 @@
   "system_id": "native-excel-base-v1",
   "template_library": "templates/excel-first-base/template_manifest.json",
   "master_workbook": "templates/excel-first-base/master_workbook.xlsx",
-  "template_library_implementation": "scripts/clone_excel_template.py",
+  "template_library_implementation": "scripts/excel/clone_excel_template.py",
   "model_library": "templates/model-library/index.json",
   "source_directory": "templates/sources",
-  "design_workflow": "rules/FACTORY_NATIVE_SOURCE_WORKFLOW.md",
+  "design_workflow": "rules/excel/FACTORY_NATIVE_SOURCE_WORKFLOW.md",
   "design_priority": [
     "utility",
     "replicability",

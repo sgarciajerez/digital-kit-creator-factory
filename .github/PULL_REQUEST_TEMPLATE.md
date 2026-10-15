@@ -8,6 +8,7 @@
 
 ## Changelog
 
-- [ ] He actualizado `changelog.md` bajo `Unreleased`, o no hay cambios relevantes para registrar.
+- [ ] He actualizado `changelog.md` bajo `Unreleased` con los cambios incorporados.
+- [ ] He clasificado el cambio con SemVer y actualizado `VERSION` para la siguiente integración.
 
-Flujo habitual: desarrollar en `develop` y abrir el pull request contra `master` cuando el cambio esté listo para integrar.
+Flujo habitual: desarrollar en `develop` y abrir el pull request contra `master` cuando el cambio esté listo para integrar. La integración publica la versión indicada en `VERSION`.

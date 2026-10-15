@@ -2,7 +2,9 @@ from pathlib import Path
 import sys
 import tempfile
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+import scripts  # noqa: F401 - initializes categorized legacy module paths
 
 
 def pytest_configure(config):
