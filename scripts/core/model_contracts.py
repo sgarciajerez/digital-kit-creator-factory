@@ -603,6 +603,27 @@ def _product_contracts() -> dict[int, dict[str, Any]]:
     puppy["cases"][0]["name"] = "puppy setup spending updates the control panel"
     puppy["cases"][0]["purpose"] = "Comprueba que un gasto de preparación del cachorro actualiza la partida, el gasto acumulado y el presupuesto restante sin duplicarse."
     contracts[16] = puppy
+    vehicle = deepcopy(puppy)
+    vehicle.update({
+        "contract_id": "vehicle-maintenance-cost-planner-v1",
+        "title": "Vehicle Maintenance Spreadsheet & Car Cost Tracker Kit",
+        "product_id": 17,
+        "purpose": "Organizar costes introducidos por el usuario, presupuestos de talleres y eventos de servicio sin prescribir intervalos mecánicos ni sustituir asesoramiento profesional.",
+        "relationships": [
+            "Purchases is the operational source for vehicle ownership costs.",
+            "Purchases.Area must match Budget.Area so each cost is attributed once.",
+            "Quotes compare garage or parts estimates before a choice is made.",
+            "Timeline records owner-entered dates and service events; it does not prescribe maintenance intervals.",
+            "Rows labelled TOTAL remain outside editable and filterable table ranges.",
+        ],
+    })
+    vehicle_areas = ["Fuel", "Insurance", "Routine service", "Repairs and parts", "Registration and fees", "Tyres", "Contingency"]
+    for enum in vehicle["enum_contract"]:
+        if enum.get("column") == "Area":
+            enum["values"] = vehicle_areas
+    vehicle["cases"][0]["name"] = "vehicle ownership cost updates the control panel"
+    vehicle["cases"][0]["purpose"] = "Comprueba que un gasto de mantenimiento actualiza su partida, el gasto acumulado y el presupuesto restante sin duplicarse."
+    contracts[17] = vehicle
     book = deepcopy(contracts[12])
     book.update({
         "contract_id": "community-garden-planner-v1",

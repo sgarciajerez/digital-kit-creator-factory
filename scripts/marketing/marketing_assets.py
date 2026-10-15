@@ -582,7 +582,7 @@ def campaign_marketing_images(
     layout_id: str, artwork_ref: str, calculator_preview: Path | None = None,
 ) -> list[Path]:
     """Compose product-specific campaign mockups around real workbook captures."""
-    layouts = {"moving_atlas", "interiors_editorial", "aquarium_fieldguide", "puppy_firstyear_editorial"}
+    layouts = {"moving_atlas", "interiors_editorial", "aquarium_fieldguide", "puppy_firstyear_editorial", "garage_service_manual"}
     if layout_id not in layouts:
         raise ValueError(f"Unknown marketing_layout {layout_id!r}; add a distinct campaign composition before use")
     artwork_path = package / artwork_ref
@@ -824,6 +824,68 @@ def campaign_marketing_images(
             draw.text((145, y + 26), f"ASK  /  0{index + 1}", font=font(17, True), fill=palette["secondary"])
             draw_wrapped(draw, (145, y + 72), label, width=36, font_obj=font(28, True), fill=palette["ink"])
         save(questions, "04-provider-question-cards-mockup.png")
+    elif layout_id == "garage_service_manual":
+        # A service-ticket/ledger composition, deliberately unlike the other
+        # products' route maps, room boards, specimen windows and pet editorial.
+        cover = Image.new("RGB", CANVAS, palette["ink"])
+        cover.paste(ImageOps.fit(artwork, (1180, 1500), method=Image.Resampling.LANCZOS, centering=(0.55, 0.5)), (820, 0))
+        draw = ImageDraw.Draw(cover)
+        draw.rectangle((0, 0, 900, 1500), fill=palette["background"])
+        draw.rectangle((0, 0, 28, 1500), fill=palette["secondary"])
+        draw.text((92, 85), "WORKSHOP LEDGER  /  FIELD EDITION", font=font(21, True), fill=palette["accent"])
+        draw_wrapped(draw, (86, 155), title, width=20, font_obj=font(57, True), fill=palette["ink"], spacing=5)
+        draw_wrapped(draw, (94, 400), "A clear record of service, quotes and the cost of keeping a vehicle.", width=36, font_obj=font(25), fill=palette["ink"], spacing=7)
+        draw.line((95, 570, 700, 570), fill=palette["secondary"], width=5)
+        for i, label in enumerate(("SERVICE HISTORY", "GARAGE QUOTES", "OWNERSHIP COSTS")):
+            y = 610 + i * 65
+            draw.text((100, y), f"0{i + 1}  /  {label}", font=font(18, True), fill=palette["accent"])
+        if calculator_preview and calculator_preview.is_file():
+            cover.paste(device_frame(fit_preview(calculator_preview, (740, 416)), "COST-PER-MILE TOOL", palette), (60, 930))
+            cover.paste(device_frame(previews[0], "VEHICLE EXCEL PLANNER", palette), (1030, 930))
+        else:
+            cover.paste(device_frame(previews[0], "VEHICLE EXCEL PLANNER", palette), (175, 900))
+        draw = ImageDraw.Draw(cover)
+        draw.rectangle((0, 1390, 2000, 1500), fill=palette["ink"])
+        draw.text((85, 1430), "EXCEL + OFFLINE CALCULATOR + FIELD GUIDE + SERVICE WORKSHEETS", font=font(18, True), fill=WHITE)
+        save(cover, "00-product-cover.png")
+
+        ticket = Image.new("RGB", CANVAS, palette["background"])
+        draw = ImageDraw.Draw(ticket)
+        draw.rectangle((0, 0, 2000, 260), fill=palette["ink"])
+        draw.text((100, 62), "01  /  THE SERVICE TICKET", font=font(23, True), fill=palette["highlight"])
+        draw_wrapped(draw, (95, 112), "Keep the work, mileage and paperwork connected.", width=40, font_obj=font(46, True), fill=WHITE)
+        for i, label in enumerate(("DATE + ODOMETER", "WORK AUTHORIZED", "INVOICE + NEXT SOURCE")):
+            y = 390 + i * 275
+            draw.rectangle((105, y, 1885, y + 205), fill=WHITE, outline=palette["secondary"], width=3)
+            draw.rectangle((105, y, 390, y + 205), fill=palette["accent"] if i % 2 == 0 else palette["secondary"])
+            draw_wrapped(draw, (135, y + 66), f"0{i + 1}\n{label}", width=16, font_obj=font(22, True), fill=WHITE)
+            draw.line((455, y + 74, 1780, y + 74), fill=palette["background"], width=3)
+            draw.line((455, y + 140, 1780, y + 140), fill=palette["background"], width=3)
+        save(ticket, "01-service-ticket-mockup.png")
+
+        calculator = Image.new("RGB", CANVAS, palette["ink"])
+        draw = ImageDraw.Draw(calculator)
+        draw.text((100, 85), "02  /  COST PER MILE, IN CONTEXT", font=font(22, True), fill=palette["highlight"])
+        draw_wrapped(draw, (94, 145), "Use your own costs and a matching time period.", width=38, font_obj=font(47, True), fill=WHITE)
+        if calculator_preview and calculator_preview.is_file():
+            calculator.paste(fit_preview(calculator_preview, (1160, 652)), (90, 450))
+        calculator.paste(previews[1] if len(previews) > 1 else previews[0], (1280, 450))
+        draw = ImageDraw.Draw(calculator)
+        draw.text((100, 1170), "A planning ratio, not a repair forecast or safety assessment.", font=font(22, True), fill=palette["background"])
+        save(calculator, "02-cost-per-mile-mockup.png")
+
+        included = Image.new("RGB", CANVAS, palette["background"])
+        included.paste(ImageOps.fit(artwork, (610, 1500), method=Image.Resampling.LANCZOS), (1390, 0))
+        draw = ImageDraw.Draw(included)
+        draw.text((90, 82), "03  /  WHAT'S IN THE KIT", font=font(22, True), fill=palette["accent"])
+        draw_wrapped(draw, (84, 140), "A glovebox-to-desk record system", width=30, font_obj=font(47, True), fill=palette["ink"])
+        for i, item in enumerate(deliverables[:6]):
+            y = 400 + i * 165
+            draw.rectangle((100, y, 1280, y + 125), fill=WHITE, outline=palette["secondary"], width=2)
+            draw.text((125, y + 17), f"{i + 1:02d}  /  INCLUDED", font=font(16, True), fill=palette["accent"])
+            draw_wrapped(draw, (355, y + 25), item["label"], width=38, font_obj=font(23, True), fill=palette["ink"])
+        save(included, "03-whats-included-mockup.png")
+
     else:
         cover = Image.new("RGB", CANVAS, "#F7F2E9")
         room = ImageOps.fit(artwork, (1120, 1500), method=Image.Resampling.LANCZOS, centering=(0.68, 0.5))
@@ -931,7 +993,7 @@ def campaign_marketing_images(
         resources = Image.new("RGB", CANVAS, palette["background"])
         resources.paste(ImageOps.fit(artwork, (700, 1500), method=Image.Resampling.LANCZOS), (1300, 0))
         draw = ImageDraw.Draw(resources)
-        reading_heading = "05  /  THE FIELD GUIDE SHELF" if layout_id == "aquarium_fieldguide" else "05  /  THE FIRST-YEAR READING SHELF" if layout_id == "puppy_firstyear_editorial" else "05  /  THE READING ROOM"
+        reading_heading = "05  /  THE FIELD GUIDE SHELF" if layout_id == "aquarium_fieldguide" else "05  /  THE FIRST-YEAR READING SHELF" if layout_id == "puppy_firstyear_editorial" else "05  /  THE WORKSHOP FIELD GUIDE" if layout_id == "garage_service_manual" else "05  /  THE READING ROOM"
         draw.text((95, 100), reading_heading, font=font(23, True), fill=palette["accent"])
         draw_wrapped(draw, (90, 160), "Guides and ideas for the work ahead", width=33, font_obj=font(46, True), fill=palette["ink"])
         for i, item in enumerate(pdf_items[:4]):

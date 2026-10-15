@@ -113,6 +113,7 @@ def test_factory_has_a_relevant_html_companion_for_each_ready_kit_profile():
         "home_renovation": "renovation-contingency-calculator",
         "freshwater_aquarium_setup": "freshwater-tank-volume-calculator",
         "puppy_first_year": "puppy-first-year-cost-calculator",
+        "vehicle_ownership": "vehicle-cost-per-mile-calculator",
     }
     for product in catalog["products"].values():
         if product.get("product_readiness", "ready") != "ready":
@@ -131,6 +132,7 @@ def test_each_factory_calculator_renders_its_declared_formula(tmp_path: Path):
         "garden_spacing": "Plants per row",
         "aquarium_volume": "Gross litres",
         "puppy_first_year": "Estimated first-year total",
+        "vehicle_cost_per_mile": "Cost per mile",
     }
     for tool in tools:
         output = tmp_path / tool["filename"]

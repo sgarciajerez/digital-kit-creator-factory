@@ -8,30 +8,32 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SUPPORTED_OPERATIONS = {"moving_budget", "renovation_contingency", "garden_spacing", "aquarium_volume", "puppy_first_year"}
+SUPPORTED_OPERATIONS = {"moving_budget", "renovation_contingency", "garden_spacing", "aquarium_volume", "puppy_first_year", "vehicle_cost_per_mile"}
 
 COPY = {
     "en": {
         "eyebrow": "A QUICK, PRACTICAL TOOL", "open_note": "Works offline in your browser. Your entries stay on this device and are not saved or sent anywhere.",
         "calculate": "Update estimate", "result": "Your estimate", "reset": "Reset values", "currency": "Amounts in your chosen currency",
         "invalid": "Enter valid, non-negative numbers to see your estimate.",
-        "titles": {"moving_budget": "Moving Budget Buffer Calculator", "renovation_contingency": "Renovation Contingency Calculator", "garden_spacing": "Garden Bed Planting Calculator", "aquarium_volume": "Freshwater Tank Volume Calculator", "puppy_first_year": "Puppy First-Year Cost Calculator"},
+        "titles": {"moving_budget": "Moving Budget Buffer Calculator", "renovation_contingency": "Renovation Contingency Calculator", "garden_spacing": "Garden Bed Planting Calculator", "aquarium_volume": "Freshwater Tank Volume Calculator", "puppy_first_year": "Puppy First-Year Cost Calculator", "vehicle_cost_per_mile": "Vehicle Cost-per-Mile Calculator"},
         "moving": {"intro": "Give your moving budget a little breathing room before the boxes arrive.", "labels": ["Available moving budget", "Estimated moving costs", "Contingency reserve (%)"], "result_labels": ["Suggested reserve", "Budget including reserve", "Left after this estimate"], "formula": "Reserve = estimated costs × reserve rate. Remaining budget = available budget − estimated costs − reserve."},
         "renovation": {"intro": "Check whether your contingency is proportionate to the current project estimate.", "labels": ["Current project estimate", "Contingency rate (%)", "Reserve already set aside"], "result_labels": ["Suggested contingency", "Additional amount to set aside", "Project estimate with contingency"], "formula": "Suggested contingency = estimate × rate. Additional amount = max(0, suggested contingency − reserve already set aside)."},
         "garden": {"intro": "Turn bed dimensions and plant spacing into a quick starting-point count.", "labels": ["Bed length (m)", "Bed width (m)", "Spacing between plants (cm)"], "result_labels": ["Approximate plants per row", "Approximate rows", "Approximate plants in the bed"], "formula": "Plants per row = floor(length ÷ spacing) + 1. Rows = floor(width ÷ spacing) + 1. Total = plants per row × rows."},
         "aquarium": {"intro": "Estimate a rectangular freshwater tank's water volume from its inside measurements.", "labels": ["Inside length (cm)", "Inside width (cm)", "Water depth (cm)", "Estimated fill factor (%)"], "result_labels": ["Estimated water volume (litres)", "Approximate US gallons", "Gross volume before fill factor (litres)"], "formula": "Gross litres = inside length × inside width × water depth ÷ 1,000. Estimate = gross litres × fill factor. This does not account for substrate, hardscape or equipment displacement."},
         "puppy": {"intro": "Build a first-year estimate from your own local quotes and monthly figures; no prices or care schedule are assumed.", "labels": ["Adoption or acquisition fee", "Initial setup costs", "Food per month", "Routine care per month", "Insurance per month"], "result_labels": ["Estimated first-year total", "Average monthly equivalent", "Up-front costs", "Recurring costs across 12 months"], "formula": "First-year estimate = adoption fee + setup costs + 12 × (monthly food + routine care + insurance). Use local quotes and your veterinarian's advice; this is a budgeting aid, not a care or insurance recommendation."},
+        "vehicle": {"intro": "Enter your own estimated annual costs and annual distance to see a simple ownership-cost snapshot. No vehicle, fuel or maintenance assumptions are built in.", "labels": ["Fuel cost per year", "Insurance per year", "Maintenance and repairs per year", "Fees and other costs per year", "Miles driven per year"], "result_labels": ["Estimated annual cost", "Monthly equivalent", "Cost per mile", "Annual distance entered (miles)"], "formula": "Annual cost = fuel + insurance + maintenance and repairs + fees and other costs. Cost per mile = annual cost ÷ annual miles. Excludes financing and depreciation unless you include them in a cost field; this is an organizational estimate, not mechanical or financial advice."},
     },
     "es": {
         "eyebrow": "HERRAMIENTA PRÁCTICA", "open_note": "Funciona sin conexión en tu navegador. Los datos se quedan en este dispositivo: no se guardan ni se envían.",
         "calculate": "Actualizar cálculo", "result": "Tu estimación", "reset": "Restablecer valores", "currency": "Importes en la moneda que elijas",
         "invalid": "Introduce números válidos y no negativos para ver el cálculo.",
-        "titles": {"moving_budget": "Calculadora del presupuesto de mudanza", "renovation_contingency": "Calculadora de imprevistos de reforma", "garden_spacing": "Calculadora de plantación en bancal", "aquarium_volume": "Calculadora del volumen de un acuario de agua dulce", "puppy_first_year": "Calculadora del primer año con un cachorro"},
+        "titles": {"moving_budget": "Calculadora del presupuesto de mudanza", "renovation_contingency": "Calculadora de imprevistos de reforma", "garden_spacing": "Calculadora de plantación en bancal", "aquarium_volume": "Calculadora del volumen de un acuario de agua dulce", "puppy_first_year": "Calculadora del primer año con un cachorro", "vehicle_cost_per_mile": "Calculadora del coste por milla del vehículo"},
         "moving": {"intro": "Deja un pequeño margen en el presupuesto de la mudanza antes de que lleguen las cajas.", "labels": ["Presupuesto disponible para la mudanza", "Costes estimados de la mudanza", "Reserva para imprevistos (%)"], "result_labels": ["Reserva sugerida", "Presupuesto con reserva", "Restante tras esta estimación"], "formula": "Reserva = costes estimados × porcentaje de reserva. Presupuesto restante = presupuesto disponible − costes estimados − reserva."},
         "renovation": {"intro": "Comprueba si la reserva para imprevistos guarda proporción con la estimación actual de la obra.", "labels": ["Estimación actual del proyecto", "Porcentaje para imprevistos (%)", "Reserva ya apartada"], "result_labels": ["Reserva sugerida", "Importe adicional que conviene apartar", "Estimación del proyecto con reserva"], "formula": "Reserva sugerida = estimación × porcentaje. Importe adicional = max(0, reserva sugerida − reserva ya apartada)."},
         "garden": {"intro": "Convierte las medidas del bancal y la separación entre plantas en un recuento orientativo.", "labels": ["Largo del bancal (m)", "Ancho del bancal (m)", "Separación entre plantas (cm)"], "result_labels": ["Plantas aproximadas por fila", "Filas aproximadas", "Plantas aproximadas en el bancal"], "formula": "Plantas por fila = floor(largo ÷ separación) + 1. Filas = floor(ancho ÷ separación) + 1. Total = plantas por fila × filas."},
         "aquarium": {"intro": "Estima el volumen de agua de un acuario rectangular con sus medidas interiores.", "labels": ["Largo interior (cm)", "Ancho interior (cm)", "Profundidad del agua (cm)", "Factor de llenado estimado (%)"], "result_labels": ["Volumen estimado (litros)", "Galones estadounidenses aproximados", "Volumen bruto antes del factor (litros)"], "formula": "Litros brutos = largo interior × ancho interior × profundidad del agua ÷ 1.000. Estimación = litros brutos × factor de llenado. No descuenta el desplazamiento del sustrato, rocas ni equipo."},
         "puppy": {"intro": "Prepara una estimación del primer año con tus precios locales y gastos mensuales, sin asumir precios ni pautas de cuidado.", "labels": ["Adopción o adquisición", "Gastos iniciales de preparación", "Alimentación mensual", "Cuidados habituales al mes", "Seguro mensual"], "result_labels": ["Estimación total del primer año", "Promedio mensual equivalente", "Gastos iniciales", "Gastos recurrentes de 12 meses"], "formula": "Estimación anual = adopción + preparación + 12 × (alimentación mensual + cuidados habituales + seguro). Usa presupuestos locales y consulta al veterinario; es una ayuda presupuestaria, no una recomendación veterinaria ni de seguros."},
+        "vehicle": {"intro": "Introduce tus propios costes anuales estimados y la distancia anual para obtener una visión sencilla del coste de propiedad. No presupone vehículo, combustible ni mantenimiento.", "labels": ["Combustible al año", "Seguro al año", "Mantenimiento y reparaciones al año", "Tasas y otros costes al año", "Millas recorridas al año"], "result_labels": ["Coste anual estimado", "Equivalente mensual", "Coste por milla", "Distancia anual introducida (millas)"], "formula": "Coste anual = combustible + seguro + mantenimiento y reparaciones + tasas y otros costes. Coste por milla = coste anual ÷ millas anuales. Excluye financiación y depreciación salvo que las incluyas en un campo; es una estimación organizativa, no asesoramiento mecánico ni financiero."},
     },
 }
 
@@ -41,6 +43,7 @@ FIELD_IDS = {
     "garden_spacing": ["length", "width", "spacing"],
     "aquarium_volume": ["length", "width", "depth", "fill"],
     "puppy_first_year": ["adoption", "setup", "food", "care", "insurance"],
+    "vehicle_cost_per_mile": ["fuel", "insurance", "maintenance", "fees", "miles"],
 }
 
 
@@ -76,7 +79,7 @@ def generate_html_tool(spec: dict, output_path: Path, tool: dict) -> dict:
 
     language = "es" if str(spec.get("design_language") or spec.get("language") or "en").casefold().startswith("es") else "en"
     copy = COPY[language]
-    tool_copy = copy["moving" if operation == "moving_budget" else "renovation" if operation == "renovation_contingency" else "garden" if operation == "garden_spacing" else "aquarium" if operation == "aquarium_volume" else "puppy"]
+    tool_copy = copy["moving" if operation == "moving_budget" else "renovation" if operation == "renovation_contingency" else "garden" if operation == "garden_spacing" else "aquarium" if operation == "aquarium_volume" else "vehicle" if operation == "vehicle_cost_per_mile" else "puppy"]
     tool_title = copy["titles"][operation]
     if language == "en":
         tool_title = str(tool.get("title", tool_title))
@@ -104,6 +107,10 @@ def generate_html_tool(spec: dict, output_path: Path, tool: dict) -> dict:
             maximum = ' max="100"' if field_id == "fill" else ""
         if operation == "puppy_first_year":
             initial = {"adoption": "450", "setup": "500", "food": "70", "care": "55", "insurance": "35"}[field_id]
+        if operation == "vehicle_cost_per_mile":
+            initial = {"fuel": "1800", "insurance": "1200", "maintenance": "900", "fees": "350", "miles": "12000"}[field_id]
+            if field_id == "miles":
+                minimum = "0.1"
         fields.append(
             f'<label for="{field_id}">{html.escape(label)}'
             f'<input id="{field_id}" name="{field_id}" type="number" inputmode="decimal" min="{minimum}"{maximum} step="any" value="{initial}" required></label>'
@@ -150,6 +157,7 @@ if(cfg.operation==='moving_budget'){{const [budget,costs,rate]=values;const buff
 else if(cfg.operation==='renovation_contingency'){{const [estimate,rate,reserve]=values;const target=estimate*rate/100;put(0,target);put(1,Math.max(0,target-reserve));put(2,estimate+target);}}
 else if(cfg.operation==='aquarium_volume'){{const [length,width,depth,fill]=values;if(length<=0||width<=0||depth<=0||fill<=0||fill>100){{errorBox.textContent=cfg.invalid;return;}}const gross=length*width*depth/1000;const litres=gross*fill/100;put(0,litres);put(1,litres*0.219969);put(2,gross);}}
 else if(cfg.operation==='puppy_first_year'){{const [adoption,setup,food,care,insurance]=values;const upfront=adoption+setup;const recurring=12*(food+care+insurance);const total=upfront+recurring;put(0,total);put(1,total/12);put(2,upfront);put(3,recurring);}}
+else if(cfg.operation==='vehicle_cost_per_mile'){{const [fuel,insurance,maintenance,fees,miles]=values;if(miles<=0){{errorBox.textContent=cfg.invalid;return;}}const total=fuel+insurance+maintenance+fees;put(0,total);put(1,total/12);put(2,total/miles);put(3,miles);}}
 else{{const [length,width,spacing]=values;if(spacing<=0){{errorBox.textContent=cfg.invalid;return;}}const perRow=Math.floor(length*100/spacing)+1;const rows=Math.floor(width*100/spacing)+1;put(0,perRow,true);put(1,rows,true);put(2,perRow*rows,true);}}
 }}
 form.addEventListener('input',()=>calculate());form.addEventListener('submit',calculate);document.getElementById('reset').addEventListener('click',()=>setTimeout(()=>calculate(),0));calculate();

@@ -5,7 +5,8 @@
     2,
     12,
     15,
-    16
+    16,
+    17
   ],
   "finalized_product_ids": [],
   "auto_publish_policy": {
@@ -14,5 +15,5 @@
     "one_time_product_ids": [],
     "requires_passed_factory_gates": true
   },
-  "rule": "The autonomous factory starts from product-1 and the master_workbook only; every later product must be explicitly added to the active catalogue. Product-2 is the moving-home planner pilot. Product-12 is the home renovation planner with a distinct terracotta-and-sage editorial identity. Product-15 is a freshwater aquarium setup planner with a distinct aquatic field-guide visual identity. Product-16 is a puppy first-year preparation and budget kit with a distinct illustrated, warm editorial identity; its estimate tool is a budgeting aid, not veterinary, behavioural, insurance or financial advice."
+  "rule": "The autonomous factory starts from product-1 and the master_workbook only; every later product must be explicitly added to the active catalogue. Product-2 is the moving-home planner pilot. Product-12 is the home renovation planner with a distinct terracotta-and-sage editorial identity. Product-15 is a freshwater aquarium setup planner with a distinct aquatic field-guide visual identity. Product-16 is a puppy first-year preparation and budget kit with a distinct illustrated, warm editorial identity; its estimate tool is a budgeting aid, not veterinary, behavioural, insurance or financial advice. Product-17 is a vehicle maintenance and ownership-cost kit with a distinct workshop service-manual identity; its estimates are organizational aids, not mechanical, safety, tax, financial or repair advice."
 }

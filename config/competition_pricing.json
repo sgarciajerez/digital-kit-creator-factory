@@ -100,6 +100,17 @@
         "https://www.etsy.com/listing/4574755213/pet-care-planner-excel-vet-records"
       ],
       "note": "Historical adjacent dog/pet spreadsheet observations; live Etsy search results are used for the actual recommendation. These are not exact first-year puppy comparisons. Differentiate around first-year preparation budgeting, provider quote questions and an offline estimate; avoid medical tracking claims."
+    },
+    "vehicle-maintenance-cost-planner": {
+      "search_queries": ["car maintenance tracker excel", "vehicle maintenance spreadsheet", "car service log spreadsheet"],
+      "observed_prices": [2.50, 6.99, 13.33, 17.98],
+      "sources": [
+        "https://www.etsy.com/listing/4473019303/car-maintenance-log-vehicle-maintenance",
+        "https://www.etsy.com/listing/4540088773/vehicle-maintenance-spreadsheet-car",
+        "https://www.etsy.com/market/car_maintenance_tracker_excel",
+        "https://www.etsy.com/market/car_maintenance_logbook"
+      ],
+      "note": "Initial public Etsy observations span low-cost printable logs and broader digital planners; they are not a reliable sales-volume estimate. The live pricing step must refresh active comparables and recommend the current median before publication. Differentiate around connected Excel records, an offline cost-per-mile calculator, practical ownership worksheets and a sourced field guide."
     }
   }
 }

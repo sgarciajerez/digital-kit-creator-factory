@@ -1,0 +1,11 @@
+{
+  "title": "Vehicle Service & Ownership Worksheets",
+  "subtitle": "Print-friendly pages for organizing records and preparing practical conversations. Follow your owner's manual and qualified professional advice for vehicle-specific decisions.",
+  "pages": [
+    {"title": "Vehicle handover card", "intro": "Keep a compact reference for one vehicle. Avoid adding sensitive account or payment details.", "fields": ["Make, model and year", "Vehicle identification reference (store securely)", "Current odometer reading and date", "Owner's manual location", "Preferred service contact", "Roadside-assistance contact", "Notes about where records are filed"]},
+    {"title": "Service and repair history", "intro": "One line per visit. Separate work completed from recommendations or observations.", "fields": ["Date", "Odometer reading", "Shop or provider", "Driver's original concern", "Work authorized", "Work completed", "Invoice or file reference", "Recommendation to review", "Next source to check"]},
+    {"title": "Garage quote comparison", "intro": "Ask for written, like-for-like estimates; this page does not determine whether a repair is necessary.", "fields": ["Vehicle and concern", "Shop name and quote date", "Proposed work and parts", "Labour and diagnostic fee", "Taxes and other charges", "Exclusions and assumptions", "Warranty or parts details", "Authorization limit", "Questions before deciding"]},
+    {"title": "Ownership-cost review", "intro": "Choose one period and use consistent categories. Keep one-off expenses visible rather than hiding them in an average.", "fields": ["Review period", "Starting odometer", "Ending odometer", "Fuel total", "Insurance total", "Maintenance and repair total", "Fees and other costs", "Costs excluded from this review", "What changed from the estimate"]},
+    {"title": "Documents and next questions", "intro": "Use this index as a pointer to safely stored files, not as a place for passwords or full financial account details.", "fields": ["Document or invoice", "Date and provider", "Secure file location", "Open question", "Person to contact", "Source to verify", "Follow-up date chosen by owner", "Resolved / pending", "Notes"]}
+  ]
+}

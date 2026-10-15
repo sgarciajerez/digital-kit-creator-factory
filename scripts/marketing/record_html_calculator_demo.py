@@ -24,6 +24,7 @@ DEMO_VALUES = {
     "garden_spacing": [2.4, 1.2, 30],
     "aquarium_volume": [90, 45, 36, 80],
     "puppy_first_year": [425, 620, 74, 58, 31],
+    "vehicle_cost_per_mile": [1800, 1200, 900, 350, 12000],
 }
 LABELS = {
     "en": ("1 / OPEN THE OFFLINE TOOL", "2 / ENTER YOUR VALUES", "3 / REVIEW THE LIVE RESULT"),
@@ -66,13 +67,14 @@ def _font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.I
     return ImageFont.load_default()
 
 
-def _labelled_frame(path: Path, label: str) -> np.ndarray:
+def _labelled_frame(path: Path, label: str, operation: str = "") -> np.ndarray:
     image = Image.open(path).convert("RGB")
     if image.size != SIZE:
         image = image.resize(SIZE, Image.Resampling.LANCZOS)
     draw = ImageDraw.Draw(image)
-    draw.rectangle((0, SIZE[1] - 82, SIZE[0], SIZE[1]), fill="#203A3B")
-    draw.rectangle((0, SIZE[1] - 82, 14, SIZE[1]), fill="#CF765B")
+    ink, accent = ("#182B38", "#B66A42") if operation == "vehicle_cost_per_mile" else ("#203A3B", "#CF765B")
+    draw.rectangle((0, SIZE[1] - 82, SIZE[0], SIZE[1]), fill=ink)
+    draw.rectangle((0, SIZE[1] - 82, 14, SIZE[1]), fill=accent)
     draw.text((45, SIZE[1] - 59), label, font=_font(25, True), fill="white")
     return np.asarray(image)
 
@@ -136,7 +138,7 @@ def record_html_calculator_demo(
             raise RuntimeError("HTML calculator screenshot has an unexpected viewport size")
         with imageio.get_writer(video_path, fps=FPS, codec="libx264", quality=7, pixelformat="yuv420p", macro_block_size=1) as writer:
             for shot, label in zip(shots, labels):
-                frame = _labelled_frame(shot, label)
+                frame = _labelled_frame(shot, label, operation)
                 for _ in range(2 * FPS):
                     writer.append_data(frame)
     if not video_path.is_file() or video_path.stat().st_size < 100_000:

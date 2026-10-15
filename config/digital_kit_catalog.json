@@ -44,6 +44,12 @@
       "needs": ["new_dog_setup_budget", "vet_cost_comparison", "first_year_care_timeline", "puppy_first_year_estimate"],
       "ebook_required": true,
       "product_readiness": "ready"
+    },
+    "vehicle-maintenance-cost-planner": {
+      "profile": "vehicle_ownership",
+      "needs": ["vehicle_ownership_budget", "garage_quote_comparison", "service_history_record", "vehicle_cost_per_mile", "annual_cost_review"],
+      "ebook_required": true,
+      "product_readiness": "ready"
     }
   },
   "html_tools": [
@@ -86,6 +92,14 @@
       "operation": "puppy_first_year",
       "triggers": ["new_dog_setup_budget", "puppy_first_year_estimate"],
       "priority": 12
+    },
+    {
+      "id": "vehicle-cost-per-mile-calculator",
+      "title": "Vehicle Cost-per-Mile Calculator",
+      "filename": "vehicle-cost-per-mile-calculator.html",
+      "operation": "vehicle_cost_per_mile",
+      "triggers": ["vehicle_ownership_budget", "vehicle_cost_per_mile"],
+      "priority": 13
     }
   ],
   "modules": [
@@ -130,6 +144,13 @@
       "filename": "puppy-first-year-preparation-worksheets.pdf",
       "content_file": "config/digital_kit_content/puppy-first-year.json",
       "triggers": ["new_dog_setup_budget", "vet_cost_comparison", "first_year_care_timeline", "puppy_first_year_estimate"]
+    },
+    {
+      "id": "vehicle-service-record-worksheets",
+      "title": "Vehicle Service & Ownership Worksheets",
+      "filename": "vehicle-service-ownership-worksheets.pdf",
+      "content_file": "config/digital_kit_content/vehicle-service-records.json",
+      "triggers": ["vehicle_ownership_budget", "garage_quote_comparison", "service_history_record", "vehicle_cost_per_mile", "annual_cost_review"]
     }
   ]
 }
