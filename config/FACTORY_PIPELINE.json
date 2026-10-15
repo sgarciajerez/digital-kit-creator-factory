@@ -1,0 +1,6 @@
+{
+  "schema_version": "1.0.0",
+  "active_product_ids": [1],
+  "finalized_product_ids": [],
+  "rule": "The autonomous factory starts from product-1 and the master_workbook only; every later product must be explicitly added to the active catalogue."
+}

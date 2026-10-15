@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">Presupuesto familiar</title>
+  <desc id="desc">Icono de una familia junto a una hoja de presupuesto</desc>
+  <rect width="96" height="96" rx="20" fill="#164E63"/>
+  <path d="M22 61h52v17H22z" fill="#DDF3EF"/>
+  <path d="M27 57h42l5 4H22z" fill="#0F766E"/>
+  <path d="M31 64h4v9h-4zm9-5h4v14h-4zm9 3h4v11h-4zm9-7h4v18h-4z" fill="#164E63"/>
+  <circle cx="34" cy="29" r="8" fill="#DDF3EF"/>
+  <circle cx="57" cy="27" r="7" fill="#DDF3EF"/>
+  <path d="M21 54c1-10 7-15 13-15s12 5 13 15zm24-3c1-8 6-12 12-12s10 4 12 12z" fill="#DDF3EF"/>
+  <circle cx="69" cy="67" r="4" fill="#477D8E"/>
+</svg>

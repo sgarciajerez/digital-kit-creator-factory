@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "pattern_id": "dashboard-card-v1",
+  "status": "calibration_in_progress",
+  "pattern_screen": "Dashboard",
+  "source_product": "native-master-base",
+  "source_native_model": "templates/excel-first-base/master_workbook.xlsx",
+  "source_model_library": "templates/model-library/index.json",
+  "manual": "rules/FACTORY_SCREEN_PATTERN_MANUAL.md",
+  "native_contract_manual": "rules/FACTORY_NATIVE_EXCEL_DESIGN_CONTRACT.md",
+  "source_of_truth": "master_workbook.xlsx",
+  "invariants": {
+    "minimum_outer_padding_fraction": 0.06,
+    "header_safe_zone_fraction": 0.25,
+    "identity_zone": "top-right",
+    "table_text_alignment": "left",
+    "numeric_body_alignment": "right_when_header_is_numeric",
+    "minimum_text_indent": 1,
+    "minimum_column_to_table_median": 0.55,
+    "rounded_card_perimeter_owner": "shape",
+    "navigation_component": "separated_pill_buttons",
+    "minimum_navigation_height_points": 30,
+    "minimum_navigation_gutter_points": 8,
+    "svg_aspect_ratio_immutable": true
+  },
+  "allowed_overrides": [
+    "row_count",
+    "card_end_row",
+    "signature_chart",
+    "copy_and_formulas",
+    "declared_component_omission"
+  ],
+  "inheritance_rule": "Every screen inherits all invariants from master_workbook.xlsx; overrides must be explicit in its native Excel geometry contract."
+}

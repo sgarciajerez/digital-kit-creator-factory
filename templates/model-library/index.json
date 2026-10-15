@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "library_id": "native-excel-model-library-v1",
+  "purpose": "Modelos nativos recuperados de productos y fuentes anteriores para futuras plantillas.",
+  "source_of_truth": "native_xlsx_and_contract",
+  "models": [
+    {
+      "id": "native-master-base-v1",
+      "kind": "shared_base",
+      "workbook": "templates/excel-first-base/master_workbook.xlsx",
+      "contract": "templates/excel-first-base/native_base_contract.json",
+      "source_lineage": ["templates/sources/*"],
+      "builder": "scripts/create_family_budget_from_sources.py"
+    },
+    {
+      "id": "family-budget-sources-base-v1",
+      "kind": "recovered_product_model",
+      "workbook": "templates/model-library/family-budget-sources-base/app/presupuesto-familiar-sources-base.xlsx",
+      "contract": "templates/model-library/family-budget-sources-base/model_contract.json",
+      "guide": "templates/model-library/family-budget-sources-base/model_behavior.md",
+      "source_lineage": ["templates/sources/*"],
+      "builder": "scripts/create_family_budget_from_sources.py",
+      "patterns": ["monthly_budget", "planned_vs_actual", "cash_flow", "transactions", "emergency_fund", "debts", "validation_lists"]
+    },
+    {
+      "id": "wedding-planner-base-v1",
+      "kind": "recovered_product_model",
+      "workbook": "templates/model-library/wedding-planner-base/app/planificador-de-boda-base.xlsx",
+      "contract": "templates/model-library/wedding-planner-base/model_contract.json",
+      "guide": "templates/model-library/wedding-planner-base/model_behavior.md",
+      "source_lineage": [
+        "templates/sources/planilla-de-excel-para-presupuesto-de-casamiento.xlsx",
+        "templates/sources/planilla-de-excel-de-presupuesto-de-fiesta.xlsx",
+        "templates/sources/formato-de-cotizacion-en-excel.xlsx",
+        "templates/sources/cronograma-de-actividades-en-excel.xlsx",
+        "templates/sources/planilla-de-excel-de-planeamiento-de-compras.xlsx"
+      ],
+      "builder": "scripts/create_wedding_planner_native.py",
+      "patterns": ["event_budget", "supplier_quotes", "payments", "guest_register", "checklist", "timeline"]
+    }
+  ]
+}

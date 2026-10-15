@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0.0",
+  "library_id": "native-excel-base-library-v1",
+  "implementation": "scripts/clone_excel_template.py",
+  "source_directory": "templates/sources",
+  "model_library": "templates/model-library/index.json",
+  "principles": [
+    "native_workbook_first",
+    "formula_safe",
+    "bounded_grid",
+    "repeatable_styles",
+    "shared_geometry",
+    "navigation_shapes_only",
+    "svg_identity_on_every_sheet",
+    "semantic_table_schema",
+    "semantic_number_formats",
+    "design_specific_identity"
+  ],
+  "primitives": [
+    "header",
+    "summary_row",
+    "table",
+    "input_block",
+    "progress_bar",
+    "note",
+    "navigation",
+    "identity_icon",
+    "chart"
+  ],
+  "layouts": {
+    "guide": ["header", "input_block", "note", "navigation"],
+    "dashboard": ["header", "summary_row", "table", "navigation"],
+    "table": ["header", "table", "navigation"],
+    "analysis": ["header", "summary_row", "table", "navigation"],
+    "checklist": ["header", "progress_bar", "table", "navigation"],
+    "settings": ["header", "input_block", "note", "navigation"]
+  },
+  "editable_roles": ["input", "formula", "status", "note"],
+  "variation_points": {
+    "theme": "palette tokens in the product design spec",
+    "content": "content_by_tab supplied to ExcelTemplateFactory",
+    "formulas": "formula strings supplied as cell values",
+    "row_counts": "rows passed to the selected primitive",
+    "screen_column_widths": "inherited from the native master; only deliberate product variants may change them",
+    "conditional_formatting": "explicit product override after the base layout",
+    "validation_lists": "explicit list values attached to input columns",
+    "table_schema": "explicit semantic headers, stable ListObject ranges, totals outside data ranges",
+    "number_formats": "assign by field meaning after cloning; never inherit percentage formats blindly",
+    "identity_asset": "one product-specific SVG or palette-adapted variant embedded on every worksheet",
+    "chart_slots": {
+      "default": [],
+      "requires_explicit_contract": true,
+      "allowed_types": ["bar", "column", "line", "pie", "doughnut"],
+      "maximum_per_screen": 1,
+      "maximum_per_workbook": 2,
+      "anchor_mode": "native_excel_cell"
+    }
+  },
+  "grid": {
+    "first_content_column": 2,
+    "last_content_column": 13,
+    "header_rows": [1, 2, 3, 4],
+    "content_start_row": 6,
+    "navigation_row": 1,
+    "header_title_rows": [2, 3, 4],
+    "table_header_row": 7,
+    "freeze_panes": false,
+    "navigation_shape": "rounded_rectangle",
+    "icon_required_on_every_sheet": true,
+    "body_row_height": 22,
+    "header_row_height": 28
+  }
+}

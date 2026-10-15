@@ -1,0 +1,151 @@
+{
+  "schema_version": "3.0.0",
+  "system_id": "native-excel-base-v1",
+  "template_library": "templates/excel-first-base/template_manifest.json",
+  "master_workbook": "templates/excel-first-base/master_workbook.xlsx",
+  "template_library_implementation": "scripts/clone_excel_template.py",
+  "model_library": "templates/model-library/index.json",
+  "source_directory": "templates/sources",
+  "design_workflow": "rules/FACTORY_NATIVE_SOURCE_WORKFLOW.md",
+  "design_priority": [
+    "utility",
+    "replicability",
+    "readability",
+    "visual_attractiveness"
+  ],
+  "complexity_budget": {
+    "target_score": 2,
+    "maximum_score": 4,
+    "scale": "1=very simple, 10=highly complex",
+    "maximum_components_per_screen": 6,
+    "maximum_visual_accents": 2,
+    "maximum_chart_objects": 2,
+    "maximum_chart_objects_per_screen": 1
+  },
+  "logical_excel_canvas": {
+    "columns": 12,
+    "rows": 36,
+    "opening_zoom": 95,
+    "source_workbook": "templates/excel-first-base/master_workbook.xlsx",
+    "freeze_panes": false,
+    "row_roles": {
+      "1": "rounded_navigation_buttons",
+      "2": "workbook_label",
+      "3": "screen_title",
+      "4": "screen_subtitle",
+      "7": "table_header_when_applicable"
+    }
+  },
+  "tokens": {
+    "outer_padding_fraction": 0.055,
+    "header_height_fraction": 0.18,
+    "content_start_fraction": 0.24,
+    "navigation_height_fraction": 0.035,
+    "navigation_gap_px": 6,
+    "card_radius_px": 12,
+    "card_padding_px": 18,
+    "table_cell_padding_px": 10,
+    "minimum_table_column_ratio": 0.55,
+    "minimum_excel_indent": 1,
+    "body_row_height_points": 22,
+    "header_row_height_points": 28,
+    "navigation_button_width_points": 68,
+    "navigation_button_height_points": 21,
+    "navigation_button_shape": "rounded_rectangle",
+    "icon_asset": "assets/family-budget-icon.svg",
+    "icon_required_on_every_sheet": true,
+    "derived_design_icon_rule": "Cada diseño declara un SVG propio o una variante recoloreada en su paleta; el icono familiar solo es el icono de la base."
+  },
+  "allowed_components": [
+    "header",
+    "summary_row",
+    "table",
+    "input_block",
+    "progress_bar",
+    "note",
+    "navigation",
+    "chart"
+  ],
+  "templates": {
+    "guide": {
+      "required_components": ["header", "input_block", "note", "navigation"],
+      "optional_components": [],
+      "description": "Short instruction table and first-use notes. No decorative cards."
+    },
+    "dashboard": {
+      "required_components": ["header", "summary_row", "table", "navigation"],
+      "optional_components": ["progress_bar", "note", "chart"],
+      "description": "Compact summary row followed by the most useful operational table."
+    },
+    "table": {
+      "required_components": ["header", "table", "navigation"],
+      "optional_components": ["summary_row", "note", "chart"],
+      "description": "Primary Excel table with clear inputs, formulas and status fields."
+    },
+    "analysis": {
+      "required_components": ["header", "summary_row", "table", "navigation"],
+      "optional_components": ["progress_bar", "note", "chart"],
+      "description": "Scenario or progress table with one optional native Excel chart."
+    },
+    "checklist": {
+      "required_components": ["header", "table", "progress_bar", "navigation"],
+      "optional_components": ["note", "summary_row"],
+      "description": "Task table with one simple completion indicator."
+    },
+    "settings": {
+      "required_components": ["header", "input_block", "note", "navigation"],
+      "optional_components": ["summary_row"],
+      "description": "Compact input form using editable cells and short explanations."
+    }
+  },
+  "allowed_screen_overrides": [
+    "row_count",
+    "card_end_row",
+    "copy_and_formulas",
+    "declared_component_omission"
+  ],
+  "forbidden_by_default": [
+    "decorative_illustrations",
+    "multi-column_dashboard_panels",
+    "gradient_fills",
+    "heavy_shadows",
+    "browser_only_positioning",
+    "unapproved_fixed_pixel_layouts",
+    "content_driven_column_widths",
+    "more_than_two_accent_colors"
+  ],
+  "navigation": {
+    "component": "rounded_in_sheet_buttons_plus_native_excel_sheet_tabs",
+    "complete_tab_set_required": true,
+    "button_width_mode": "shared_base_buttons",
+    "gap_px": 4,
+    "left_edge_token": "outer_padding",
+    "right_edge_token": "outer_padding",
+    "minimum_height_px": 34,
+    "native_shape_required": true,
+    "icon_required": true,
+    "freeze_panes_allowed": false
+  },
+  "model_integrity": {
+    "table_headers_must_be_explicit": true,
+    "generic_headers_forbidden": true,
+    "total_rows_outside_tables": true,
+    "semantic_number_formats_required": true,
+    "percentage_formats_only_for_ratio_fields": true,
+    "design_specific_svg_required": true
+  },
+  "charts": {
+    "default": "none",
+    "allowed_types": ["bar", "column", "line", "pie", "doughnut"],
+    "maximum_per_screen": 1,
+    "maximum_per_workbook": 2,
+    "requires_formula_backed_ranges": true,
+    "anchor_mode": "native_excel_cell",
+    "allowed_size": {
+      "width": 12,
+      "height": 7
+    }
+  },
+  "source_of_truth": "master_workbook_and_functional_contract",
+  "rendering_rule": "Inspect templates/sources, select a functional model, clone master_workbook.xlsx, change only declared variation slots, and validate the resulting XLSX directly."
+}

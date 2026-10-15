@@ -1,0 +1,35 @@
+{
+  "schema_version": "3.0.0",
+  "status": "passed",
+  "source_of_truth": "master_workbook.xlsx",
+  "master_workbook": "D:\\Proyectos\\Creador de Excels\\templates\\excel-first-base\\master_workbook.xlsx",
+  "spec": "D:\\Proyectos\\Creador de Excels\\templates\\excel-first-base\\design_spec.json",
+  "checks": {
+    "master_exists": true,
+    "master_is_workbook": true,
+    "no_freeze_panes": true,
+    "explicit_table_headers": true,
+    "formula_count": true,
+    "validation_count": true,
+    "chart_contract": true,
+    "native_objects_present": true
+  },
+  "workbook": {
+    "sheets": [
+      "Inicio",
+      "Resumen",
+      "Presupuesto",
+      "Gastos reales",
+      "Movimientos",
+      "Flujo de caja",
+      "Metas y fondo",
+      "Deudas",
+      "Listas"
+    ],
+    "formula_count": 305,
+    "validation_count": 3,
+    "chart_count": 2,
+    "table_count": 8
+  },
+  "errors": []
+}

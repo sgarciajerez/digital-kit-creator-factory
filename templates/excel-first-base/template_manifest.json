@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "template_id": "family-budget-workbook-v1",
+  "template_type": "master_workbook",
+  "purpose": "Base visual y estructural reutilizable para plantillas Excel de planificación, registro y análisis.",
+  "source_of_truth": {
+    "master_workbook": "master_workbook.xlsx",
+    "source_review": "source_patterns.md",
+    "model_library": "../model-library/index.json",
+    "model_behavior": "model_behavior.md",
+    "model_contract": "model_contract.json"
+  },
+  "copy_rule": "Clona el libro maestro y sustituye únicamente los datos, fórmulas, textos, paleta y columnas declarados para el producto derivado.",
+  "geometry_policy": "preserve_master_grid_exactly",
+  "table_slot_policy": "same_master_ranges_and_column_count",
+  "adaptation_policy": "Do not adapt column widths, merges, or visual slots; version the master when geometry changes.",
+  "template_slots": {
+    "header": ["B2:M2", "B3:M3", "B4:M4"],
+    "summary": "B6:M7",
+    "dashboard_table": "B9:E14",
+    "dashboard_chart": "H9:M22",
+    "note": "B28:M28",
+    "navigation": "rounded_in_sheet_buttons_plus_native_excel_sheet_tabs",
+    "identity": "Product-specific five-colour palette, native worksheet surfaces and coherent mock data"
+  },
+  "enabled_capabilities": {
+    "formula_types": ["SUM", "ROWS", "COUNTIF", "COUNTA", "cell arithmetic", "cross-sheet references"],
+    "validation_lists": true,
+    "native_charts": true,
+    "formula_recalculation_on_open": true,
+    "svg_icon": false,
+    "rounded_navigation_buttons": true
+  },
+  "model_quality": {
+    "behavior_guide_required": true,
+    "contract_is_independent_from_xlsx": true,
+    "validator": "scripts/model_quality.py",
+    "functional_qa_cases_required_for_formula_models": true
+  },
+  "native_base": {
+    "workbook": "master_workbook.xlsx",
+    "contract": "native_base_contract.json",
+    "builder": "scripts/create_family_budget_from_sources.py",
+    "identity_rule": "La identidad derivada se expresa mediante la paleta declarada, los acentos nativos del workbook y datos de ejemplo coherentes con el proyecto.",
+    "source_count": 29,
+    "sheets": ["Inicio", "Resumen", "Presupuesto", "Gastos reales", "Movimientos", "Flujo de caja", "Metas y fondo", "Deudas", "Listas"],
+    "shared_structure": ["row_1_navigation", "rows_2_to_4_header", "row_7_table_headers_when_applicable", "native_tables", "formula_cells", "native_charts"]
+  },
+  "variation_points": [
+    "nombre, subtítulo y texto de ayuda",
+    "paleta de identidad",
+    "nombres de pestañas y propósito",
+    "cabeceras y columnas de entrada",
+    "datos de ejemplo o reales",
+    "fórmulas y rangos",
+    "listas de validación",
+    "esquema semántico de tablas y rangos sin filas TOTAL dentro de datos",
+    "formatos numéricos asignados por significado de columna",
+    "icono SVG específico o adaptado a la identidad del producto",
+    "un gráfico nativo por pantalla cuando aporte decisión"
+  ],
+  "forbidden_changes": [
+    "eliminar o rediseñar la barra de navegación y el icono compartido",
+    "dependencias de navegador para el encuadre",
+    "nuevos sistemas de tarjetas por producto",
+    "cabeceras genéricas de tabla o filas TOTAL dentro del rango de datos",
+    "formatos de porcentaje heredados en columnas de conteo o importes",
+    "reutilizar el icono fijo de la base sin adaptación de identidad o paleta",
+    "mover las ranuras compartidas de cabecera, resumen, tabla, gráfico o nota sin versionar la plantilla"
+  ],
+  "source_lineage": {
+    "source_folder": "templates/sources",
+    "model_library": "templates/model-library/index.json",
+    "source_file_count": 29,
+    "patterns_absorbed": [
+      "presupuesto mensual y anual",
+      "presupuesto frente a real y desviaciones",
+      "flujo de efectivo",
+      "movimientos y categorías",
+      "resumen con gráfico",
+      "fondo de emergencia, metas y deudas",
+      "hojas de instrucciones y configuración"
+    ]
+  }
+}

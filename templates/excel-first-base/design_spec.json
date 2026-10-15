@@ -1,0 +1,1389 @@
+{
+  "schema_version": "2.0.0",
+  "design_system_version": "3.0.0",
+  "slug": "presupuesto-familiar-base",
+  "title": "Base de presupuesto familiar",
+  "subtitle": "Una retícula reutilizable para planificar, registrar y revisar el dinero del hogar.",
+  "design_language": "es",
+  "source_of_truth": "master_workbook.xlsx + native_base_contract.json",
+  "design_approach": "excel_first_simple_table_system",
+  "model_base": "templates/excel-first-base",
+  "source_lineage": ["templates/sources"],
+  "native_reference_mode": "master_workbook_contract",
+  "template_id": "family-budget-workbook-v1",
+  "template_manifest": "template_manifest.json",
+  "master_workbook": "templates/excel-first-base/master_workbook.xlsx",
+  "source_review": "source_patterns.md",
+  "palette": {
+    "background": "#F5F7F4",
+    "ink": "#263A35",
+    "accent": "#477A67",
+    "secondary": "#7A9B89",
+    "highlight": "#D0A542",
+    "surface": "#FFFFFF",
+    "muted": "#6D7D89",
+    "line": "#DCE7E3",
+    "input_fill": "#FFF9E9",
+    "formula_fill": "#F4F8F6"
+  },
+  "native_excel_design_contract": {
+    "grid": "12-column simple worksheet grid",
+    "opening_zoom": 95,
+    "merged_cells": [
+      "B2:M2",
+      "B3:M3",
+      "B4:M4",
+      "B28:M28"
+    ],
+    "navigation": "rounded in-sheet buttons plus native Excel worksheet tabs",
+    "icon": "FamilyBudgetIcon on every worksheet",
+    "freeze_panes": false,
+    "allowed_charts": [
+      "column",
+      "bar",
+      "line",
+      "pie",
+      "doughnut"
+    ],
+    "max_charts_per_screen": 1,
+    "row_heights": {
+      "header": 28,
+      "body": 22,
+      "navigation": 24
+    },
+    "column_widths": {
+      "A": 4,
+      "B": 24,
+      "C": 22,
+      "D": 22,
+      "E": 22,
+      "F": 3,
+      "G": 3,
+      "H": 12,
+      "I": 12,
+      "J": 12,
+      "K": 12,
+      "L": 12,
+      "M": 12
+    },
+    "screen_column_widths": {
+      "Presupuesto": {
+        "A": 4,
+        "B": 15,
+        "C": 20,
+        "D": 20,
+        "E": 20,
+        "F": 18,
+        "G": 3,
+        "H": 12,
+        "I": 12,
+        "J": 12,
+        "K": 12,
+        "L": 12,
+        "M": 12
+      },
+      "Movimientos": {
+        "A": 4,
+        "B": 15,
+        "C": 14,
+        "D": 20,
+        "E": 24,
+        "F": 18,
+        "G": 18,
+        "H": 14,
+        "I": 12,
+        "J": 12,
+        "K": 12,
+        "L": 12,
+        "M": 12
+      },
+      "Deudas": {
+        "A": 4,
+        "B": 22,
+        "C": 20,
+        "D": 18,
+        "E": 18,
+        "F": 18,
+        "G": 3,
+        "H": 12,
+        "I": 12,
+        "J": 12,
+        "K": 12,
+        "L": 12,
+        "M": 12
+      },
+      "Metas": {
+        "A": 4,
+        "B": 24,
+        "C": 18,
+        "D": 18,
+        "E": 18,
+        "F": 18,
+        "G": 3,
+        "H": 12,
+        "I": 12,
+        "J": 12,
+        "K": 12,
+        "L": 12,
+        "M": 12
+      },
+      "Revisión": {
+        "A": 4,
+        "B": 30,
+        "C": 16,
+        "D": 16,
+        "E": 16,
+        "F": 3,
+        "G": 3,
+        "H": 12,
+        "I": 12,
+        "J": 12,
+        "K": 12,
+        "L": 12,
+        "M": 12
+      }
+    }
+  },
+  "tabs": [
+    "Inicio",
+    "Resumen",
+    "Presupuesto",
+    "Movimientos",
+    "Deudas",
+    "Metas",
+    "Revisión",
+    "Configuración"
+  ],
+  "screen_contracts": {
+    "Inicio": {
+      "template": "guide",
+      "components": [
+        "header",
+        "input_block",
+        "note",
+        "navigation"
+      ],
+      "overrides": {},
+      "complexity_score": 2,
+      "content": {
+        "role": "guía de uso",
+        "data_source": "workbook_model",
+        "geometry_source": "excel_native_grid"
+      }
+    },
+    "Resumen": {
+      "template": "dashboard",
+      "components": [
+        "header",
+        "summary_row",
+        "table",
+        "navigation",
+        "note",
+        "chart"
+      ],
+      "overrides": {},
+      "complexity_score": 3,
+      "content": {
+        "role": "resumen presupuesto frente a gasto real",
+        "data_source": "workbook_model",
+        "geometry_source": "excel_native_grid"
+      },
+      "chart": {
+        "type": "column",
+        "title": "Presupuesto frente a gasto real",
+        "values": {
+          "min_col": 3,
+          "min_row": 9,
+          "max_col": 4,
+          "max_row": 14
+        },
+        "categories": {
+          "min_col": 2,
+          "min_row": 10,
+          "max_col": 2,
+          "max_row": 14
+        },
+        "titles_from_data": true,
+        "anchor": "H9",
+        "width": 10,
+        "height": 7,
+        "legend": true,
+        "accent": "#7A9B89"
+      }
+    },
+    "Presupuesto": {
+      "template": "table",
+      "components": [
+        "header",
+        "table",
+        "navigation"
+      ],
+      "overrides": {
+        "row_count": 13
+      },
+      "complexity_score": 2,
+      "content": {
+        "role": "presupuesto mensual y anual",
+        "data_source": "workbook_model",
+        "geometry_source": "excel_native_grid"
+      }
+    },
+    "Movimientos": {
+      "template": "table",
+      "components": [
+        "header",
+        "table",
+        "navigation"
+      ],
+      "overrides": {
+        "row_count": 6
+      },
+      "complexity_score": 2,
+      "content": {
+        "role": "registro de movimientos",
+        "data_source": "workbook_model",
+        "geometry_source": "excel_native_grid"
+      }
+    },
+    "Deudas": {
+      "template": "analysis",
+      "components": [
+        "header",
+        "summary_row",
+        "table",
+        "navigation"
+      ],
+      "overrides": {
+        "row_count": 3
+      },
+      "complexity_score": 2,
+      "content": {
+        "role": "seguimiento de deudas",
+        "data_source": "workbook_model",
+        "geometry_source": "excel_native_grid"
+      }
+    },
+    "Metas": {
+      "template": "analysis",
+      "components": [
+        "header",
+        "summary_row",
+        "table",
+        "navigation"
+      ],
+      "overrides": {
+        "row_count": 3
+      },
+      "complexity_score": 2,
+      "content": {
+        "role": "metas de ahorro y fondo de emergencia",
+        "data_source": "workbook_model",
+        "geometry_source": "excel_native_grid"
+      }
+    },
+    "Revisión": {
+      "template": "checklist",
+      "components": [
+        "header",
+        "table",
+        "progress_bar",
+        "navigation",
+        "note"
+      ],
+      "overrides": {
+        "row_count": 4
+      },
+      "complexity_score": 2,
+      "content": {
+        "role": "cierre mensual",
+        "data_source": "workbook_model",
+        "geometry_source": "excel_native_grid"
+      }
+    },
+    "Configuración": {
+      "template": "settings",
+      "components": [
+        "header",
+        "input_block",
+        "note",
+        "navigation"
+      ],
+      "overrides": {},
+      "complexity_score": 2,
+      "content": {
+        "role": "parámetros globales del hogar",
+        "data_source": "workbook_model",
+        "geometry_source": "excel_native_grid"
+      }
+    }
+  },
+  "content_seed": {
+    "Inicio": {
+      "title": "Empieza por una vista clara del hogar",
+      "rows": [
+        [
+          "Objetivo",
+          "Planificar el mes",
+          "Define qué quieres controlar antes de introducir cifras."
+        ],
+        [
+          "Primer paso",
+          "Completa las celdas amarillas",
+          "Las celdas verdes contienen fórmulas y resultados."
+        ],
+        [
+          "Frecuencia",
+          "Revisión mensual",
+          "Registra los movimientos y cierra el mes con la pestaña Revisión."
+        ],
+        [
+          "Lectura",
+          "Usa Resumen",
+          "Compara el plan con el gasto real y detecta desviaciones."
+        ]
+      ],
+      "note": "La estructura está pensada para reutilizarse: duplica el libro para cada año o adapta las categorías sin mover la retícula."
+    },
+    "Resumen": {
+      "title": "El mes, en una sola pantalla",
+      "subtitle": "Una comparación sencilla entre lo que planeabas gastar y lo que realmente salió.",
+      "summary": [
+        [
+          "Presupuesto total",
+          "=SUM(C10:C14)"
+        ],
+        [
+          "Gasto real",
+          "=SUM(D10:D14)"
+        ],
+        [
+          "Diferencia",
+          "=SUM(E10:E14)"
+        ],
+        [
+          "Categorías",
+          "=ROWS(B10:B14)"
+        ]
+      ],
+      "headers": [
+        "Categoría",
+        "Presupuesto",
+        "Gasto real",
+        "Diferencia"
+      ],
+      "rows": [
+        [
+          "Vivienda",
+          1100,
+          1090,
+          "=C10-D10"
+        ],
+        [
+          "Alimentación",
+          420,
+          465,
+          "=C11-D11"
+        ],
+        [
+          "Transporte",
+          250,
+          230,
+          "=C12-D12"
+        ],
+        [
+          "Salud y cuidado",
+          350,
+          340,
+          "=C13-D13"
+        ],
+        [
+          "Ocio y variables",
+          280,
+          300,
+          "=C14-D14"
+        ]
+      ],
+      "editable_columns": [
+        0,
+        1,
+        2
+      ],
+      "note": "Amarillo significa entrada manual; verde significa cálculo. Una diferencia negativa indica que esa categoría superó su presupuesto. La navegación usa las pestañas nativas de Excel."
+    },
+    "Presupuesto": {
+      "title": "Plan mensual y anual",
+      "headers": [
+        "Mes",
+        "Categoría",
+        "Planificado",
+        "Real",
+        "Diferencia"
+      ],
+      "rows": [
+        [
+          "Enero",
+          "Hogar",
+          2400,
+          2425,
+          "=C7-D7"
+        ],
+        [
+          "Febrero",
+          "Hogar",
+          2380,
+          2360,
+          "=C8-D8"
+        ],
+        [
+          "Marzo",
+          "Hogar",
+          2450,
+          2485,
+          "=C9-D9"
+        ],
+        [
+          "Abril",
+          "Hogar",
+          2420,
+          0,
+          "=C10-D10"
+        ],
+        [
+          "Mayo",
+          "Hogar",
+          2480,
+          0,
+          "=C11-D11"
+        ],
+        [
+          "Junio",
+          "Hogar",
+          2500,
+          0,
+          "=C12-D12"
+        ],
+        [
+          "Julio",
+          "Hogar",
+          2550,
+          0,
+          "=C13-D13"
+        ],
+        [
+          "Agosto",
+          "Hogar",
+          2600,
+          0,
+          "=C14-D14"
+        ],
+        [
+          "Septiembre",
+          "Hogar",
+          2500,
+          0,
+          "=C15-D15"
+        ],
+        [
+          "Octubre",
+          "Hogar",
+          2480,
+          0,
+          "=C16-D16"
+        ],
+        [
+          "Noviembre",
+          "Hogar",
+          2550,
+          0,
+          "=C17-D17"
+        ],
+        [
+          "Diciembre",
+          "Hogar",
+          2800,
+          0,
+          "=C18-D18"
+        ],
+        [
+          "Total anual",
+          "Todas",
+          "=SUM(C7:C18)",
+          "=SUM(D7:D18)",
+          "=C19-D19"
+        ]
+      ],
+      "editable_columns": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "validations": [
+        {
+          "column": 0,
+          "values": [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+          ]
+        }
+      ]
+    },
+    "Movimientos": {
+      "title": "Registro de movimientos",
+      "headers": [
+        "Fecha",
+        "Tipo",
+        "Categoría",
+        "Concepto",
+        "Importe",
+        "Pagado por",
+        "Estado"
+      ],
+      "rows": [
+        [
+          "05/01/2027",
+          "Gasto",
+          "Alimentación",
+          "Compra semanal",
+          86,
+          "Familia",
+          "Conciliado"
+        ],
+        [
+          "08/01/2027",
+          "Gasto",
+          "Vivienda",
+          "Electricidad",
+          62,
+          "Familia",
+          "Conciliado"
+        ],
+        [
+          "12/01/2027",
+          "Gasto",
+          "Transporte",
+          "Abono mensual",
+          48,
+          "Ana",
+          "Pendiente"
+        ],
+        [
+          "19/01/2027",
+          "Gasto",
+          "Salud y cuidado",
+          "Farmacia",
+          29,
+          "Carlos",
+          "Conciliado"
+        ],
+        [
+          "25/01/2027",
+          "Ingreso",
+          "Ingresos",
+          "Nómina",
+          3200,
+          "Familia",
+          "Conciliado"
+        ],
+        [
+          "28/01/2027",
+          "Ahorro",
+          "Metas",
+          "Fondo de emergencia",
+          250,
+          "Familia",
+          "Pendiente"
+        ]
+      ],
+      "editable_columns": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "validations": [
+        {
+          "column": 1,
+          "values": [
+            "Ingreso",
+            "Gasto",
+            "Ahorro"
+          ]
+        },
+        {
+          "column": 2,
+          "values": [
+            "Vivienda",
+            "Alimentación",
+            "Transporte",
+            "Salud y cuidado",
+            "Ocio y variables",
+            "Ingresos",
+            "Metas"
+          ]
+        },
+        {
+          "column": 6,
+          "values": [
+            "Conciliado",
+            "Pendiente"
+          ]
+        }
+      ]
+    },
+    "Deudas": {
+      "title": "Deudas y pagos comprometidos",
+      "summary": [
+        [
+          "Saldo pendiente",
+          "=SUM(C10:C12)"
+        ],
+        [
+          "Pago mensual",
+          "=SUM(D10:D12)"
+        ],
+        [
+          "Deudas activas",
+          "=ROWS(B10:B12)"
+        ],
+        [
+          "Interés anual",
+          "=SUM(E10:E12)/ROWS(E10:E12)"
+        ]
+      ],
+      "headers": [
+        "Deuda",
+        "Saldo pendiente",
+        "Pago mensual",
+        "Interés anual",
+        "Meses restantes"
+      ],
+      "rows": [
+        [
+          "Hipoteca",
+          180000,
+          850,
+          0.035,
+          240
+        ],
+        [
+          "Préstamo coche",
+          9200,
+          280,
+          0.07,
+          36
+        ],
+        [
+          "Tarjeta",
+          2400,
+          150,
+          0.19,
+          18
+        ]
+      ],
+      "editable_columns": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "Metas": {
+      "title": "Metas, ahorro y fondo de emergencia",
+      "summary": [
+        [
+          "Objetivo total",
+          "=SUM(C10:C12)"
+        ],
+        [
+          "Ahorrado",
+          "=SUM(D10:D12)"
+        ],
+        [
+          "Pendiente",
+          "=SUM(E10:E12)"
+        ],
+        [
+          "Metas activas",
+          "=ROWS(B10:B12)"
+        ]
+      ],
+      "headers": [
+        "Meta",
+        "Objetivo",
+        "Ahorrado",
+        "Pendiente",
+        "Fecha objetivo"
+      ],
+      "rows": [
+        [
+          "Fondo de emergencia",
+          6000,
+          2500,
+          "=C10-D10",
+          "31/12/2027"
+        ],
+        [
+          "Vacaciones",
+          1800,
+          650,
+          "=C11-D11",
+          "30/06/2027"
+        ],
+        [
+          "Reparaciones del hogar",
+          1200,
+          300,
+          "=C12-D12",
+          "31/10/2027"
+        ]
+      ],
+      "editable_columns": [
+        0,
+        1,
+        2,
+        4
+      ]
+    },
+    "Revisión": {
+      "progress": "=COUNTIF(E10:E13,\"Hecho\")/COUNTA(B10:B13)",
+      "headers": [
+        "Tarea",
+        "Responsable",
+        "Fecha",
+        "Estado"
+      ],
+      "rows": [
+        [
+          "Actualizar movimientos",
+          "Familia",
+          "31/01/2027",
+          "Hecho"
+        ],
+        [
+          "Comparar presupuesto y real",
+          "Familia",
+          "31/01/2027",
+          "En curso"
+        ],
+        [
+          "Revisar metas de ahorro",
+          "Ana",
+          "02/02/2027",
+          "Pendiente"
+        ],
+        [
+          "Preparar el siguiente mes",
+          "Carlos",
+          "03/02/2027",
+          "Pendiente"
+        ]
+      ],
+      "editable_columns": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "validations": [
+        {
+          "column": 3,
+          "values": [
+            "Hecho",
+            "En curso",
+            "Pendiente"
+          ]
+        }
+      ],
+      "note": "Cierra el mes aquí: una revisión breve mantiene las cifras útiles y prepara el siguiente periodo."
+    },
+    "Configuración": {
+      "rows": [
+        [
+          "Nombre del hogar",
+          "Familia García",
+          "Identifica el libro sin alterar su estructura."
+        ],
+        [
+          "Moneda",
+          "EUR",
+          "Usa una sola moneda en todas las pestañas."
+        ],
+        [
+          "Ingresos netos mensuales",
+          3200,
+          "Sirve como referencia para valorar el saldo disponible."
+        ],
+        [
+          "Mes de inicio",
+          "Enero",
+          "Define el primer mes del ejemplo anual."
+        ]
+      ],
+      "note": "Las celdas amarillas son parámetros de entrada. La paleta y la retícula forman parte de la base reutilizable; los productos derivados pueden cambiar su identidad sin moverlas.",
+      "validations": [
+        {
+          "column": 1,
+          "values": [
+            "EUR",
+            "USD",
+            "GBP"
+          ]
+        }
+      ]
+    }
+  },
+  "design_system_contract": "config/FACTORY_DESIGN_SYSTEM.json",
+  "design_system_version": "3.0.0",
+  "template_library": "templates/excel-first-base/template_manifest.json",
+  "layout_mode": "template_inheritance",
+  "design_order": "rules/FACTORY_DESIGN_ORDER_SIMPLE_EXCEL.md",
+  "visual_acceptance": {
+    "human_review_required": true,
+    "native_geometry_required": true,
+    "source_model_match_required": true,
+    "native_shapes_only": true,
+    "chart_objects_allowed": true
+  },
+  "signature_visual": {
+    "type": "native_summary_or_optional_excel_chart",
+    "chart_objects_allowed": true,
+    "purpose": "Hacer visible la decisión principal con celdas, fórmulas y un gráfico nativo opcional."
+  },
+  "visual_complexity": {
+    "target_score": 2,
+    "maximum_score": 4,
+    "scale": "1=very simple, 10=highly complex",
+    "reason": "La utilidad y la replicabilidad tienen prioridad sobre la decoración."
+  },
+  "navigation_contract": {
+    "tabs": [
+      "Inicio",
+      "Resumen",
+      "Presupuesto",
+      "Movimientos",
+      "Deudas",
+      "Metas",
+      "Revisión",
+      "Configuración"
+    ],
+    "component": "rounded_in_sheet_buttons_plus_native_excel_sheet_tabs",
+    "button_width_mode": "shared_base_buttons",
+    "gap_px": 4,
+    "frame_edges": "inherited_from_outer_padding"
+  },
+  "global_design_system": "rules/DESIGN_SYSTEM.md",
+  "model_behavior_file": "model_behavior.md",
+  "model_contract_file": "model_contract.json",
+  "model_behavior_source": "declared_model_contract_before_xlsx",
+  "user_model_guide": {
+    "file": "model_behavior.md",
+    "purpose": "Guía de uso y de verificación funcional independiente del XLSX.",
+    "edit_inputs_only": true,
+    "fail_on_contract_mismatch": true
+  },
+  "model_contract": {
+    "contract_id": "family-budget-master-v1",
+    "title": "Base de presupuesto familiar",
+    "product_id": null,
+    "purpose": "Registrar movimientos una sola vez, comparar presupuesto y gasto real por mes y categoría, y convertir el resultado en flujo de caja, metas y deudas.",
+    "sheets": [
+      "Inicio",
+      "Resumen",
+      "Presupuesto",
+      "Gastos reales",
+      "Movimientos",
+      "Flujo de caja",
+      "Metas y fondo",
+      "Deudas",
+      "Listas"
+    ],
+    "tables": [
+      {
+        "sheet": "Resumen",
+        "ref": "B11:F18",
+        "headers": [
+          {
+            "name": "Categoría",
+            "role": "input",
+            "kind": "text"
+          },
+          {
+            "name": "Plan",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Real",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Diferencia",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "% gastado",
+            "role": "derived",
+            "kind": "percent"
+          }
+        ],
+        "required": true
+      },
+      {
+        "sheet": "Presupuesto",
+        "ref": "B7:O14",
+        "headers": [
+          {
+            "name": "Categoría",
+            "role": "input",
+            "kind": "text"
+          },
+          {
+            "name": "Enero",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Febrero",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Marzo",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Abril",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Mayo",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Junio",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Julio",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Agosto",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Septiembre",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Octubre",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Noviembre",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Diciembre",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Total anual",
+            "role": "derived",
+            "kind": "amount"
+          }
+        ],
+        "required": true,
+        "total_ref": "B15:O15",
+        "total_label": "TOTAL DEL HOGAR"
+      },
+      {
+        "sheet": "Gastos reales",
+        "ref": "B7:O14",
+        "headers": [
+          {
+            "name": "Categoría",
+            "role": "derived",
+            "kind": "text"
+          },
+          {
+            "name": "Enero",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Febrero",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Marzo",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Abril",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Mayo",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Junio",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Julio",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Agosto",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Septiembre",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Octubre",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Noviembre",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Diciembre",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Total anual",
+            "role": "derived",
+            "kind": "amount"
+          }
+        ],
+        "required": true,
+        "total_ref": "B15:O15",
+        "total_label": "TOTAL REAL"
+      },
+      {
+        "sheet": "Movimientos",
+        "ref": "B7:I27",
+        "headers": [
+          {
+            "name": "Fecha",
+            "role": "input",
+            "kind": "date"
+          },
+          {
+            "name": "Mes",
+            "role": "input",
+            "kind": "text"
+          },
+          {
+            "name": "Tipo",
+            "role": "input",
+            "kind": "text"
+          },
+          {
+            "name": "Categoría",
+            "role": "input",
+            "kind": "text"
+          },
+          {
+            "name": "Concepto",
+            "role": "input",
+            "kind": "text"
+          },
+          {
+            "name": "Importe",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Pagado por",
+            "role": "input",
+            "kind": "text"
+          },
+          {
+            "name": "Estado",
+            "role": "input",
+            "kind": "text"
+          }
+        ],
+        "required": true
+      },
+      {
+        "sheet": "Flujo de caja",
+        "ref": "B7:J19",
+        "headers": [
+          {
+            "name": "Mes",
+            "role": "derived",
+            "kind": "text"
+          },
+          {
+            "name": "Ingresos plan",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Ingresos real",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Gastos plan",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Gastos real",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Ahorro plan",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Ahorro real",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Disponible",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Comentarios",
+            "role": "input",
+            "kind": "text"
+          }
+        ],
+        "required": true
+      },
+      {
+        "sheet": "Metas y fondo",
+        "ref": "B9:J12",
+        "headers": [
+          {
+            "name": "Meta",
+            "role": "input",
+            "kind": "text"
+          },
+          {
+            "name": "Gasto mensual",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Meses",
+            "role": "input",
+            "kind": "count"
+          },
+          {
+            "name": "Meta necesaria",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Ahorrado",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Pendiente",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Progreso",
+            "role": "derived",
+            "kind": "percent"
+          },
+          {
+            "name": "Fecha objetivo",
+            "role": "input",
+            "kind": "date"
+          },
+          {
+            "name": "Estado",
+            "role": "derived",
+            "kind": "text"
+          }
+        ],
+        "required": true
+      },
+      {
+        "sheet": "Deudas",
+        "ref": "B7:H10",
+        "headers": [
+          {
+            "name": "Deuda",
+            "role": "input",
+            "kind": "text"
+          },
+          {
+            "name": "Saldo actual",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Interés anual",
+            "role": "input",
+            "kind": "percent"
+          },
+          {
+            "name": "Pago mensual",
+            "role": "input",
+            "kind": "amount"
+          },
+          {
+            "name": "Meses restantes",
+            "role": "input",
+            "kind": "count"
+          },
+          {
+            "name": "Interés estimado",
+            "role": "derived",
+            "kind": "amount"
+          },
+          {
+            "name": "Estado",
+            "role": "derived",
+            "kind": "text"
+          }
+        ],
+        "required": true
+      },
+      {
+        "sheet": "Listas",
+        "ref": "B7:C13",
+        "headers": [
+          {
+            "name": "Parámetro",
+            "role": "input",
+            "kind": "text"
+          },
+          {
+            "name": "Valor",
+            "role": "input",
+            "kind": "general"
+          }
+        ],
+        "required": true
+      }
+    ],
+    "formula_rules": [
+      {
+        "sheet": "Resumen",
+        "cell": "E12",
+        "contains": "C12-D12",
+        "description": "La diferencia es presupuesto menos gasto real."
+      },
+      {
+        "sheet": "Resumen",
+        "cell": "F12",
+        "contains": "D12/C12",
+        "description": "El porcentaje compara gasto real con presupuesto."
+      },
+      {
+        "sheet": "Gastos reales",
+        "cell": "C8",
+        "contains": "SUMIFS",
+        "description": "El gasto real nace de Movimientos y no se duplica manualmente."
+      },
+      {
+        "sheet": "Flujo de caja",
+        "cell": "I8",
+        "contains": "D8-F8-H8",
+        "description": "Disponible = ingreso real - gasto real - ahorro real."
+      },
+      {
+        "sheet": "Metas y fondo",
+        "cell": "G10",
+        "contains": "MAX(E10-F10,0)",
+        "description": "Pendiente nunca puede ser negativa."
+      },
+      {
+        "sheet": "Metas y fondo",
+        "cell": "H10",
+        "contains": "F10/E10",
+        "description": "Progreso = ahorrado / meta necesaria."
+      }
+    ],
+    "relationships": [
+      "Movimientos es la única entrada operativa para gastos reales y flujo de caja.",
+      "Presupuesto y Gastos reales comparten categorías y meses.",
+      "Las filas TOTAL quedan fuera del rango de datos de cada tabla.",
+      "Las columnas de conteo nunca se expresan como porcentaje."
+    ],
+    "cases": [
+      {
+        "name": "income flows into monthly cash flow",
+        "purpose": "Comprueba que el ingreso neto declarado alimenta la lectura mensual.",
+        "inputs": [
+          {
+            "sheet": "Listas",
+            "cell": "C9",
+            "value": 3500
+          }
+        ],
+        "assertions": [
+          {
+            "sheet": "Flujo de caja",
+            "cell": "C8",
+            "operator": "equals",
+            "value": 3500
+          }
+        ]
+      }
+    ],
+    "failure_criteria": [
+      "Una tabla tiene una cabecera vacía, genérica, duplicada o con un significado distinto.",
+      "Una fila TOTAL queda dentro del rango filtrable de datos.",
+      "Gastos reales deja de depender de Movimientos o Disponible deja de seguir su ecuación.",
+      "Una columna de conteo usa formato porcentaje o una columna monetaria usa porcentaje."
+    ]
+  }
+}

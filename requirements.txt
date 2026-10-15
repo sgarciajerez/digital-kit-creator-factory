@@ -1,0 +1,15 @@
+streamlit>=1.40,<2
+pydantic>=2.7,<3
+openpyxl>=3.1,<4
+pytest>=8,<9
+python-dotenv>=1,<2
+PyYAML>=6,<7
+pywin32>=306; sys_platform == "win32"
+Pillow>=10,<13
+imageio>=2.34,<3
+imageio-ffmpeg>=0.5,<1
+mss>=9,<11
+numpy>=1.26,<3
+PyAutoGUI>=0.9.54,<1
+pyperclip>=1.9,<2
+

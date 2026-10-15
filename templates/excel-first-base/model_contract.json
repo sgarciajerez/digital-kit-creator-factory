@@ -1,0 +1,496 @@
+{
+  "contract_id": "family-budget-master-v1",
+  "title": "Base de presupuesto familiar",
+  "product_id": null,
+  "purpose": "Registrar movimientos una sola vez, comparar presupuesto y gasto real por mes y categoría, y convertir el resultado en flujo de caja, metas y deudas.",
+  "sheets": [
+    "Inicio",
+    "Resumen",
+    "Presupuesto",
+    "Gastos reales",
+    "Movimientos",
+    "Flujo de caja",
+    "Metas y fondo",
+    "Deudas",
+    "Listas"
+  ],
+  "tables": [
+    {
+      "sheet": "Resumen",
+      "ref": "B11:F18",
+      "headers": [
+        {
+          "name": "Categoría",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Plan",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Real",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Diferencia",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "% gastado",
+          "role": "derived",
+          "kind": "percent"
+        }
+      ],
+      "required": true
+    },
+    {
+      "sheet": "Presupuesto",
+      "ref": "B7:O14",
+      "headers": [
+        {
+          "name": "Categoría",
+          "role": "derived",
+          "kind": "text"
+        },
+        {
+          "name": "Enero",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Febrero",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Marzo",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Abril",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Mayo",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Junio",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Julio",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Agosto",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Septiembre",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Octubre",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Noviembre",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Diciembre",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Total anual",
+          "role": "derived",
+          "kind": "amount"
+        }
+      ],
+      "required": true,
+      "total_ref": "B15:O15",
+      "total_label": "TOTAL DEL HOGAR"
+    },
+    {
+      "sheet": "Gastos reales",
+      "ref": "B7:O14",
+      "headers": [
+        {
+          "name": "Categoría",
+          "role": "derived",
+          "kind": "text"
+        },
+        {
+          "name": "Enero",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Febrero",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Marzo",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Abril",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Mayo",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Junio",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Julio",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Agosto",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Septiembre",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Octubre",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Noviembre",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Diciembre",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Total anual",
+          "role": "derived",
+          "kind": "amount"
+        }
+      ],
+      "required": true,
+      "total_ref": "B15:O15",
+      "total_label": "TOTAL REAL"
+    },
+    {
+      "sheet": "Movimientos",
+      "ref": "B7:I27",
+      "headers": [
+        {
+          "name": "Fecha",
+          "role": "input",
+          "kind": "date"
+        },
+        {
+          "name": "Mes",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Tipo",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Categoría",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Concepto",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Importe",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Pagado por",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Estado",
+          "role": "input",
+          "kind": "text"
+        }
+      ],
+      "required": true
+    },
+    {
+      "sheet": "Flujo de caja",
+      "ref": "B7:J19",
+      "headers": [
+        {
+          "name": "Mes",
+          "role": "derived",
+          "kind": "text"
+        },
+        {
+          "name": "Ingresos plan",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Ingresos real",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Gastos plan",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Gastos real",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Ahorro plan",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Ahorro real",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Disponible",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Comentarios",
+          "role": "input",
+          "kind": "text"
+        }
+      ],
+      "required": true
+    },
+    {
+      "sheet": "Metas y fondo",
+      "ref": "B9:J12",
+      "headers": [
+        {
+          "name": "Meta",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Gasto mensual",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Meses",
+          "role": "input",
+          "kind": "count"
+        },
+        {
+          "name": "Meta necesaria",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Ahorrado",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Pendiente",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Progreso",
+          "role": "derived",
+          "kind": "percent"
+        },
+        {
+          "name": "Fecha objetivo",
+          "role": "input",
+          "kind": "date"
+        },
+        {
+          "name": "Estado",
+          "role": "derived",
+          "kind": "text"
+        }
+      ],
+      "required": true
+    },
+    {
+      "sheet": "Deudas",
+      "ref": "B7:H10",
+      "headers": [
+        {
+          "name": "Deuda",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Saldo actual",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Interés anual",
+          "role": "input",
+          "kind": "percent"
+        },
+        {
+          "name": "Pago mensual",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Meses restantes",
+          "role": "input",
+          "kind": "count"
+        },
+        {
+          "name": "Interés estimado",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Estado",
+          "role": "derived",
+          "kind": "text"
+        }
+      ],
+      "required": true
+    },
+    {
+      "sheet": "Listas",
+      "ref": "B7:C13",
+      "headers": [
+        {
+          "name": "Parámetro",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Valor",
+          "role": "input",
+          "kind": "general"
+        }
+      ],
+      "required": true
+    }
+  ],
+  "formula_rules": [
+    {
+      "sheet": "Resumen",
+      "cell": "E12",
+      "contains": "C12-D12",
+      "description": "La diferencia es presupuesto menos gasto real."
+    },
+    {
+      "sheet": "Resumen",
+      "cell": "F12",
+      "contains": "D12/C12",
+      "description": "El porcentaje compara gasto real con presupuesto."
+    },
+    {
+      "sheet": "Gastos reales",
+      "cell": "C8",
+      "contains": "SUMIFS",
+      "description": "El gasto real nace de Movimientos y no se duplica manualmente."
+    },
+    {
+      "sheet": "Flujo de caja",
+      "cell": "I8",
+      "contains": "D8-F8-H8",
+      "description": "Disponible = ingreso real - gasto real - ahorro real."
+    },
+    {
+      "sheet": "Metas y fondo",
+      "cell": "G10",
+      "contains": "MAX(E10-F10,0)",
+      "description": "Pendiente nunca puede ser negativa."
+    },
+    {
+      "sheet": "Metas y fondo",
+      "cell": "H10",
+      "contains": "F10/E10",
+      "description": "Progreso = ahorrado / meta necesaria."
+    },
+    {
+      "sheet": "Presupuesto",
+      "cell": "B8",
+      "contains": "Listas!I7",
+      "description": "La categoría presupuestaria se obtiene de la lista editable de Listas."
+    }
+  ],
+  "relationships": [
+    "Movimientos es la única entrada operativa para gastos reales y flujo de caja.",
+    "Presupuesto y Gastos reales comparten categorías y meses.",
+    "Las filas TOTAL quedan fuera del rango de datos de cada tabla.",
+    "Las columnas de conteo nunca se expresan como porcentaje."
+  ],
+  "cases": [
+    {
+      "name": "income flows into monthly cash flow",
+      "purpose": "Comprueba que el ingreso neto declarado alimenta la lectura mensual.",
+      "inputs": [
+        {
+          "sheet": "Listas",
+          "cell": "C9",
+          "value": 3500
+        }
+      ],
+      "assertions": [
+        {
+          "sheet": "Flujo de caja",
+          "cell": "C8",
+          "operator": "equals",
+          "value": 3500
+        }
+      ]
+    }
+  ],
+  "failure_criteria": [
+    "Una tabla tiene una cabecera vacía, genérica, duplicada o con un significado distinto.",
+    "Una fila TOTAL queda dentro del rango filtrable de datos.",
+    "Gastos reales deja de depender de Movimientos o Disponible deja de seguir su ecuación.",
+    "Una columna de conteo usa formato porcentaje o una columna monetaria usa porcentaje."
+  ]
+}

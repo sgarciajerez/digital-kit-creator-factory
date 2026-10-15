@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "workbook": "templates\\excel-first-base\\master_workbook.xlsx",
+  "contract": "templates\\excel-first-base\\native_base_contract.json",
+  "checks": {
+    "sheet_order_matches_contract": true,
+    "freeze_panes_disabled": true,
+    "row_7_has_no_bottom_borders": true,
+    "formula_contract": true,
+    "native_tables_present": true,
+    "table_headers_are_semantic": true,
+    "table_totals_are_outside_data_ranges": true,
+    "native_charts_present": true,
+    "model_quality_contract": true,
+    "svg_asset_embedded": true,
+    "icon_on_every_sheet": true,
+    "rounded_navigation_on_every_sheet": true
+  },
+  "details": {
+    "formula_count": 298,
+    "table_count": 8,
+    "chart_count": 2,
+    "row_7_borders": [],
+    "generic_table_headers": [],
+    "total_rows_inside_tables": [],
+    "model_quality_errors": []
+  }
+}

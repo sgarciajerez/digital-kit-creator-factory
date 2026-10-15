@@ -1,0 +1,66 @@
+{
+  "currency_observed": "USD",
+  "method": "Cap every comparable at 3 EUR-equivalent, take the median of the capped prices, then launch 8% below it with Etsy-friendly cents. No template may exceed 3 EUR.",
+  "observed_at": "2026-10-13",
+  "products": {
+    "wedding-planner": {
+      "observed_prices": [11.18, 6.90, 6.54, 6.24, 9.94, 7.97, 5.90, 6.99, 7.97, 11.51, 7.99],
+      "sources": [
+        "https://www.etsy.com/listing/1385674728/excel-wedding-budget-spreadsheet",
+        "https://www.etsy.com/listing/4515509261/wedding-budget-planner-spreadsheet"
+      ],
+      "note": "Comparable wedding budget/planner listings range from entry-level discounted files to more complete dashboards."
+    },
+    "debt-payoff-planner": {
+      "observed_prices": [4.99, 5.21, 4.99, 5.21],
+      "sources": [
+        "https://www.etsy.com/listing/4494526524/debt-payoff-tracker-spreadsheet-excel",
+        "https://www.etsy.com/listing/1216858632/debt-snowball-spreadsheet-excel-debt"
+      ],
+      "note": "The effective comparable prices observed for debt payoff trackers cluster close to five dollars."
+    },
+    "small-business-cashflow": {
+      "observed_prices": [5.76, 5.76, 8.31, 9.95, 9.78, 4.99, 3.57, 7.15, 16.34, 6.85, 9.99, 13.85],
+      "sources": [
+        "https://www.etsy.com/listing/4494868300/small-business-cash-flow-tracker-excel",
+        "https://www.etsy.com/listing/4510615333/cash-flow-tracker-small-business"
+      ],
+      "note": "One premium listing is an outlier; comparable small-business spreadsheet templates mostly sit below ten dollars."
+    },
+    "meal-planner-grocery-budget": {
+      "observed_prices": [7.29, 4.99, 2.80, 5.89, 7.87, 5.54],
+      "sources": [
+        "https://www.etsy.com/listing/4487358240/weekly-meal-planner-spreadsheet-excel",
+        "https://www.etsy.com/listing/4511861792/meal-planner-spreadsheet-budget-tracker"
+      ],
+      "note": "Meal planners range widely; connected grocery and budget features justify positioning above the cheapest single-sheet files."
+    },
+    "home-renovation-planner": {
+      "observed_prices": [6.78, 17.00, 6.94, 5.99, 2.48],
+      "sources": [
+        "https://www.etsy.com/listing/1463837692/home-renovation-spreadsheet-budget",
+        "https://www.etsy.com/listing/1609166259/house-renovation-planner-budget",
+        "https://www.etsy.com/listing/1370065356/renovation-tracker-to-plan-your-home",
+        "https://www.etsy.com/market/home_renovation_template",
+        "https://www.etsy.com/listing/1760071459/home-remodel-planner-remodeling-budget"
+      ],
+      "note": "Comparable renovation spreadsheets span low-cost trackers and premium multi-sheet planners; the launch method caps comparables at 3 EUR and positions this connected workbook at the store's low-entry ceiling."
+    },
+    "freelance-client-invoice-tracker": {
+      "observed_prices": [5.76, 5.76, 8.31, 9.95, 9.78, 4.99, 3.57, 7.15],
+      "sources": [
+        "https://www.etsy.com/listing/4494868300/small-business-cash-flow-tracker-excel",
+        "https://www.etsy.com/listing/4510615333/cash-flow-tracker-small-business"
+      ],
+      "note": "Comparable cash-flow and invoice trackers support positioning this connected freelance workbook as an entry-level business finance template."
+    },
+    "creator-content-sponsorship-tracker": {
+      "observed_prices": [5.76, 5.76, 8.31, 9.95, 7.15, 4.99],
+      "sources": [
+        "https://www.etsy.com/listing/4494868300/small-business-cash-flow-tracker-excel",
+        "https://www.etsy.com/listing/4510615333/cash-flow-tracker-small-business"
+      ],
+      "note": "Comparable creator and small-business finance templates support an entry-level launch position for a connected sponsorship and cash tracker."
+    }
+  }
+}

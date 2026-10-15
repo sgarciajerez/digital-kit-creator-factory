@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0.0",
+  "contract_id": "family-budget-native-base-v1",
+  "source_of_truth": "master_workbook.xlsx + templates/sources + model contract",
+  "model_library": "templates/model-library/index.json",
+  "source_directory": "templates/sources",
+  "builder": "scripts/create_family_budget_from_sources.py",
+  "post_processor": "scripts/excel_visual_overlays.py",
+  "opening_zoom": 95,
+  "freeze_panes": false,
+  "shared_rows": {
+    "navigation": 1,
+    "workbook_label": 2,
+    "screen_title": 3,
+    "screen_subtitle": 4,
+    "table_header_when_applicable": 7
+  },
+  "navigation": {
+    "component": "rounded_in_sheet_buttons_plus_native_excel_sheet_tabs",
+    "button_shape": "rounded_rectangle",
+    "button_width_points": 68,
+    "button_height_points": 21,
+    "gap_points": 4,
+    "buttons_per_sheet": 9,
+    "identity_mode": "native_palette_and_cell_surfaces",
+    "identity_required_on_every_sheet": false,
+    "derived_design_rule": "Cada producto derivado debe declarar cinco colores distintos y datos mock coherentes con su proyecto; no requiere iconos externos."
+  },
+  "table_contract": {
+    "headers_required": true,
+    "header_row": 7,
+    "forbid_generic_headers": ["Columna1", "Columna2", "Columna3", "Columna4", "Columna5", "Columna6", "Columna7", "Columna8", "Columna9", "Columna10", "Columna11", "Columna12", "Columna13", "Columna14"],
+    "totals_outside_data_range": true,
+    "schema_must_match_visible_columns": true,
+    "validate_table_range_after_resize": true
+  },
+  "number_format_contract": {
+    "percentage_only_for": ["ratios", "completion", "progress", "share"],
+    "integer_for": ["counts", "guests", "quantities", "tables", "days"],
+    "currency_or_decimal_for": ["amounts", "budgets", "payments", "balances"],
+    "date_for": ["dates", "deadlines"],
+    "never_inherit_number_format_from_replaced_model_column": true
+  },
+  "sheet_geometry": {
+    "Inicio": {"last_column": "J", "widths": {"A": 3, "B": 18, "C": 20, "D": 20, "E": 20, "F": 3, "G": 21, "H": 16, "I": 16, "J": 16}},
+    "Resumen": {"last_column": "N", "widths": {"A": 3, "B": 22, "C": 16, "D": 16, "E": 16, "F": 14, "G": 3, "H": 12, "I": 12, "J": 12, "K": 12, "L": 12, "M": 12, "N": 12}},
+    "Presupuesto": {"last_column": "O", "width_pattern": "A=3;B=23;C:N=11;O=15"},
+    "Gastos reales": {"last_column": "O", "width_pattern": "A=3;B=23;C:N=11;O=15"},
+    "Movimientos": {"last_column": "M", "widths": {"A": 3, "B": 14, "C": 14, "D": 12, "E": 21, "F": 24, "G": 14, "H": 15, "I": 15, "J": 3, "K": 18, "L": 18, "M": 18}},
+    "Flujo de caja": {"last_column": "Q", "width_pattern": "A=3;B=14;C:I=15;J=25;K=3;L:Q=12"},
+    "Metas y fondo": {"last_column": "J", "widths": {"A": 3, "B": 23, "C": 14, "D": 11, "E": 15, "F": 14, "G": 14, "H": 12, "I": 15, "J": 14}},
+    "Deudas": {"last_column": "H", "widths": {"A": 3, "B": 22, "C": 15, "D": 14, "E": 15, "F": 15, "G": 18, "H": 15}},
+    "Listas": {"last_column": "M", "widths": {"A": 3, "B": 25, "C": 19, "D": 3, "E": 16, "F": 3, "G": 14, "H": 3, "I": 21, "J": 3, "K": 14, "L": 3, "M": 15}}
+  },
+  "allowed_variations": [
+    "texts",
+    "sheet_names_and_purpose",
+    "one_global_palette",
+    "table_headers_and_input_columns",
+    "sample_data",
+    "formula_ranges",
+    "validation_lists",
+    "one_native_chart_per_screen_when_useful",
+    "cell_based_progress_bar"
+  ],
+  "product_families": ["guide", "dashboard", "table", "analysis", "checklist", "settings"],
+  "limits": {
+    "complexity_target": 2,
+    "complexity_maximum": 4,
+    "max_accent_colors": 2,
+    "max_charts_per_screen": 1,
+    "max_charts_per_workbook": 2,
+    "max_visual_components_per_screen": 6
+  },
+  "forbidden_variations": [
+    "freeze_panes",
+    "moving_shared_header_or_table_slots_without_versioning",
+    "random_per_sheet_palettes",
+    "generic_table_headers",
+    "including_total_rows_inside_data_tables",
+    "percentage_formats_on_counts_or_amounts",
+    "missing_or_incoherent_product_palette_or_mock_data",
+    "decorative_dashboard_panels",
+    "broken_or_hidden_formula_ranges",
+    "#REF!"
+  ]
+}

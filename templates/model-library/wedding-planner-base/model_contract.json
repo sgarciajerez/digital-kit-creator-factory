@@ -1,0 +1,486 @@
+{
+  "contract_id": "wedding-planner-base-v1",
+  "title": "Base de planificador de boda",
+  "product_id": null,
+  "purpose": "Comparar presupuesto y pagos, seguir proveedores, invitados y tareas sin duplicar entradas.",
+  "sheets": [
+    "Inicio",
+    "Resumen",
+    "Presupuesto",
+    "Pagos reales",
+    "Proveedores",
+    "Flujo de pagos",
+    "Checklist",
+    "Invitados",
+    "Listas"
+  ],
+  "tables": [
+    {
+      "sheet": "Resumen",
+      "ref": "B11:F18",
+      "headers": [
+        {
+          "name": "Categoría",
+          "role": "derived",
+          "kind": "text"
+        },
+        {
+          "name": "Plan",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Pagado",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Pendiente",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "% pagado",
+          "role": "derived",
+          "kind": "percent"
+        }
+      ],
+      "required": true
+    },
+    {
+      "sheet": "Presupuesto",
+      "ref": "B7:O14",
+      "headers": [
+        {
+          "name": "Categoría",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Enero",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Febrero",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Marzo",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Abril",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Mayo",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Junio",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Julio",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Agosto",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Septiembre",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Octubre",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Noviembre",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Diciembre",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Total",
+          "role": "derived",
+          "kind": "amount"
+        }
+      ],
+      "required": true,
+      "total_ref": "B15:O15",
+      "total_label": "TOTAL DE LA BODA"
+    },
+    {
+      "sheet": "Pagos reales",
+      "ref": "B7:O14",
+      "headers": [
+        {
+          "name": "Categoría",
+          "role": "derived",
+          "kind": "text"
+        },
+        {
+          "name": "Enero",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Febrero",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Marzo",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Abril",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Mayo",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Junio",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Julio",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Agosto",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Septiembre",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Octubre",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Noviembre",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Diciembre",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Total",
+          "role": "derived",
+          "kind": "amount"
+        }
+      ],
+      "required": true,
+      "total_ref": "B15:O15",
+      "total_label": "TOTAL PAGADO"
+    },
+    {
+      "sheet": "Proveedores",
+      "ref": "B7:I27",
+      "headers": [
+        {
+          "name": "Fecha",
+          "role": "input",
+          "kind": "date"
+        },
+        {
+          "name": "Mes",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Tipo",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Categoría",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Concepto",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Importe",
+          "role": "input",
+          "kind": "amount"
+        },
+        {
+          "name": "Pagado por",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Estado",
+          "role": "input",
+          "kind": "text"
+        }
+      ],
+      "required": true
+    },
+    {
+      "sheet": "Flujo de pagos",
+      "ref": "B7:J19",
+      "headers": [
+        {
+          "name": "Mes",
+          "role": "derived",
+          "kind": "text"
+        },
+        {
+          "name": "Presupuesto plan",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Ingresos",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Pagos previstos",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Pagos reales",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Ajustes",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Saldo previsto",
+          "role": "derived",
+          "kind": "amount"
+        },
+        {
+          "name": "Comentarios",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Estado",
+          "role": "derived",
+          "kind": "text"
+        }
+      ],
+      "required": true
+    },
+    {
+      "sheet": "Checklist",
+      "ref": "B9:J12",
+      "headers": [
+        {
+          "name": "Tarea",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Área",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Responsable",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Fecha límite",
+          "role": "input",
+          "kind": "date"
+        },
+        {
+          "name": "Estado",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Prioridad",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Días",
+          "role": "derived",
+          "kind": "count"
+        },
+        {
+          "name": "Notas",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Progreso",
+          "role": "derived",
+          "kind": "percent"
+        }
+      ],
+      "required": true
+    },
+    {
+      "sheet": "Invitados",
+      "ref": "B7:H10",
+      "headers": [
+        {
+          "name": "Grupo",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Invitados previstos",
+          "role": "input",
+          "kind": "count"
+        },
+        {
+          "name": "Confirmados",
+          "role": "input",
+          "kind": "count"
+        },
+        {
+          "name": "Menú",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Mesa",
+          "role": "input",
+          "kind": "count"
+        },
+        {
+          "name": "Estado",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Notas",
+          "role": "input",
+          "kind": "text"
+        }
+      ],
+      "required": true,
+      "total_ref": "B11:H11",
+      "total_label": "TOTAL"
+    },
+    {
+      "sheet": "Listas",
+      "ref": "B7:C13",
+      "headers": [
+        {
+          "name": "Parámetro",
+          "role": "input",
+          "kind": "text"
+        },
+        {
+          "name": "Valor",
+          "role": "input",
+          "kind": "general"
+        }
+      ],
+      "required": true
+    }
+  ],
+  "formula_rules": [
+    {
+      "sheet": "Resumen",
+      "cell": "E12",
+      "contains": "C12-D12",
+      "description": "Pendiente = plan menos pagado."
+    },
+    {
+      "sheet": "Pagos reales",
+      "cell": "C8",
+      "contains": "SUMIFS",
+      "description": "Los pagos reales proceden del diario de proveedores."
+    },
+    {
+      "sheet": "Flujo de pagos",
+      "cell": "H8",
+      "contains": "C8-F8+D8-G8",
+      "description": "Saldo previsto combina presupuesto, ingresos, pagos y ajustes."
+    },
+    {
+      "sheet": "Checklist",
+      "cell": "J10",
+      "contains": "IF(F10=\"Confirmado\",1,0)",
+      "description": "Progreso refleja el estado de la tarea."
+    },
+    {
+      "sheet": "Invitados",
+      "cell": "C11",
+      "contains": "SUM(C8:C10)",
+      "description": "El total de invitados previstos suma grupos, no porcentajes."
+    }
+  ],
+  "relationships": [
+    "Proveedores es el diario operativo; Pagos reales y Flujo de pagos se alimentan de él.",
+    "Invitados previstos, Confirmados y Mesa son conteos enteros.",
+    "Los porcentajes solo describen progreso o pagado, nunca número de invitados.",
+    "Las filas TOTAL están fuera de las tablas de datos."
+  ],
+  "cases": [
+    {
+      "name": "guest total follows group counts",
+      "purpose": "Comprueba que el total de invitados suma personas y no interpreta la columna como porcentaje.",
+      "inputs": [
+        {
+          "sheet": "Invitados",
+          "cell": "C8",
+          "value": 40
+        }
+      ],
+      "assertions": [
+        {
+          "sheet": "Invitados",
+          "cell": "C11",
+          "operator": "equals",
+          "value": 130
+        }
+      ]
+    }
+  ],
+  "failure_criteria": [
+    "Invitados previstos, Confirmados o Mesa usan formato porcentaje.",
+    "Los pagos reales se introducen duplicados en vez de salir de Proveedores.",
+    "Pendiente o saldo previsto deja de ser una relación calculada.",
+    "Una fila TOTAL queda dentro del rango filtrable de la tabla."
+  ]
+}
