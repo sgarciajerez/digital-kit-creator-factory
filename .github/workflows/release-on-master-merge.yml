@@ -1,0 +1,70 @@
+name: Create release after develop merge
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: release-master
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out merged commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Confirm this is an integration from develop
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pull_requests="$(gh api "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls" \
+            --jq '[.[] | select(.merged_at != null and .base.ref == "master" and .head.ref == "develop")] | length')"
+          if [[ "$pull_requests" -gt 0 ]]; then
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          else
+            git fetch origin develop:refs/remotes/origin/develop
+            develop_sha="$(git rev-parse refs/remotes/origin/develop)"
+            parents="$(git rev-list --parents -n 1 "$GITHUB_SHA")"
+            if [[ " $parents " == *" $develop_sha "* ]] && [[ "$(wc -w <<< "$parents")" -eq 3 ]]; then
+              echo "release=true" >> "$GITHUB_OUTPUT"
+              echo "Direct merge commit from develop detected."
+            else
+              echo "release=false" >> "$GITHUB_OUTPUT"
+              echo "This master update was not merged from develop; no release will be created."
+            fi
+          fi
+
+      - name: Read and validate repository version
+        id: version
+        if: steps.source.outputs.release == 'true'
+        run: |
+          git fetch --tags origin
+          version="$(tr -d '[:space:]' < VERSION)"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "VERSION must contain a SemVer MAJOR.MINOR.PATCH value." >&2
+            exit 1
+          fi
+          release_tag="v$version"
+          if git rev-parse -q --verify "refs/tags/$release_tag" >/dev/null; then
+            echo "Release tag '$release_tag' already exists; increment VERSION before merging." >&2
+            exit 1
+          fi
+          echo "tag=$release_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub release with generated notes
+        if: steps.source.outputs.release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+        run: gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --title "$RELEASE_TAG" --generate-notes

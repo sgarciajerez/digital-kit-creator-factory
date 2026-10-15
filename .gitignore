@@ -17,5 +17,6 @@ data/*.sqlite3-*
 logs/*.log
 outputs/*
 backups/
+assets/
 templates/sources/*.exe
 

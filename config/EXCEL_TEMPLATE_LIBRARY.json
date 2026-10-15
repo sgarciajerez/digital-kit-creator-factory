@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "library_id": "native-excel-base-library-v1",
-  "implementation": "scripts/clone_excel_template.py",
+  "implementation": "scripts/excel/clone_excel_template.py",
   "source_directory": "templates/sources",
   "model_library": "templates/model-library/index.json",
   "principles": [

@@ -4,8 +4,8 @@
   "source_of_truth": "master_workbook.xlsx + templates/sources + model contract",
   "model_library": "templates/model-library/index.json",
   "source_directory": "templates/sources",
-  "builder": "scripts/create_family_budget_from_sources.py",
-  "post_processor": "scripts/excel_visual_overlays.py",
+  "builder": "scripts/generation/create_family_budget_from_sources.py",
+  "post_processor": "scripts/excel/excel_visual_overlays.py",
   "opening_zoom": 95,
   "freeze_panes": false,
   "shared_rows": {
